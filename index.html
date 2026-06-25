@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Focus Session — Pomodoro Timer & Website Blocker for Chrome</title>
+  <meta name="description" content="A Pomodoro timer that actually blocks the sites you keep opening. Free to install, Pro unlocks full analytics and advanced blocking.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #070a10;
+      --bg-2:     #0c1018;
+      --bg-3:     #111620;
+      --ember:    #ff6a3d;
+      --ember-2:  #ffb347;
+      --teal:     #4fd1c5;
+      --border:   rgba(255,255,255,0.07);
+      --text-1:   #f3f1ec;
+      --text-2:   #8b92a8;
+      --text-3:   #5c6275;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-1);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(7,10,16,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex; flex-direction: column; gap: 1px;
+    }
+    .nav-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ember);
+    }
+    .nav-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--text-1);
+    }
+
+    .nav-cta {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 9px 20px; border-radius: 10px;
+      background: var(--ember); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .nav-cta:hover { opacity: 0.88; }
+
+    /* ── Shared ───────────────────────────────────────────────── */
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 32px; }
+
+    .eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--ember);
+    }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(26px, 3vw, 36px); font-weight: 700;
+      line-height: 1.2; color: var(--text-1);
+    }
+
+    .section { padding: 96px 0; }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      padding: 100px 0 80px;
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(255,106,61,0.10) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 30%, rgba(91,77,180,0.12) 0%, transparent 55%);
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-left { display: flex; flex-direction: column; gap: 24px; }
+
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.02em;
+      color: var(--text-1);
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--ember), var(--ember-2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: 17px; color: var(--text-2); line-height: 1.65;
+      max-width: 440px;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px; border-radius: 12px;
+      background: var(--ember); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      text-decoration: none; transition: opacity 0.15s;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 13px 26px; border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      color: var(--text-2); font-size: 15px; font-weight: 500;
+      text-decoration: none; transition: all 0.15s;
+    }
+    .btn-secondary:hover { color: var(--text-1); border-color: rgba(255,255,255,0.18); }
+
+    .hero-meta {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 12.5px; color: var(--text-3);
+    }
+    .hero-meta-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--ember); opacity: 0.5;
+    }
+
+    /* Extension popup mockup */
+    .popup-mockup {
+      position: relative;
+      width: 320px; margin: 0 auto;
+      filter: drop-shadow(0 32px 64px rgba(255,106,61,0.18));
+    }
+
+    .popup-shell {
+      background: linear-gradient(165deg, #0c1018, #13091e);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 20px;
+      padding: 24px 22px 20px;
+      overflow: hidden;
+      position: relative;
+    }
+    .popup-shell::before {
+      content: ''; position: absolute;
+      inset: 0; pointer-events: none;
+      background: radial-gradient(circle at 50% 35%, rgba(255,106,61,0.08), transparent 60%);
+    }
+
+    .popup-eyebrow {
+      text-align: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ember); margin-bottom: 14px;
+    }
+
+    .popup-orb-wrap {
+      display: flex; justify-content: center; margin-bottom: 16px;
+    }
+    .popup-orb {
+      width: 80px; height: 80px; border-radius: 50%;
+      background: radial-gradient(circle at 38% 35%, #ffb347, #ff6a3d 55%, #c93a1a);
+      box-shadow: 0 0 30px rgba(255,106,61,0.5), 0 0 60px rgba(255,106,61,0.2);
+      animation: orbPulse 3s ease-in-out infinite;
+    }
+    @keyframes orbPulse {
+      0%, 100% { box-shadow: 0 0 30px rgba(255,106,61,0.5), 0 0 60px rgba(255,106,61,0.2); }
+      50%       { box-shadow: 0 0 40px rgba(255,106,61,0.7), 0 0 80px rgba(255,106,61,0.3); }
+    }
+
+    .popup-phase {
+      text-align: center; margin-bottom: 4px;
+      font-size: 11px; color: var(--ember); font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .popup-timer {
+      text-align: center; margin-bottom: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 42px; font-weight: 700; color: var(--text-1);
+      letter-spacing: -0.02em;
+    }
+
+    .popup-btn {
+      display: block; width: 100%; padding: 11px;
+      background: rgba(255,106,61,0.12);
+      border: 1px solid rgba(255,106,61,0.25);
+      border-radius: 12px; text-align: center;
+      color: var(--ember); font-size: 13px; font-weight: 600;
+      margin-bottom: 12px; cursor: default;
+    }
+
+    .popup-stats {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 4px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .popup-stats-text { font-size: 11px; color: var(--text-3); }
+    .popup-pill {
+      font-size: 10px; padding: 3px 8px; border-radius: 20px;
+      background: rgba(255,179,71,0.1); border: 1px solid rgba(255,179,71,0.25);
+      color: var(--ember-2); font-weight: 600;
+    }
+
+    /* ── Trust bar ────────────────────────────────────────────── */
+    .trust-bar {
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .trust-bar-inner {
+      display: flex; align-items: center; justify-content: center;
+      gap: 40px; flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 13px; color: var(--text-3); font-weight: 500;
+    }
+    .trust-icon { font-size: 16px; }
+
+    /* ── Features ─────────────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px; margin-top: 48px;
+    }
+
+    .feature-card {
+      background: linear-gradient(165deg, var(--bg-2), #130c1e);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+
+    .feature-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: rgba(255,106,61,0.1); border: 1px solid rgba(255,106,61,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+    }
+    .feature-icon.teal {
+      background: rgba(79,209,197,0.1); border-color: rgba(79,209,197,0.2);
+    }
+    .feature-icon.gold {
+      background: rgba(255,179,71,0.1); border-color: rgba(255,179,71,0.2);
+    }
+
+    .feature-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px; font-weight: 700; color: var(--text-1);
+    }
+    .feature-desc { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+    .feature-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .feature-pill {
+      font-size: 11px; padding: 3px 9px; border-radius: 20px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--text-3);
+    }
+
+    /* ── Comparison ───────────────────────────────────────────── */
+    .compare-section { padding: 96px 0; }
+
+    .compare-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 48px;
+    }
+
+    .compare-card {
+      border-radius: 18px; padding: 28px 28px 24px;
+      border: 1px solid var(--border);
+    }
+    .compare-card.free { background: var(--bg-2); }
+    .compare-card.pro  {
+      background: linear-gradient(160deg, #130c1e, #0c1018);
+      border-color: rgba(255,106,61,0.25);
+      position: relative; overflow: hidden;
+    }
+    .compare-card.pro::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--ember), var(--ember-2));
+    }
+
+    .compare-tier {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .compare-tier.free { color: var(--text-3); }
+    .compare-tier.pro  { color: var(--ember); }
+
+    .compare-list { display: flex; flex-direction: column; gap: 11px; }
+    .compare-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 14px; color: var(--text-2); line-height: 1.45;
+    }
+    .check {
+      flex-shrink: 0; width: 18px; height: 18px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; margin-top: 1px;
+    }
+    .check.green { background: rgba(79,209,197,0.15); color: var(--teal); }
+    .check.ember { background: rgba(255,106,61,0.15); color: var(--ember); }
+
+    /* ── Pricing ──────────────────────────────────────────────── */
+    .pricing-section { padding: 96px 0; }
+
+    .pricing-intro { text-align: center; margin-bottom: 48px; }
+    .pricing-intro p { font-size: 17px; color: var(--text-2); margin-top: 12px; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .price-card {
+      background: var(--bg-2);
+      border: 1px solid var(--border);
+      border-radius: 18px; padding: 28px 22px 24px;
+      display: flex; flex-direction: column;
+    }
+
+    .price-card.featured {
+      background: linear-gradient(160deg, #160c22, #0d0818);
+      border-color: rgba(255,106,61,0.35);
+      position: relative; overflow: hidden;
+    }
+    .price-card.featured::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--ember), var(--ember-2));
+    }
+
+    .price-badge {
+      display: inline-block; align-self: flex-start;
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 3px 9px; border-radius: 20px; margin-bottom: 16px;
+      background: rgba(255,106,61,0.12); border: 1px solid rgba(255,106,61,0.3);
+      color: var(--ember);
+    }
+
+    .price-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--text-2); margin-bottom: 10px;
+    }
+
+    .price-amount {
+      display: flex; align-items: baseline; gap: 4px;
+      margin-bottom: 4px;
+    }
+    .price-currency { font-size: 18px; color: var(--text-2); font-weight: 500; }
+    .price-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 40px; font-weight: 700; color: var(--text-1); line-height: 1;
+    }
+    .price-card.featured .price-number { color: var(--ember); }
+
+    .price-period { font-size: 13px; color: var(--text-3); margin-bottom: 6px; }
+    .price-saving {
+      font-size: 12px; font-weight: 600; color: var(--teal);
+      margin-bottom: 20px;
+    }
+
+    .price-divider {
+      height: 1px; background: var(--border); margin-bottom: 16px;
+    }
+
+    .price-features { flex: 1; display: flex; flex-direction: column; gap: 9px; margin-bottom: 24px; }
+    .price-feature { font-size: 13px; color: var(--text-2); display: flex; align-items: center; gap: 7px; }
+    .price-feature::before { content: '✓'; color: var(--teal); font-size: 11px; font-weight: 700; }
+
+    .price-cta {
+      display: block; text-align: center; padding: 11px;
+      border-radius: 11px; font-size: 14px; font-weight: 600;
+      text-decoration: none; transition: all 0.15s;
+    }
+    .price-cta.outline {
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03); color: var(--text-2);
+    }
+    .price-cta.outline:hover { border-color: rgba(255,255,255,0.18); color: var(--text-1); }
+    .price-cta.solid {
+      background: var(--ember); color: #fff;
+    }
+    .price-cta.solid:hover { opacity: 0.88; }
+
+    .pricing-note {
+      text-align: center; margin-top: 24px;
+      font-size: 13px; color: var(--text-3);
+    }
+
+    /* ── FAQ ──────────────────────────────────────────────────── */
+    .faq-section { padding: 80px 0; }
+    .faq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+
+    .faq-item {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+
+    .faq-q {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 15px; font-weight: 600; color: var(--text-1);
+      margin-bottom: 10px;
+    }
+    .faq-a { font-size: 14px; color: var(--text-2); line-height: 1.65; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+    }
+
+    .footer-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-left { font-size: 13px; color: var(--text-3); }
+    .footer-right { display: flex; align-items: center; gap: 24px; }
+    .footer-link {
+      font-size: 13px; color: var(--text-3); text-decoration: none;
+      transition: color 0.12s;
+    }
+    .footer-link:hover { color: var(--text-1); }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+      .hero-inner { grid-template-columns: 1fr; }
+      .popup-mockup { display: none; }
+      .features-grid { grid-template-columns: 1fr; }
+      .compare-grid { grid-template-columns: 1fr; }
+      .pricing-grid { grid-template-columns: 1fr 1fr; }
+      .faq-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .container { padding: 0 20px; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .trust-bar-inner { gap: 20px; }
+      nav { padding: 12px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="nav-logo">
+    <span class="nav-eyebrow">NiallCodes</span>
+    <span class="nav-name">Focus Session</span>
+  </div>
+  <a href="https://chromewebstore.google.com/detail/focus-session/EXTENSION_ID" class="nav-cta" target="_blank">
+    Add to Chrome — Free
+  </a>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <span class="eyebrow">Chrome Extension</span>
+        <h1>A focus timer<br>with <em>teeth.</em></h1>
+        <p class="hero-sub">Focus Session runs a Pomodoro timer and blocks the sites you keep opening — so you can actually finish what you started.</p>
+        <div class="hero-actions">
+          <a href="https://chromewebstore.google.com/detail/focus-session/EXTENSION_ID" class="btn-primary" target="_blank">
+            Add to Chrome — Free
+          </a>
+          <a href="#pricing" class="btn-secondary">See Pro pricing ↓</a>
+        </div>
+        <div class="hero-meta">
+          <span class="hero-meta-item"><span class="hero-meta-dot"></span>Free to install</span>
+          <span class="hero-meta-item"><span class="hero-meta-dot"></span>No account required</span>
+          <span class="hero-meta-item"><span class="hero-meta-dot"></span>Chrome only</span>
+        </div>
+      </div>
+
+      <!-- Extension mockup -->
+      <div class="popup-mockup">
+        <div class="popup-shell">
+          <div class="popup-eyebrow">Focus Session</div>
+          <div class="popup-orb-wrap">
+            <div class="popup-orb"></div>
+          </div>
+          <div class="popup-phase">Work</div>
+          <div class="popup-timer">24:58</div>
+          <div class="popup-btn">⏸ Pause</div>
+          <div class="popup-stats">
+            <span class="popup-stats-text">3 sessions today · 1h 15m</span>
+            <span class="popup-pill">Pro ✦</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Trust bar -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-bar-inner">
+      <span class="trust-item"><span class="trust-icon">🔒</span>No browsing data collected</span>
+      <span class="trust-item"><span class="trust-icon">💾</span>All data stored locally</span>
+      <span class="trust-item"><span class="trust-icon">⚡</span>Works offline</span>
+      <span class="trust-item"><span class="trust-icon">🔄</span>30-day refund guarantee</span>
+    </div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="section">
+  <div class="container">
+    <span class="eyebrow">What it does</span>
+    <h2 style="margin-top: 10px;">Everything you need to actually focus.</h2>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⏱</div>
+        <div>
+          <div class="feature-title">Pomodoro timer</div>
+          <p class="feature-desc">Classic 25/5 out of the box. Customise work and break lengths, set auto-start, and get desktop notifications when it's time to switch.</p>
+          <div class="feature-pills">
+            <span class="feature-pill">4 presets</span>
+            <span class="feature-pill">Custom mode</span>
+            <span class="feature-pill">Session labels</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon teal">🚫</div>
+        <div>
+          <div class="feature-title">Website blocker</div>
+          <p class="feature-desc">Add any site to your blocklist and Focus Session will redirect you mid-session. Works on x.com, Reddit, YouTube — anything. A 5-minute snooze is there for when you genuinely need it.</p>
+          <div class="feature-pills">
+            <span class="feature-pill">Session blocking</span>
+            <span class="feature-pill">Always-on (Pro)</span>
+            <span class="feature-pill">PIN protection</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon gold">📊</div>
+        <div>
+          <div class="feature-title">Focus analytics</div>
+          <p class="feature-desc">52-week activity heatmap, daily distribution chart, session label breakdown, and personal bests. See your actual patterns, not just a session count.</p>
+          <div class="feature-pills">
+            <span class="feature-pill">Heatmap</span>
+            <span class="feature-pill">Streak tracking</span>
+            <span class="feature-pill">Export data (Pro)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Free vs Pro -->
+<section class="compare-section">
+  <div class="container">
+    <span class="eyebrow">Free vs Pro</span>
+    <h2 style="margin-top: 10px;">The free tier is genuinely useful.</h2>
+    <p style="color: var(--text-2); margin-top: 12px; max-width: 520px;">Pro adds the features that power users want — always-on blocking, full analytics history, and a floating widget that stays visible as you work.</p>
+
+    <div class="compare-grid">
+      <div class="compare-card free">
+        <div class="compare-tier free">Free — always</div>
+        <div class="compare-list">
+          <div class="compare-item"><span class="check green">✓</span>Pomodoro timer with 4 presets</div>
+          <div class="compare-item"><span class="check green">✓</span>Session blocking (during work sessions)</div>
+          <div class="compare-item"><span class="check green">✓</span>Session labels (Work, Study, Creative, Other)</div>
+          <div class="compare-item"><span class="check green">✓</span>8 themes including Ember, Ocean, Forest</div>
+          <div class="compare-item"><span class="check green">✓</span>Bar and Orb floating widgets</div>
+          <div class="compare-item"><span class="check green">✓</span>Analytics — last 8 weeks + label breakdown</div>
+          <div class="compare-item"><span class="check green">✓</span>Keyboard shortcuts</div>
+          <div class="compare-item"><span class="check green">✓</span>New tab override</div>
+        </div>
+      </div>
+
+      <div class="compare-card pro">
+        <div class="compare-tier pro">Pro ✦</div>
+        <div class="compare-list">
+          <div class="compare-item"><span class="check ember">✦</span>Everything in Free</div>
+          <div class="compare-item"><span class="check ember">✦</span>Always-on absolute blocker with PIN</div>
+          <div class="compare-item"><span class="check ember">✦</span>Custom timer presets</div>
+          <div class="compare-item"><span class="check ember">✦</span>7 notification sounds</div>
+          <div class="compare-item"><span class="check ember">✦</span>7 floating widget styles (Dot, Pill, Breathe, Flame…)</div>
+          <div class="compare-item"><span class="check ember">✦</span>Full 52-week activity heatmap</div>
+          <div class="compare-item"><span class="check ember">✦</span>Personal bests and streak trophies</div>
+          <div class="compare-item"><span class="check ember">✦</span>Export session history to JSON</div>
+          <div class="compare-item"><span class="check ember">✦</span>Daily task list</div>
+          <div class="compare-item"><span class="check ember">✦</span>Activates on up to 2 devices</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing -->
+<section class="pricing-section" id="pricing">
+  <div class="container">
+    <div class="pricing-intro">
+      <span class="eyebrow">Pricing</span>
+      <h2 style="margin-top: 10px;">Simple, honest pricing.</h2>
+      <p>No trials, no feature limits on free. Upgrade when Pro makes sense for you.</p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <div class="price-card">
+        <div class="price-name">Monthly</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">2.99</span>
+        </div>
+        <div class="price-period">per month</div>
+        <div class="price-saving" style="color: var(--text-3);">billed monthly</div>
+        <div class="price-divider"></div>
+        <div class="price-features">
+          <div class="price-feature">All Pro features</div>
+          <div class="price-feature">Up to 2 devices</div>
+          <div class="price-feature">Cancel anytime</div>
+        </div>
+        <a href="https://buy.stripe.com/5kQ3cxfdIfDV8wK9M29AA01" class="price-cta outline" target="_blank">Get Monthly</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-name">3 Months</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">3.99</span>
+        </div>
+        <div class="price-period">per 3 months</div>
+        <div class="price-saving">Save 56% vs monthly</div>
+        <div class="price-divider"></div>
+        <div class="price-features">
+          <div class="price-feature">All Pro features</div>
+          <div class="price-feature">Up to 2 devices</div>
+          <div class="price-feature">Cancel anytime</div>
+        </div>
+        <a href="https://buy.stripe.com/9B64gB4z4ajB7sG1fw9AA02" class="price-cta outline" target="_blank">Get 3 Months</a>
+      </div>
+
+      <div class="price-card">
+        <div class="price-name">Annual</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">7.99</span>
+        </div>
+        <div class="price-period">per year</div>
+        <div class="price-saving">Save 78% vs monthly</div>
+        <div class="price-divider"></div>
+        <div class="price-features">
+          <div class="price-feature">All Pro features</div>
+          <div class="price-feature">Up to 2 devices</div>
+          <div class="price-feature">Cancel anytime</div>
+        </div>
+        <a href="https://buy.stripe.com/5kQbJ37Lg1N5cN08HY9AA03" class="price-cta outline" target="_blank">Get Annual</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="price-badge">Most Popular</div>
+        <div class="price-name">Lifetime</div>
+        <div class="price-amount">
+          <span class="price-currency">$</span>
+          <span class="price-number">11.99</span>
+        </div>
+        <div class="price-period">one-time payment</div>
+        <div class="price-saving">$4 more than a year — never pay again</div>
+        <div class="price-divider"></div>
+        <div class="price-features">
+          <div class="price-feature">All Pro features forever</div>
+          <div class="price-feature">Up to 2 devices</div>
+          <div class="price-feature">All future updates included</div>
+        </div>
+        <a href="https://buy.stripe.com/28E00l0iO8bt28m9M29AA04" class="price-cta solid" target="_blank">Get Lifetime</a>
+      </div>
+
+    </div>
+
+    <p class="pricing-note">
+      Your license key is emailed immediately after purchase. Questions? <a href="mailto:hello@niallcodes.com" style="color: var(--ember); text-decoration: none;">hello@niallcodes.com</a>
+    </p>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+  <div class="container">
+    <span class="eyebrow">Questions</span>
+    <h2 style="margin-top: 10px;">The honest answers.</h2>
+
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q">Does Focus Session track what I browse?</div>
+        <div class="faq-a">No. The extension never reads your browsing history or page content. It only knows the domains you've explicitly added to your blocklist. All session data stays in your browser's local storage — it never leaves your machine.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I use it on multiple computers?</div>
+        <div class="faq-a">Pro licenses activate on up to 2 devices. If you get a new computer, you can deactivate an old device from within the extension settings to free up a slot.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if I want a refund?</div>
+        <div class="faq-a">Email hello@niallcodes.com within 30 days of purchase and we'll refund you, no questions asked. The free tier is permanent and doesn't require payment to stay useful, so we only expect people to upgrade when it genuinely adds value for them.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does it work in incognito mode?</div>
+        <div class="faq-a">Not by default — Chrome disables extensions in incognito unless you explicitly enable them. Go to chrome://extensions → Focus Session → "Allow in incognito" if you want blocking to apply there too.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-left">© 2026 NiallCodes. All rights reserved.</span>
+      <div class="footer-right">
+        <a href="/privacy.html" class="footer-link">Privacy Policy</a>
+        <a href="mailto:hello@niallcodes.com" class="footer-link">hello@niallcodes.com</a>
+        <a href="https://chromewebstore.google.com/detail/focus-session/EXTENSION_ID" class="footer-link" target="_blank">Chrome Web Store</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

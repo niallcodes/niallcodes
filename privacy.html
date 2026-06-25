@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — Focus Session</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #070a10; --bg-2: #0c1018; --ember: #ff6a3d;
+      --border: rgba(255,255,255,0.07);
+      --text-1: #f3f1ec; --text-2: #8b92a8; --text-3: #5c6275;
+    }
+    body {
+      background: var(--bg); color: var(--text-1);
+      font-family: 'Inter', sans-serif; font-size: 15px;
+      line-height: 1.7; -webkit-font-smoothing: antialiased;
+    }
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 40px; border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { display: flex; flex-direction: column; gap: 1px; }
+    .nav-eyebrow {
+      font-size: 9px; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ember);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .nav-name { font-family: 'Space Grotesk', sans-serif; font-size: 17px; font-weight: 700; }
+    .back-link {
+      font-size: 13px; color: var(--text-3); text-decoration: none;
+      transition: color 0.12s;
+    }
+    .back-link:hover { color: var(--text-1); }
+
+    .container { max-width: 720px; margin: 0 auto; padding: 64px 32px 96px; }
+
+    .page-eyebrow {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--ember); margin-bottom: 10px;
+    }
+    h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 36px; font-weight: 700; margin-bottom: 8px;
+    }
+    .meta { font-size: 13px; color: var(--text-3); margin-bottom: 48px; }
+
+    h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 19px; font-weight: 700; color: var(--text-1);
+      margin-top: 40px; margin-bottom: 12px;
+    }
+    p { color: var(--text-2); margin-bottom: 14px; }
+    ul { color: var(--text-2); padding-left: 20px; margin-bottom: 14px; }
+    li { margin-bottom: 6px; }
+    strong { color: var(--text-1); font-weight: 600; }
+    a { color: var(--ember); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .highlight {
+      background: rgba(255,106,61,0.06); border: 1px solid rgba(255,106,61,0.15);
+      border-radius: 12px; padding: 16px 20px; margin-bottom: 20px;
+    }
+    .highlight p { margin-bottom: 0; }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 24px 40px;
+      font-size: 13px; color: var(--text-3);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">
+    <span class="nav-eyebrow">NiallCodes</span>
+    <span class="nav-name">Focus Session</span>
+  </div>
+  <a href="/index.html" class="back-link">← Back</a>
+</nav>
+
+<div class="container">
+  <div class="page-eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="meta">Last updated: June 2026 · Focus Session Chrome Extension · NiallCodes</p>
+
+  <div class="highlight">
+    <p><strong>Short version:</strong> Focus Session never reads your browsing history or page content. It stores your session data locally on your device. It does not sell, share, or transmit your personal data to any third party except as described below (Stripe for payment processing and Resend for license key delivery).</p>
+  </div>
+
+  <h2>1. What data the extension stores</h2>
+  <p>Focus Session stores the following data <strong>locally in your browser</strong> (using Chrome's storage APIs). This data never leaves your device except as described in the sections below.</p>
+  <ul>
+    <li><strong>Session history</strong> — a list of completed Pomodoro sessions including the timestamp, duration, and label (Work/Study/Creative/Other) you assigned. No page content, no URLs, no browsing activity.</li>
+    <li><strong>Settings</strong> — your timer preferences, theme, sound selection, widget choice, and blocked domain list.</li>
+    <li><strong>License record</strong> — if you purchase Pro, your license key and the device identifier used for activation are stored in Chrome's sync storage (which may sync across your Chrome profile devices via Google's sync service).</li>
+  </ul>
+
+  <h2>2. What data the extension does NOT collect</h2>
+  <ul>
+    <li>Your browsing history</li>
+    <li>The content of web pages you visit</li>
+    <li>Any personal information from pages you visit</li>
+    <li>Analytics or telemetry about how you use the extension</li>
+    <li>Your IP address or device identifiers (beyond the anonymous device UUID used for license activation)</li>
+  </ul>
+
+  <h2>3. Website blocking</h2>
+  <p>Focus Session uses Chrome's declarativeNetRequest API and a lightweight content script to block websites on your blocklist. The extension only intercepts navigations to domains you have explicitly added. It never reads page content, form data, or any information from the pages it redirects.</p>
+
+  <h2>4. Permissions and why we need them</h2>
+  <ul>
+    <li><strong>storage</strong> — to save your settings, session history, and license information locally.</li>
+    <li><strong>alarms</strong> — to run the timer reliably when the popup is closed.</li>
+    <li><strong>notifications</strong> — to show desktop alerts when sessions complete.</li>
+    <li><strong>declarativeNetRequest</strong> — to redirect blocked websites to the block page during active sessions.</li>
+    <li><strong>idle</strong> — to detect when you leave your computer and optionally pause the timer.</li>
+    <li><strong>offscreen</strong> — to play notification sounds from the background service worker.</li>
+    <li><strong>scripting</strong> — to inject a lightweight content script that catches navigations handled by service workers (needed for sites like x.com).</li>
+    <li><strong>tabs</strong> — to open the analytics page and the Chrome shortcuts settings page.</li>
+    <li><strong>Host permissions</strong> (for blocked domains) — requested dynamically only for domains you add to your blocklist, to enable the blocking redirect.</li>
+  </ul>
+
+  <h2>5. Payments — Stripe</h2>
+  <p>If you purchase a Pro license, payment is processed by <strong>Stripe</strong>. We receive confirmation of your payment and your email address from Stripe. We do not store your card details — those are handled entirely by Stripe. Stripe's privacy policy is available at <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a>.</p>
+
+  <h2>6. License key delivery — Resend</h2>
+  <p>When you purchase Pro, we send your license key to the email address you provided at checkout. This is done via <strong>Resend</strong>, a transactional email service. Your email address is used only to deliver the license key and for support purposes. We do not send marketing emails. Resend's privacy policy is at <a href="https://resend.com/legal/privacy-policy" target="_blank">resend.com/legal/privacy-policy</a>.</p>
+
+  <h2>7. License validation</h2>
+  <p>When you activate a Pro license, the extension makes a request to our license server (a Cloudflare Worker at niallcodes-license.niallflorence1.workers.dev) to register your device. Subsequent validation checks are made periodically (at most once per day) to confirm your license is still active. These requests contain only your license key and an anonymous device UUID — no personal information.</p>
+
+  <h2>8. Data retention</h2>
+  <p>Session history is stored locally in your browser and is never uploaded. You can delete it at any time from the extension's Settings page (Dev tools → Clear data). License records are stored in Chrome's sync storage and will be removed when you deactivate your license or uninstall the extension.</p>
+
+  <h2>9. Children's privacy</h2>
+  <p>Focus Session is not directed at children under 13. We do not knowingly collect information from children under 13. If you believe a child has provided us with personal information, please contact us.</p>
+
+  <h2>10. Changes to this policy</h2>
+  <p>If we make material changes to this policy, we will update the "Last updated" date at the top. Continued use of the extension after changes constitutes acceptance of the updated policy.</p>
+
+  <h2>11. Contact</h2>
+  <p>Questions about this policy or your data: <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a></p>
+</div>
+
+<footer>
+  © 2026 NiallCodes · <a href="/index.html" style="color: inherit;">Focus Session</a>
+</footer>
+
+</body>
+</html>
