@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — CiteRight Citation Generator</title>
+  <meta name="description" content="Privacy policy for CiteRight, the Chrome extension for generating APA, MLA, Harvard, Chicago and more citations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0F1B2D;
+      --navy-mid:  #182438;
+      --amber:     #F5A623;
+      --white:     #F0F4F8;
+      --white-dim: #8FA3BC;
+      --white-faint: #3A4F66;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+    }
+
+    html { font-size: 16px; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-sans);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--white-faint);
+      padding: 20px 0;
+    }
+
+    .header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--amber);
+      color: var(--navy);
+      font-family: var(--font-serif);
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .logo-name {
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--white);
+      letter-spacing: -0.2px;
+    }
+
+    .back-link {
+      font-size: 13px;
+      color: var(--white-dim);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+
+    .back-link:hover { color: var(--amber); }
+
+    /* ── Main content ── */
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .page-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      line-height: 1.2;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--white-dim);
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--white-faint);
+    }
+
+    /* ── The key facts box ── */
+    .key-facts {
+      background: var(--navy-mid);
+      border: 1px solid var(--white-faint);
+      border-left: 3px solid var(--amber);
+      border-radius: 8px;
+      padding: 20px 24px;
+      margin-bottom: 48px;
+    }
+
+    .key-facts-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+
+    .key-facts ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .key-facts li {
+      font-size: 14px;
+      color: var(--white);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.5;
+    }
+
+    .key-facts li::before {
+      content: '✓';
+      color: var(--amber);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── Sections ── */
+    .section {
+      margin-bottom: 40px;
+    }
+
+    h2 {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      color: var(--white);
+      margin-bottom: 12px;
+      letter-spacing: -0.2px;
+    }
+
+    p {
+      font-size: 15px;
+      color: var(--white-dim);
+      margin-bottom: 14px;
+      line-height: 1.75;
+    }
+
+    p:last-child { margin-bottom: 0; }
+
+    ul.detail-list {
+      margin: 10px 0 14px 0;
+      padding-left: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    ul.detail-list li {
+      font-size: 15px;
+      color: var(--white-dim);
+      line-height: 1.6;
+    }
+
+    strong { color: var(--white); font-weight: 600; }
+
+    a {
+      color: var(--amber);
+      text-decoration: none;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--white-faint);
+      padding: 28px 0;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .footer-inner p {
+      font-size: 13px;
+      color: var(--white-faint);
+      margin: 0;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      h1 { font-size: 1.9rem; }
+      main { padding: 40px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="https://niallcodes.com" class="logo">
+        <span class="logo-mark">C</span>
+        <span class="logo-name">CiteRight</span>
+      </a>
+      <a href="https://niallcodes.com" class="back-link">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        niallcodes.com
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <p class="page-eyebrow">Legal</p>
+    <h1>Privacy Policy</h1>
+    <p class="meta">CiteRight — Citation Generator &nbsp;·&nbsp; Last updated: June 2026</p>
+
+    <div class="key-facts">
+      <p class="key-facts-title">The short version</p>
+      <ul>
+        <li>CiteRight collects no personal data whatsoever.</li>
+        <li>Nothing you type is ever sent to a server.</li>
+        <li>Your citation history is stored only on your own device.</li>
+        <li>No analytics, no tracking, no third-party services.</li>
+        <li>The extension works entirely offline once installed.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>What CiteRight does</h2>
+      <p>CiteRight is a Chrome extension that generates formatted academic citations in APA, MLA, Harvard, Chicago, Turabian, IEEE, Vancouver, AMA, CSE, and OSCOLA styles. It runs entirely within your browser with no server-side component.</p>
+    </div>
+
+    <div class="section">
+      <h2>Data we collect</h2>
+      <p><strong>None.</strong> CiteRight does not collect, transmit, store remotely, or share any personal data or usage information of any kind.</p>
+    </div>
+
+    <div class="section">
+      <h2>Permissions explained</h2>
+      <p>CiteRight requests the following Chrome permissions, each used solely to provide the auto-fill feature:</p>
+      <ul class="detail-list">
+        <li><strong>activeTab</strong> — allows the extension to read the title, URL, and metadata of the page you are currently viewing when you click "Fill now." This data is used only to pre-fill the citation form and is never stored or transmitted.</li>
+        <li><strong>scripting</strong> — allows the extension to run a small script on the active tab to extract page metadata (author, publication date, journal details) for the auto-fill feature. No scripts run automatically — only when you explicitly click "Fill now."</li>
+        <li><strong>storage</strong> — allows the extension to save your last 20 citations and your style preferences locally in Chrome's built-in storage on your own device. This data never leaves your browser.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Local storage</h2>
+      <p>CiteRight stores the following data locally on your device using <code style="font-family:monospace;font-size:13px;color:var(--white);background:var(--navy-mid);padding:1px 5px;border-radius:3px">chrome.storage.local</code>:</p>
+      <ul class="detail-list">
+        <li>Your last 20 generated citations (text, style, and timestamp)</li>
+        <li>A count of total citations generated (used only to decide when to show a one-time support prompt)</li>
+        <li>Whether you have dismissed the support prompt</li>
+      </ul>
+      <p>This data is stored only on your device and is deleted when you uninstall the extension. You can clear it at any time using the "Clear all" button in the extension's history panel.</p>
+    </div>
+
+    <div class="section">
+      <h2>Third-party services</h2>
+      <p>CiteRight does not use any analytics, advertising, or tracking services. The "Buy me a coffee" button links to <a href="https://ko-fi.com" target="_blank" rel="noopener">Ko-fi</a> — clicking it opens Ko-fi's website in a new tab. CiteRight itself has no integration with Ko-fi beyond this link; any data you provide to Ko-fi is governed by <a href="https://ko-fi.com/privacy" target="_blank" rel="noopener">Ko-fi's own privacy policy</a>.</p>
+      <p>Google Fonts (Inter and DM Serif Display) are loaded from Google's servers when you open the extension popup. This is a standard web font request. See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a> for details.</p>
+    </div>
+
+    <div class="section">
+      <h2>Children's privacy</h2>
+      <p>CiteRight does not knowingly collect any information from anyone, including children under the age of 13. As no data is collected at all, there is no specific risk to younger users.</p>
+    </div>
+
+    <div class="section">
+      <h2>Changes to this policy</h2>
+      <p>If this policy changes in a meaningful way (for example, if a future version of CiteRight introduces any data collection), the updated policy will be posted at this URL and the "Last updated" date above will be revised. Continued use of the extension after any changes constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="section">
+      <h2>Contact</h2>
+      <p>Questions about this privacy policy or CiteRight can be directed to <a href="https://niallcodes.com">niallcodes.com</a>.</p>
+    </div>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>CiteRight is built by <a href="https://niallcodes.com">niallcodes.com</a> &nbsp;·&nbsp; <a href="https://ko-fi.com/niallcodes">Support the project</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>
