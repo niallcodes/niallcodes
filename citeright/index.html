@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Generate perfectly formatted citations in APA, MLA, Harvard, Chicago, IEEE, Vancouver, OSCOLA and more. Auto-fills from any webpage. Free Chrome extension." />
+  <title>CiteRight — Citation Generator for Students</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:       #0F1B2D;
+      --navy-card:  #182438;
+      --navy-hover: #1E2D42;
+      --amber:      #F5A623;
+      --amber-dim:  #C8841A;
+      --white:      #F0F4F8;
+      --white-dim:  #8FA3BC;
+      --white-faint:#3A4F66;
+      --green:      #4ADE80;
+      --font-serif: 'DM Serif Display', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max:        1100px;
+      --radius:     10px;
+    }
+
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
+      background: var(--navy);
+      color: var(--white);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    /* ── Nav ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 20px 32px;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      color: var(--white);
+    }
+
+    .nav-logo-mark {
+      width: 32px;
+      height: 32px;
+      background: var(--amber);
+      color: var(--navy);
+      font-family: var(--font-serif);
+      font-size: 19px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      flex-shrink: 0;
+    }
+
+    .nav-home {
+      font-size: 13px;
+      color: var(--white-dim);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s;
+    }
+
+    .nav-home:hover { color: var(--amber); }
+
+    .nav-cta {
+      background: var(--amber);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 14px;
+      padding: 9px 20px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+
+    .nav-cta:hover { background: #F7C05A; }
+
+    /* ── Hero ── */
+    .hero {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 72px 32px 80px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--amber);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      line-height: 1.1;
+      letter-spacing: -1px;
+      color: var(--white);
+      margin-bottom: 24px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .hero-sub {
+      font-size: 1.15rem;
+      color: var(--white-dim);
+      max-width: 560px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      background: var(--amber);
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 15px;
+      padding: 13px 28px;
+      border-radius: 8px;
+      transition: background 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-primary:hover { background: #F7C05A; }
+
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--white-faint);
+    }
+
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+
+    /* ── Style pills display ── */
+    .styles-strip {
+      background: var(--navy-card);
+      border-top: 1px solid var(--white-faint);
+      border-bottom: 1px solid var(--white-faint);
+      padding: 18px 32px;
+      overflow: hidden;
+    }
+
+    .styles-strip-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .style-tag {
+      background: var(--navy-hover);
+      border: 1px solid var(--white-faint);
+      color: var(--white-dim);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-weight: 500;
+    }
+
+    .style-tag.highlight {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* ── Section shared ── */
+    section {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 80px 32px;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--amber);
+      margin-bottom: 14px;
+    }
+
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      line-height: 1.15;
+      color: var(--white);
+      margin-bottom: 16px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--white-dim);
+      max-width: 540px;
+      line-height: 1.7;
+      margin-bottom: 52px;
+    }
+
+    /* ── Features grid ── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-card {
+      background: var(--navy-card);
+      border: 1px solid var(--white-faint);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .feature-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 14px;
+      color: var(--white-dim);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .feature-tag {
+      font-size: 11.5px;
+      color: var(--white-faint);
+      background: var(--navy-hover);
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+
+    /* ── Styles section ── */
+    .styles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 16px;
+    }
+
+    .style-card {
+      background: var(--navy-card);
+      border: 1px solid var(--white-faint);
+      border-left: 3px solid var(--white-faint);
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      transition: border-left-color 0.15s;
+    }
+
+    .style-card:hover { border-left-color: var(--amber); }
+
+    .style-card-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--white);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .style-card-badge {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--amber);
+      background: rgba(245,166,35,0.1);
+      border: 1px solid rgba(245,166,35,0.2);
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    .style-card p {
+      font-size: 13px;
+      color: var(--white-dim);
+      line-height: 1.55;
+    }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 720px;
+    }
+
+    .faq-item {
+      background: var(--navy-card);
+      border: 1px solid var(--white-faint);
+      border-radius: var(--radius);
+      padding: 22px 24px;
+    }
+
+    .faq-item h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+
+    .faq-item p {
+      font-size: 14px;
+      color: var(--white-dim);
+      line-height: 1.65;
+    }
+
+    /* ── CTA band ── */
+    .cta-band {
+      background: var(--navy-card);
+      border-top: 1px solid var(--white-faint);
+      border-bottom: 1px solid var(--white-faint);
+    }
+
+    .cta-band-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 64px 32px;
+      text-align: center;
+    }
+
+    .cta-band h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      color: var(--white);
+      margin-bottom: 14px;
+    }
+
+    .cta-band p {
+      font-size: 1rem;
+      color: var(--white-dim);
+      margin-bottom: 32px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 13px;
+      color: var(--white-faint);
+      border-top: 1px solid var(--white-faint);
+    }
+
+    footer a { transition: color 0.15s; }
+    footer a:hover { color: var(--amber); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .hero { padding: 48px 20px 56px; }
+      section { padding: 56px 20px; }
+      footer { padding: 24px 20px; }
+      .styles-strip { padding: 16px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header>
+    <nav>
+      <a href="https://niallcodes.com" class="nav-logo">
+        <span class="nav-logo-mark">C</span>
+        CiteRight
+      </a>
+      <a href="https://niallcodes.com" class="nav-home">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        niallcodes.com
+      </a>
+      <a href="https://chromewebstore.google.com/detail/citeright-citation-generator-for-students/doljmalddbmaeakjcfcekohnapjglihf" class="nav-cta">Add to Chrome — Free</a>
+    </nav>
+  </header>
+
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-eyebrow">Chrome Extension · Free Forever</span>
+    <h1>Cite anything.<br><em>Instantly.</em></h1>
+    <p class="hero-sub">CiteRight generates perfectly formatted academic citations across 10 major styles — and auto-fills from any webpage with one click.</p>
+    <div class="hero-actions">
+      <a href="https://chromewebstore.google.com/detail/citeright-citation-generator-for-students/doljmalddbmaeakjcfcekohnapjglihf" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Add to Chrome — Free
+      </a>
+    </div>
+    <div class="hero-meta">
+      <span>🆓 Free forever</span>
+      <span>🔒 No data collected</span>
+      <span>⚡ Works offline</span>
+      <span>🎓 No account required</span>
+    </div>
+  </div>
+
+  <!-- Styles strip -->
+  <div class="styles-strip">
+    <div class="styles-strip-inner">
+      <span class="style-tag highlight">APA 7th</span>
+      <span class="style-tag highlight">MLA 9th</span>
+      <span class="style-tag highlight">Harvard</span>
+      <span class="style-tag highlight">Chicago</span>
+      <span class="style-tag">Turabian</span>
+      <span class="style-tag">IEEE</span>
+      <span class="style-tag">Vancouver</span>
+      <span class="style-tag">AMA</span>
+      <span class="style-tag">CSE</span>
+      <span class="style-tag highlight">OSCOLA</span>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section>
+    <p class="section-eyebrow">What it does</p>
+    <h2 class="section-title">Everything you need<br>to cite correctly.</h2>
+    <p class="section-sub">No more Googling the format. No more second-guessing the author order. Just fill in the source and copy.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Smart auto-fill</h3>
+        <p>Click "Fill now" on any webpage and CiteRight reads the title, author, date and site name automatically. On academic journal pages it goes further — pulling volume, issue, pages and DOI.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">PubMed</span>
+          <span class="feature-tag">Springer</span>
+          <span class="feature-tag">Nature</span>
+          <span class="feature-tag">Elsevier</span>
+          <span class="feature-tag">Wiley</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">✍️</div>
+        <h3>Italics that actually work</h3>
+        <p>APA, MLA, Harvard and Chicago require italicised titles. CiteRight copies with proper HTML formatting so italics paste correctly into Microsoft Word and Google Docs — no extra steps.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">Microsoft Word</span>
+          <span class="feature-tag">Google Docs</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">📋</div>
+        <h3>Citation history</h3>
+        <p>Your last 20 citations are saved automatically. Reopen the extension at any time and they're there — no re-entering details when you need the same source again.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">Last 20 citations</span>
+          <span class="feature-tag">One-click recopy</span>
+        </div>
+      </div>
+
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3>Complete privacy</h3>
+        <p>Nothing you type is ever sent to a server. CiteRight runs entirely in your browser — no account, no tracking, no analytics. Your citation history lives only on your device.</p>
+        <div class="feature-tags">
+          <span class="feature-tag">Zero data collected</span>
+          <span class="feature-tag">Works offline</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Citation styles -->
+  <section style="padding-top: 0;">
+    <p class="section-eyebrow">Citation styles</p>
+    <h2 class="section-title">10 styles.<br>Every discipline.</h2>
+    <p class="section-sub">From psychology to law, medicine to engineering — CiteRight covers the style your institution requires.</p>
+
+    <div class="styles-grid">
+      <div class="style-card">
+        <div class="style-card-name">APA 7th Edition <span class="style-card-badge">Most popular</span></div>
+        <p>Psychology, social sciences, education, and nursing. The most widely used citation style across universities worldwide.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">MLA 9th Edition</div>
+        <p>Literature, languages, and humanities. Standard for English departments across US and UK universities.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">Harvard</div>
+        <p>Widely used across UK and Australian universities in business, law, and sciences. Author-date format.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">Chicago / Turabian</div>
+        <p>History, arts, and social sciences. Turabian is the student-friendly variant used in US universities.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">IEEE</div>
+        <p>Engineering, computer science, and electronics. Numbered reference style used in technical papers.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">Vancouver</div>
+        <p>Medicine, nursing, and health sciences. Handles long author lists automatically with et al. truncation after 6 authors.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">AMA</div>
+        <p>American Medical Association style for medical journals and healthcare writing.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">CSE</div>
+        <p>Council of Science Editors format for biology, life sciences, and natural sciences.</p>
+      </div>
+      <div class="style-card">
+        <div class="style-card-name">OSCOLA <span class="style-card-badge">Legal</span></div>
+        <p>Oxford Standard for Citation of Legal Authorities. Required for UK law essays, moots, and legal research.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section style="padding-top: 0;">
+    <p class="section-eyebrow">Questions</p>
+    <h2 class="section-title">The honest answers.</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <h3>Is CiteRight actually free?</h3>
+        <p>Yes — completely and permanently free. All 10 citation styles, all source types, auto-fill, and citation history are included with no paywall and no premium tier. If it saves you time, there's a tip jar built into the extension.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does it read what I'm browsing?</h3>
+        <p>Only when you explicitly click "Fill now." At that moment it reads the current page's title, author metadata, and URL to pre-fill the citation form. It never runs automatically, never tracks your browsing, and never sends anything to a server.</p>
+      </div>
+      <div class="faq-item">
+        <h3>How accurate are the citations?</h3>
+        <p>Each of the 10 styles is built to its current published specification — APA 7th, MLA 9th, and so on. Auto-fill from academic databases (PubMed, Springer, Elsevier etc.) is accurate for fields that are exposed in the page metadata. As with any citation tool, we recommend a final check against your institution's style guide for high-stakes submissions.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Why don't italics paste into Google Docs without CiteRight?</h3>
+        <p>Most citation tools copy plain text, which strips all formatting. CiteRight copies both a plain text version and an HTML version to your clipboard simultaneously — Word and Google Docs use the HTML version and preserve the italics automatically.</p>
+      </div>
+      <div class="faq-item">
+        <h3>Does it work on PubMed and journal sites?</h3>
+        <p>Yes — CiteRight has specific scrapers for PubMed, Springer, Nature, Elsevier, Wiley, BMJ, NEJM, JAMA, and AHA journals. On those sites, "Fill now" pulls the full journal citation including authors, journal name, volume, issue, pages and DOI automatically and switches the form to Journal mode.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <div class="cta-band">
+    <div class="cta-band-inner">
+      <h2>Stop formatting by hand.</h2>
+      <p>Free to install. No account. Works on every source type.</p>
+      <a href="https://chromewebstore.google.com/detail/citeright-citation-generator-for-students/doljmalddbmaeakjcfcekohnapjglihf" class="btn-primary">
+        Add to Chrome — Free
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <span>© 2026 NiallCodes. All rights reserved.</span>
+    <div class="footer-links">
+      <a href="https://niallcodes.com/citeright-privacy.html">Privacy Policy</a>
+      <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a>
+      <a href="https://chromewebstore.google.com/detail/citeright-citation-generator-for-students/doljmalddbmaeakjcfcekohnapjglihf">Chrome Web Store</a>
+    </div>
+  </footer>
+
+</body>
+</html>
