@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capy — Your Study Companion</title>
+  <meta name="description" content="Notes, flashcards, planner, timer, highlights and more. All in one Chrome extension, with Cap the capybara cheering you on." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Lora:ital,wght@0,600;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --paper:       #FAF7F2;
+      --paper-card:  #F3EDE3;
+      --paper-dark:  #DDD0BC;
+      --ink:         #1A1612;
+      --ink-mid:     #4A3C30;
+      --ink-muted:   #6B5E52;
+      --ink-faint:   #B8A898;
+      --teal:        #2A9D8F;
+      --teal-mid:    #1E7D72;
+      --teal-light:  #E8F5F3;
+      --terra:       #E07A5F;
+      --terra-mid:   #C45A3F;
+      --terra-light: #FDF0EC;
+      --gold:        #F2A65A;
+      --gold-light:  #FEF3E7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Nav ─────────────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--paper-dark);
+      padding: 14px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo { display: flex; align-items: center; gap: 10px; }
+    .nav-logo-text { font-size: 17px; font-weight: 600; color: var(--ink); }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-link { font-size: 14px; color: var(--ink-muted); font-weight: 500; transition: color 0.15s; }
+    .nav-link:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--terra); color: white;
+      font-size: 14px; font-weight: 600;
+      padding: 8px 20px; border-radius: 100px;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: var(--terra-mid); }
+
+    /* ── Hero ────────────────────────────────────────────────── */
+    .hero {
+      max-width: 1100px; margin: 0 auto;
+      padding: 80px 40px 60px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--teal-light); border: 1px solid var(--teal);
+      color: var(--teal-mid); font-size: 13px; font-weight: 600;
+      padding: 5px 12px; border-radius: 100px;
+      margin-bottom: 20px;
+    }
+    .hero-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(36px, 5vw, 52px);
+      font-weight: 600; line-height: 1.15;
+      color: var(--ink); margin-bottom: 20px;
+    }
+    .hero-title em {
+      font-style: italic; color: var(--teal);
+    }
+    .hero-desc {
+      font-size: 17px; color: var(--ink-muted);
+      line-height: 1.7; margin-bottom: 32px;
+      max-width: 460px;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-install {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--ink); color: white;
+      font-size: 15px; font-weight: 600;
+      padding: 13px 26px; border-radius: 100px;
+      transition: background 0.15s;
+    }
+    .btn-install:hover { background: var(--ink-mid); }
+    .btn-pro {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--terra-light); color: var(--terra);
+      border: 1px solid var(--terra); font-size: 15px; font-weight: 600;
+      padding: 13px 26px; border-radius: 100px;
+      transition: all 0.15s;
+    }
+    .btn-pro:hover { background: var(--terra); color: white; }
+    .hero-note { font-size: 13px; color: var(--ink-faint); margin-top: 12px; }
+
+    /* Cap hero illustration */
+    .hero-cap {
+      display: flex; justify-content: center; align-items: center;
+      position: relative;
+    }
+    .hero-cap svg { filter: drop-shadow(0 20px 40px rgba(196,149,106,0.25)); }
+
+    /* Floating feature pills around Cap */
+    .hero-pill {
+      position: absolute;
+      background: white; border: 1px solid var(--paper-dark);
+      border-radius: 100px; padding: 7px 14px;
+      font-size: 13px; font-weight: 500; color: var(--ink-mid);
+      white-space: nowrap;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+    .pill-1 { top: 10%;  left: -10%; animation: float1 4s ease-in-out infinite; }
+    .pill-2 { top: 30%;  right: -15%; animation: float2 4.5s ease-in-out infinite 0.5s; }
+    .pill-3 { bottom: 30%; left: -12%; animation: float1 5s ease-in-out infinite 1s; }
+    .pill-4 { bottom: 15%; right: -8%; animation: float2 4s ease-in-out infinite 1.5s; }
+
+    @keyframes float1 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    @keyframes float2 { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+    /* ── Stats bar ───────────────────────────────────────────── */
+    .stats-bar {
+      background: var(--paper-card);
+      border-top: 1px solid var(--paper-dark);
+      border-bottom: 1px solid var(--paper-dark);
+      padding: 28px 40px;
+    }
+    .stats-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 32px; font-weight: 600; color: var(--teal);
+      line-height: 1;
+    }
+    .stat-label { font-size: 13px; color: var(--ink-faint); margin-top: 4px; }
+
+    /* ── Section wrapper ─────────────────────────────────────── */
+    .section {
+      max-width: 1100px; margin: 0 auto;
+      padding: 80px 40px;
+    }
+    .section-eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 600; color: var(--ink);
+      line-height: 1.2; margin-bottom: 16px;
+    }
+    .section-desc {
+      font-size: 16px; color: var(--ink-muted);
+      max-width: 540px; line-height: 1.7;
+      margin-bottom: 48px;
+    }
+
+    /* ── Feature grid ────────────────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .feature-card {
+      background: var(--paper-card);
+      border: 1px solid var(--paper-dark);
+      border-radius: 16px; padding: 24px;
+      transition: border-color 0.15s, transform 0.15s;
+    }
+    .feature-card:hover { border-color: var(--teal); transform: translateY(-2px); }
+    .feature-icon {
+      font-size: 28px; margin-bottom: 12px; display: block;
+    }
+    .feature-name {
+      font-size: 16px; font-weight: 600; color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .feature-desc { font-size: 14px; color: var(--ink-muted); line-height: 1.6; }
+    .feature-badge {
+      display: inline-block; margin-top: 10px;
+      font-size: 11px; font-weight: 700; padding: 2px 8px;
+      border-radius: 100px;
+    }
+    .badge-free { background: var(--teal-light); color: var(--teal-mid); }
+    .badge-pro { background: var(--terra-light); color: var(--terra-mid); }
+
+    /* ── Cap wardrobe section ────────────────────────────────── */
+    .wardrobe-section {
+      background: var(--paper-card);
+      border-top: 1px solid var(--paper-dark);
+      border-bottom: 1px solid var(--paper-dark);
+    }
+    .wardrobe-inner {
+      max-width: 1100px; margin: 0 auto;
+      padding: 80px 40px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; align-items: center;
+    }
+    .wardrobe-caps {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      justify-content: center;
+    }
+    .wardrobe-cap-item {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+    }
+    .wardrobe-cap-label {
+      font-size: 11px; color: var(--ink-faint); font-weight: 500;
+    }
+    .wardrobe-cap-badge {
+      font-size: 10px; padding: 2px 7px; border-radius: 100px;
+      font-weight: 600;
+    }
+
+    /* ── Pricing ─────────────────────────────────────────────── */
+    .pricing-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; max-width: 720px;
+    }
+    .pricing-card {
+      background: white;
+      border: 1px solid var(--paper-dark);
+      border-radius: 20px; padding: 32px 28px;
+      position: relative;
+    }
+    .pricing-card.featured {
+      border: 2px solid var(--teal);
+      background: white;
+    }
+    .pricing-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--teal); color: white;
+      font-size: 11px; font-weight: 700; padding: 4px 14px;
+      border-radius: 100px; white-space: nowrap;
+    }
+    .pricing-plan { font-size: 13px; font-weight: 600; color: var(--ink-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .pricing-price {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 40px; font-weight: 600; color: var(--ink);
+      line-height: 1; margin-bottom: 4px;
+    }
+    .pricing-price span { font-size: 16px; color: var(--ink-muted); font-family: 'Inter', sans-serif; font-weight: 400; }
+    .pricing-save { font-size: 12px; color: var(--teal-mid); font-weight: 600; margin-bottom: 20px; }
+    .pricing-divider { border: none; border-top: 1px solid var(--paper-dark); margin: 20px 0; }
+    .pricing-features { list-style: none; margin-bottom: 28px; }
+    .pricing-features li {
+      font-size: 14px; color: var(--ink-mid);
+      padding: 5px 0; display: flex; align-items: center; gap: 8px;
+    }
+    .pricing-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .btn-checkout {
+      display: block; text-align: center;
+      background: var(--teal); color: white;
+      font-size: 15px; font-weight: 600;
+      padding: 13px; border-radius: 100px;
+      transition: background 0.15s;
+    }
+    .btn-checkout:hover { background: var(--teal-mid); }
+    .btn-checkout-ghost {
+      display: block; text-align: center;
+      background: white; color: var(--ink);
+      border: 1px solid var(--paper-dark);
+      font-size: 15px; font-weight: 600;
+      padding: 13px; border-radius: 100px;
+      transition: all 0.15s;
+    }
+    .btn-checkout-ghost:hover { border-color: var(--ink); }
+    .pricing-note { font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 10px; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--paper-dark);
+      padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; color: var(--ink); }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-link { font-size: 13px; color: var(--ink-faint); transition: color 0.15s; }
+    .footer-link:hover { color: var(--ink); }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .hero { grid-template-columns: 1fr; padding: 48px 20px 32px; gap: 40px; }
+      .hero-cap { order: -1; }
+      .hero-pill { display: none; }
+      .section { padding: 56px 20px; }
+      .wardrobe-inner { grid-template-columns: 1fr; padding: 56px 20px; }
+      .pricing-grid { grid-template-columns: 1fr; max-width: 400px; }
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── Cap animations ──────────────────────────────────────── */
+    @keyframes capBreathe { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.04)} }
+    @keyframes capBlink { 0%,92%,100%{transform:scaleY(1)} 94%,98%{transform:scaleY(0.08)} }
+    @keyframes capArm { 0%,100%{transform:rotate(30deg)} 50%{transform:rotate(22deg) translate(-2px,-4px)} }
+    @keyframes capArmR { 0%,100%{transform:rotate(-30deg)} 50%{transform:rotate(-22deg) translate(2px,-4px)} }
+    @keyframes capStar { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(4px,-5px) scale(1.3)} }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 128 128">
+        <circle cx="64" cy="64" r="64" fill="#FAF7F2"/>
+        <ellipse cx="64" cy="102" rx="34" ry="24" fill="#C4956A"/>
+        <ellipse cx="64" cy="66" rx="33" ry="27" fill="#C4956A"/>
+        <ellipse cx="38" cy="45" rx="10" ry="8" fill="#B5845A"/>
+        <ellipse cx="90" cy="45" rx="10" ry="8" fill="#B5845A"/>
+        <ellipse cx="64" cy="77" rx="18" ry="12" fill="#B5845A"/>
+        <ellipse cx="64" cy="72" rx="6" ry="4" fill="#7A5535"/>
+        <circle cx="61" cy="72" r="2" fill="#5A3A1A"/>
+        <circle cx="67" cy="72" r="2" fill="#5A3A1A"/>
+        <ellipse cx="51" cy="61" rx="9" ry="8" fill="#FAF0E0"/>
+        <ellipse cx="77" cy="61" rx="9" ry="8" fill="#FAF0E0"/>
+        <ellipse cx="51" cy="62" rx="5.5" ry="5.5" fill="#3D2B1A"/>
+        <ellipse cx="77" cy="62" rx="5.5" ry="5.5" fill="#3D2B1A"/>
+        <circle cx="53" cy="60" r="1.8" fill="white"/>
+        <circle cx="79" cy="60" r="1.8" fill="white"/>
+        <circle cx="51" cy="61" r="11" fill="none" stroke="#8B6940" stroke-width="2.5"/>
+        <circle cx="77" cy="61" r="11" fill="none" stroke="#8B6940" stroke-width="2.5"/>
+        <line x1="62" y1="61" x2="66" y2="61" stroke="#8B6940" stroke-width="2.5"/>
+        <line x1="26" y1="58" x2="40" y2="60" stroke="#8B6940" stroke-width="2.5" stroke-linecap="round"/>
+        <line x1="88" y1="60" x2="102" y2="58" stroke="#8B6940" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M57 83 Q64 89 71 83" fill="none" stroke="#7A5535" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-logo-text">Capy</span>
+    </div>
+    <div class="nav-links">
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#wardrobe" class="nav-link">Cap's wardrobe</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+      <a href="https://niallcodes.com/capy-privacy.html" class="nav-link">Privacy</a>
+    </div>
+    <a href="#pricing" class="nav-cta">✦ Upgrade to Pro</a>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-text">
+      <div class="hero-eyebrow">🦫 Free Chrome extension</div>
+      <h1 class="hero-title">Study smarter with <em>Cap</em> by your side</h1>
+      <p class="hero-desc">Notes, flashcards, planner, timer, highlights and web highlights — all in one extension. Cap the capybara tracks your progress and cheers you on every step of the way.</p>
+      <div class="hero-actions">
+        <a href="https://chromewebstore.google.com/detail/capy" target="_blank" class="btn-install">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Add to Chrome — free
+        </a>
+        <a href="#pricing" class="btn-pro">✦ Go Pro</a>
+      </div>
+      <p class="hero-note">Free forever · No account required · No ads</p>
+    </div>
+    <div class="hero-cap">
+      <!-- Cap celebrating -->
+      <svg width="280" height="320" viewBox="0 0 110 132" role="img" aria-label="Cap the capybara celebrating">
+        <ellipse cx="55" cy="108" rx="40" ry="30" fill="#C4956A" style="transform-origin:55px 108px;animation:capBreathe 2s ease-in-out infinite;"/>
+        <ellipse cx="55" cy="62" rx="33" ry="27" fill="#C4956A"/>
+        <ellipse cx="31" cy="41" rx="9" ry="7" fill="#B5845A"/>
+        <ellipse cx="79" cy="41" rx="9" ry="7" fill="#B5845A"/>
+        <ellipse cx="55" cy="72" rx="17" ry="11" fill="#B5845A"/>
+        <ellipse cx="55" cy="67" rx="5.5" ry="3.5" fill="#7A5535"/>
+        <circle cx="52" cy="67" r="1.8" fill="#5A3A1A"/>
+        <circle cx="58" cy="67" r="1.8" fill="#5A3A1A"/>
+        <ellipse cx="42" cy="57" rx="8" ry="7" fill="#FAF0E0"/>
+        <ellipse cx="68" cy="57" rx="8" ry="7" fill="#FAF0E0"/>
+        <ellipse cx="42" cy="58" rx="5" ry="5" fill="#3D2B1A" style="transform-origin:42px 58px;animation:capBlink 3.5s ease-in-out infinite 1s;"/>
+        <ellipse cx="68" cy="58" rx="5" ry="5" fill="#3D2B1A" style="transform-origin:68px 58px;animation:capBlink 3.5s ease-in-out infinite 1.1s;"/>
+        <circle cx="44" cy="55" r="1.5" fill="white"/>
+        <circle cx="70" cy="55" r="1.5" fill="white"/>
+        <circle cx="42" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+        <circle cx="68" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+        <line x1="52" y1="57" x2="58" y2="57" stroke="#8B6940" stroke-width="2"/>
+        <line x1="20" y1="54" x2="32" y2="56" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+        <line x1="78" y1="56" x2="90" y2="54" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+        <path d="M45 77 Q55 86 65 77" fill="none" stroke="#7A5535" stroke-width="2.5" stroke-linecap="round"/>
+        <ellipse cx="16" cy="95" rx="9" ry="16" fill="#B5845A" style="transform-origin:16px 112px;animation:capArm 1.2s ease-in-out infinite;"/>
+        <ellipse cx="94" cy="95" rx="9" ry="16" fill="#B5845A" style="transform-origin:94px 112px;animation:capArmR 1.2s ease-in-out infinite;"/>
+        <ellipse cx="40" cy="128" rx="10" ry="7" fill="#B5845A"/>
+        <ellipse cx="70" cy="128" rx="10" ry="7" fill="#B5845A"/>
+        <rect x="40" y="114" width="30" height="18" rx="2" fill="#2A9D8F"/>
+        <line x1="55" y1="114" x2="55" y2="132" stroke="#1E7D72" stroke-width="1.5"/>
+        <g style="transform-origin:14px 72px;animation:capStar 1.8s ease-in-out infinite;">
+          <text x="6" y="76" style="font-size:14px;fill:#F2A65A;font-family:sans-serif;">★</text>
+        </g>
+        <g style="transform-origin:90px 60px;animation:capStar 1.5s ease-in-out infinite 0.4s;">
+          <text x="84" y="64" style="font-size:12px;fill:#2A9D8F;font-family:sans-serif;">★</text>
+        </g>
+        <g style="transform-origin:28px 36px;animation:capStar 2s ease-in-out infinite 0.8s;">
+          <text x="22" y="40" style="font-size:10px;fill:#E07A5F;font-family:sans-serif;">✦</text>
+        </g>
+      </svg>
+      <div class="hero-pill pill-1">📝 Smart notes</div>
+      <div class="hero-pill pill-2">⏱ Study timer</div>
+      <div class="hero-pill pill-3">🔦 Web highlights</div>
+      <div class="hero-pill pill-4">🔥 Streak tracking</div>
+    </div>
+  </section>
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat">
+        <div class="stat-num">8</div>
+        <div class="stat-label">tools in one extension</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">13+</div>
+        <div class="stat-label">Cap accessories</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">6</div>
+        <div class="stat-label">scholar levels</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">$0</div>
+        <div class="stat-label">to get started</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <section class="section" id="features">
+    <div class="section-eyebrow">Everything you need</div>
+    <h2 class="section-title">All your study tools,<br>one place</h2>
+    <p class="section-desc">No more tab-switching between a notes app, a flashcard site, and a timer. Capy keeps it all in your browser, always one click away.</p>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <span class="feature-icon">📝</span>
+        <div class="feature-name">Smart notes</div>
+        <div class="feature-desc">Create, pin, and tag notes. Select text on any webpage to auto-fill. Read aloud with voice selection. Export to Markdown.</div>
+        <span class="feature-badge badge-free">Free</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🃏</span>
+        <div class="feature-name">Flashcards</div>
+        <div class="feature-desc">Build decks, review with flip mode, track what you know. Convert notes to flashcards in one tap.</div>
+        <span class="feature-badge badge-free">Free (50 cards)</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">📅</span>
+        <div class="feature-name">Planner</div>
+        <div class="feature-desc">Tasks with priority and due dates. Calendar view, progress bar, exam countdown on the dashboard.</div>
+        <span class="feature-badge badge-free">Free</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">⏱</span>
+        <div class="feature-name">Study timer</div>
+        <div class="feature-desc">25, 45, 60, 90 minute sessions. Cap studies alongside you, earns a book for your library on completion. Chimes when done.</div>
+        <span class="feature-badge badge-free">Free</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔦</span>
+        <div class="feature-name">Web highlights</div>
+        <div class="feature-desc">Highlight text on any webpage in five colours. Add a note to any highlight. All highlights searchable from the extension.</div>
+        <span class="feature-badge badge-free">Free</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🛡</span>
+        <div class="feature-name">Lock In mode</div>
+        <div class="feature-desc">Block distracting sites during study sessions. Reddit, YouTube, TikTok — gone until you stop locking in.</div>
+        <span class="feature-badge badge-free">Free (5 sites)</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔗</span>
+        <div class="feature-name">URL folders</div>
+        <div class="feature-desc">Organise your research links into folders. Open all sources at once before a study session.</div>
+        <span class="feature-badge badge-free">Free (5 folders)</span>
+      </div>
+      <div class="feature-card">
+        <span class="feature-icon">🔥</span>
+        <div class="feature-name">Streak Shield</div>
+        <div class="feature-desc">Built a 30-day streak? Earn a shield to freeze it during holidays or study breaks. Cap puts on a hard hat.</div>
+        <span class="feature-badge badge-pro">Pro</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wardrobe -->
+  <div class="wardrobe-section" id="wardrobe">
+    <div class="wardrobe-inner">
+      <div>
+        <div class="section-eyebrow">Cap's wardrobe</div>
+        <h2 class="section-title">Dress Cap up<br>as you level up</h2>
+        <p style="font-size:16px;color:var(--ink-muted);line-height:1.7;margin-bottom:24px;">Cap earns accessories as you study. Reach PhD level (800 XP) and unlock the graduation cap — free. Go Pro and unlock 10+ permanent outfits plus seasonal looks that change throughout the year.</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:8px;margin-bottom:32px;">
+          <li style="font-size:14px;color:var(--ink-mid);display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);font-weight:700;">✓</span> Gold crown, dapper bowtie, gold frames</li>
+          <li style="font-size:14px;color:var(--ink-mid);display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);font-weight:700;">✓</span> Lo-fi headphones, coffee break, cosy scarf</li>
+          <li style="font-size:14px;color:var(--ink-mid);display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);font-weight:700;">✓</span> Seasonal: Halloween pumpkin hat, Santa hat</li>
+          <li style="font-size:14px;color:var(--ink-mid);display:flex;align-items:center;gap:8px;"><span style="color:var(--teal);font-weight:700;">✓</span> More added every season</li>
+        </ul>
+        <a href="#pricing" class="btn-install" style="display:inline-flex;">Unlock all accessories →</a>
+      </div>
+      <div class="wardrobe-caps">
+        <!-- Cap base -->
+        <div class="wardrobe-cap-item">
+          <svg width="80" height="96" viewBox="0 0 110 132">
+            <ellipse cx="55" cy="108" rx="40" ry="30" fill="#C4956A"/>
+            <ellipse cx="55" cy="62" rx="33" ry="27" fill="#C4956A"/>
+            <ellipse cx="31" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="79" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="55" cy="72" rx="17" ry="11" fill="#B5845A"/>
+            <ellipse cx="55" cy="67" rx="5.5" ry="3.5" fill="#7A5535"/>
+            <circle cx="52" cy="67" r="1.8" fill="#5A3A1A"/><circle cx="58" cy="67" r="1.8" fill="#5A3A1A"/>
+            <ellipse cx="42" cy="57" rx="7" ry="6" fill="#FAF0E0"/><ellipse cx="68" cy="57" rx="7" ry="6" fill="#FAF0E0"/>
+            <ellipse cx="42" cy="58" rx="4" ry="4" fill="#3D2B1A"/><ellipse cx="68" cy="58" rx="4" ry="4" fill="#3D2B1A"/>
+            <circle cx="43" cy="56" r="1.2" fill="white"/><circle cx="69" cy="56" r="1.2" fill="white"/>
+            <circle cx="42" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <circle cx="68" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <line x1="52" y1="57" x2="58" y2="57" stroke="#8B6940" stroke-width="2"/>
+            <line x1="20" y1="54" x2="32" y2="56" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <line x1="78" y1="56" x2="90" y2="54" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <path d="M49 77 Q55 82 61 77" fill="none" stroke="#7A5535" stroke-width="1.8" stroke-linecap="round"/>
+            <ellipse cx="22" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(-15 22 112)"/>
+            <ellipse cx="88" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(15 88 112)"/>
+            <ellipse cx="40" cy="128" rx="10" ry="7" fill="#B5845A"/><ellipse cx="70" cy="128" rx="10" ry="7" fill="#B5845A"/>
+            <rect x="40" y="114" width="30" height="18" rx="2" fill="#2A9D8F"/>
+          </svg>
+          <span class="wardrobe-cap-label">Base Cap</span>
+          <span class="wardrobe-cap-badge badge-free">Free</span>
+        </div>
+        <!-- Grad cap -->
+        <div class="wardrobe-cap-item">
+          <svg width="80" height="96" viewBox="0 0 110 145">
+            <ellipse cx="55" cy="108" rx="40" ry="30" fill="#C4956A"/>
+            <ellipse cx="55" cy="62" rx="33" ry="27" fill="#C4956A"/>
+            <ellipse cx="31" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="79" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="55" cy="72" rx="17" ry="11" fill="#B5845A"/>
+            <ellipse cx="55" cy="67" rx="5.5" ry="3.5" fill="#7A5535"/>
+            <circle cx="52" cy="67" r="1.8" fill="#5A3A1A"/><circle cx="58" cy="67" r="1.8" fill="#5A3A1A"/>
+            <ellipse cx="42" cy="57" rx="7" ry="6" fill="#FAF0E0"/><ellipse cx="68" cy="57" rx="7" ry="6" fill="#FAF0E0"/>
+            <ellipse cx="42" cy="58" rx="4" ry="4" fill="#3D2B1A"/><ellipse cx="68" cy="58" rx="4" ry="4" fill="#3D2B1A"/>
+            <circle cx="43" cy="56" r="1.2" fill="white"/><circle cx="69" cy="56" r="1.2" fill="white"/>
+            <circle cx="42" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <circle cx="68" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <line x1="52" y1="57" x2="58" y2="57" stroke="#8B6940" stroke-width="2"/>
+            <line x1="20" y1="54" x2="32" y2="56" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <line x1="78" y1="56" x2="90" y2="54" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <path d="M49 77 Q55 82 61 77" fill="none" stroke="#7A5535" stroke-width="1.8" stroke-linecap="round"/>
+            <ellipse cx="22" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(-15 22 112)"/>
+            <ellipse cx="88" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(15 88 112)"/>
+            <ellipse cx="40" cy="128" rx="10" ry="7" fill="#B5845A"/><ellipse cx="70" cy="128" rx="10" ry="7" fill="#B5845A"/>
+            <rect x="40" y="114" width="30" height="18" rx="2" fill="#2A9D8F"/>
+            <ellipse cx="55" cy="37" rx="26" ry="6" fill="#1A1612"/>
+            <rect x="43" y="22" width="24" height="16" rx="3" fill="#1A1612"/>
+            <rect x="30" y="30" width="50" height="8" rx="2" fill="#2A2018"/>
+            <circle cx="55" cy="22" r="3.5" fill="#F2A65A"/>
+            <line x1="55" y1="22" x2="74" y2="28" stroke="#F2A65A" stroke-width="2" stroke-linecap="round"/>
+            <line x1="74" y1="28" x2="74" y2="40" stroke="#F2A65A" stroke-width="1.8"/>
+            <ellipse cx="74" cy="42" rx="3" ry="5" fill="#F2A65A"/>
+          </svg>
+          <span class="wardrobe-cap-label">Graduation</span>
+          <span class="wardrobe-cap-badge badge-free">PhD level</span>
+        </div>
+        <!-- Crown -->
+        <div class="wardrobe-cap-item">
+          <svg width="80" height="96" viewBox="0 0 110 142">
+            <ellipse cx="55" cy="108" rx="40" ry="30" fill="#C4956A"/>
+            <ellipse cx="55" cy="62" rx="33" ry="27" fill="#C4956A"/>
+            <ellipse cx="31" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="79" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="55" cy="72" rx="17" ry="11" fill="#B5845A"/>
+            <ellipse cx="55" cy="67" rx="5.5" ry="3.5" fill="#7A5535"/>
+            <circle cx="52" cy="67" r="1.8" fill="#5A3A1A"/><circle cx="58" cy="67" r="1.8" fill="#5A3A1A"/>
+            <ellipse cx="42" cy="57" rx="7" ry="6" fill="#FAF0E0"/><ellipse cx="68" cy="57" rx="7" ry="6" fill="#FAF0E0"/>
+            <ellipse cx="42" cy="58" rx="4" ry="4" fill="#3D2B1A"/><ellipse cx="68" cy="58" rx="4" ry="4" fill="#3D2B1A"/>
+            <circle cx="43" cy="56" r="1.2" fill="white"/><circle cx="69" cy="56" r="1.2" fill="white"/>
+            <circle cx="42" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <circle cx="68" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <line x1="52" y1="57" x2="58" y2="57" stroke="#8B6940" stroke-width="2"/>
+            <line x1="20" y1="54" x2="32" y2="56" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <line x1="78" y1="56" x2="90" y2="54" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <path d="M49 77 Q55 82 61 77" fill="none" stroke="#7A5535" stroke-width="1.8" stroke-linecap="round"/>
+            <ellipse cx="22" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(-15 22 112)"/>
+            <ellipse cx="88" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(15 88 112)"/>
+            <ellipse cx="40" cy="128" rx="10" ry="7" fill="#B5845A"/><ellipse cx="70" cy="128" rx="10" ry="7" fill="#B5845A"/>
+            <rect x="40" y="114" width="30" height="18" rx="2" fill="#2A9D8F"/>
+            <path d="M34 33 L34 21 L43 28 L55 15 L67 28 L76 21 L76 33 Z" fill="#F2C94C"/>
+            <path d="M34 31 L76 31 L76 35 L34 35 Z" fill="#E5B800"/>
+            <circle cx="55" cy="19" r="3" fill="#E07A5F"/>
+            <circle cx="42" cy="27" r="2" fill="#2A9D8F"/>
+            <circle cx="68" cy="27" r="2" fill="#2A9D8F"/>
+          </svg>
+          <span class="wardrobe-cap-label">Gold crown</span>
+          <span class="wardrobe-cap-badge badge-pro">Pro</span>
+        </div>
+        <!-- Santa -->
+        <div class="wardrobe-cap-item">
+          <svg width="80" height="96" viewBox="0 0 110 150">
+            <ellipse cx="55" cy="108" rx="40" ry="30" fill="#C4956A"/>
+            <ellipse cx="55" cy="62" rx="33" ry="27" fill="#C4956A"/>
+            <ellipse cx="31" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="79" cy="41" rx="9" ry="7" fill="#B5845A"/>
+            <ellipse cx="55" cy="72" rx="17" ry="11" fill="#B5845A"/>
+            <ellipse cx="55" cy="67" rx="5.5" ry="3.5" fill="#7A5535"/>
+            <circle cx="52" cy="67" r="1.8" fill="#5A3A1A"/><circle cx="58" cy="67" r="1.8" fill="#5A3A1A"/>
+            <ellipse cx="42" cy="57" rx="7" ry="6" fill="#FAF0E0"/><ellipse cx="68" cy="57" rx="7" ry="6" fill="#FAF0E0"/>
+            <ellipse cx="42" cy="58" rx="4" ry="4" fill="#3D2B1A"/><ellipse cx="68" cy="58" rx="4" ry="4" fill="#3D2B1A"/>
+            <circle cx="43" cy="56" r="1.2" fill="white"/><circle cx="69" cy="56" r="1.2" fill="white"/>
+            <circle cx="42" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <circle cx="68" cy="57" r="10" fill="none" stroke="#8B6940" stroke-width="2"/>
+            <line x1="52" y1="57" x2="58" y2="57" stroke="#8B6940" stroke-width="2"/>
+            <line x1="20" y1="54" x2="32" y2="56" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <line x1="78" y1="56" x2="90" y2="54" stroke="#8B6940" stroke-width="2" stroke-linecap="round"/>
+            <path d="M47 78 Q55 85 63 78" fill="none" stroke="#7A5535" stroke-width="2.2" stroke-linecap="round"/>
+            <ellipse cx="22" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(-15 22 112)"/>
+            <ellipse cx="88" cy="112" rx="9" ry="13" fill="#B5845A" transform="rotate(15 88 112)"/>
+            <ellipse cx="40" cy="128" rx="10" ry="7" fill="#B5845A"/><ellipse cx="70" cy="128" rx="10" ry="7" fill="#B5845A"/>
+            <rect x="40" y="114" width="30" height="18" rx="2" fill="#2A9D8F"/>
+            <polygon points="55,8 38,36 76,36" fill="#D42B2B"/>
+            <rect x="32" y="32" width="48" height="9" rx="4" fill="#FAF7F2"/>
+            <path d="M55 8 Q70 4 72 16" fill="none" stroke="#D42B2B" stroke-width="5" stroke-linecap="round"/>
+            <circle cx="72" cy="16" r="7" fill="#FAF7F2"/>
+          </svg>
+          <span class="wardrobe-cap-label">Santa hat</span>
+          <span class="wardrobe-cap-badge badge-pro" style="background:#F3F0FF;color:#7C3AED;">Seasonal</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="section-eyebrow">Simple pricing</div>
+    <h2 class="section-title">Start free,<br>upgrade when it clicks</h2>
+    <p class="section-desc">Everything you need to get started is free. Pro removes limits and adds the features serious students love.</p>
+
+    <div class="pricing-grid">
+      <!-- Annual -->
+      <div class="pricing-card featured">
+        <div class="pricing-badge">Most popular</div>
+        <div class="pricing-plan">Pro — Annual</div>
+        <div class="pricing-price">$19.99 <span>/ year</span></div>
+        <div class="pricing-save">✦ Save 58% — just $1.67/month</div>
+        <hr class="pricing-divider" />
+        <ul class="pricing-features">
+          <li>Unlimited flashcards</li>
+          <li>Unlimited URL folders</li>
+          <li>Unlimited lock in sites</li>
+          <li>All Cap accessories (10+)</li>
+          <li>Streak Shield</li>
+          <li>Dark theme</li>
+          <li>Export flashcards (CSV)</li>
+          <li>Recurring tasks</li>
+          <li>Full study history</li>
+          <li>AI quiz from notes — soon</li>
+        </ul>
+        <a href="https://buy.stripe.com/14AbJ3c1wajB00e6zQ9AA06" target="_blank" class="btn-checkout">Get Pro Annual →</a>
+        <p class="pricing-note">Billed $19.99 once a year · Cancel anytime</p>
+      </div>
+      <!-- Monthly -->
+      <div class="pricing-card">
+        <div class="pricing-plan">Pro — Monthly</div>
+        <div class="pricing-price">$3.99 <span>/ month</span></div>
+        <div class="pricing-save" style="color:var(--ink-faint);">Flexible, cancel anytime</div>
+        <hr class="pricing-divider" />
+        <ul class="pricing-features">
+          <li>Everything in Annual</li>
+          <li>Billed monthly</li>
+          <li>Cancel at any time</li>
+        </ul>
+        <a href="https://buy.stripe.com/5kQfZjc1wdvN5ky2jA9AA05" target="_blank" class="btn-checkout-ghost">Get Pro Monthly</a>
+        <p class="pricing-note">Billed $3.99 each month</p>
+      </div>
+    </div>
+
+    <p style="font-size:13px;color:var(--ink-faint);margin-top:24px;">
+      After payment you'll receive a license key by email. Open Capy → Settings → Activate Pro and paste it in.
+      Questions? <a href="mailto:hello@niallcodes.com" style="color:var(--teal);">hello@niallcodes.com</a>
+    </p>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-logo">
+      <svg width="22" height="22" viewBox="0 0 128 128">
+        <circle cx="64" cy="64" r="64" fill="#FAF7F2"/>
+        <ellipse cx="64" cy="66" rx="33" ry="27" fill="#C4956A"/>
+        <ellipse cx="51" cy="61" rx="9" ry="8" fill="#FAF0E0"/>
+        <ellipse cx="77" cy="61" rx="9" ry="8" fill="#FAF0E0"/>
+        <ellipse cx="51" cy="62" rx="5.5" ry="5.5" fill="#3D2B1A"/>
+        <ellipse cx="77" cy="62" rx="5.5" ry="5.5" fill="#3D2B1A"/>
+        <circle cx="51" cy="61" r="11" fill="none" stroke="#8B6940" stroke-width="2.5"/>
+        <circle cx="77" cy="61" r="11" fill="none" stroke="#8B6940" stroke-width="2.5"/>
+        <line x1="62" y1="61" x2="66" y2="61" stroke="#8B6940" stroke-width="2.5"/>
+        <path d="M57 83 Q64 89 71 83" fill="none" stroke="#7A5535" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      Capy
+    </div>
+    <div class="footer-links">
+      <a href="https://niallcodes.com/capy-privacy.html" class="footer-link">Privacy policy</a>
+      <a href="mailto:hello@niallcodes.com" class="footer-link">Contact</a>
+      <a href="https://niallcodes.com" class="footer-link">niallcodes.com</a>
+    </div>
+    <p style="font-size:13px;color:var(--ink-faint);">© 2025 niallcodes.com</p>
+  </footer>
+
+</body>
+</html>
