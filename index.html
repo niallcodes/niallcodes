@@ -40,6 +40,8 @@
     }
 
     .container { max-width: 860px; margin: 0 auto; padding: 0 32px; width: 100%; }
+    /* Wider container for the extensions grid so 3 tiles fit per row */
+    .container-wide { max-width: 1120px; margin: 0 auto; padding: 0 32px; width: 100%; }
 
     /* ── Nav ──────────────────────────────────────────────── */
     nav {
@@ -100,7 +102,7 @@
 
     .ext-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 16px;
     }
 
@@ -189,6 +191,7 @@
 
     @media (max-width: 560px) {
       .container { padding: 0 20px; }
+      .container-wide { padding: 0 20px; }
       .ext-grid { grid-template-columns: 1fr; }
       h1 { font-size: 32px; }
     }
@@ -214,7 +217,7 @@
 </section>
 
 <section class="extensions-section">
-  <div class="container">
+  <div class="container-wide">
     <p class="section-label">Extensions</p>
     <div class="ext-grid">
 
@@ -299,6 +302,25 @@
           <span class="ext-tag">Education</span>
           <span class="ext-tag">Study timer</span>
           <span class="ext-tag">Notes · Flashcards</span>
+          <span class="ext-tag">Free + Pro</span>
+        </div>
+        <span class="ext-arrow">Learn more →</span>
+      </a>
+
+      <!-- Lectern -->
+      <a href="/lectern/" class="ext-card">
+        <div class="ext-header">
+          <div class="ext-icon" style="background:#1c1917; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:24px; font-weight:600; color:#FAF7F2;">L</div>
+          <div class="ext-meta">
+            <span class="ext-name">Lectern</span>
+            <span class="ext-status live">● Live</span>
+          </div>
+        </div>
+        <p class="ext-desc">A distraction-free reader for the web. Clean reading view, AI summaries, highlights, speed reading and export to Markdown, HTML or PDF. Free, with optional Pro.</p>
+        <div class="ext-tags">
+          <span class="ext-tag">Productivity</span>
+          <span class="ext-tag">Reader mode</span>
+          <span class="ext-tag">AI summaries</span>
           <span class="ext-tag">Free + Pro</span>
         </div>
         <span class="ext-arrow">Learn more →</span>
