@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Snipdrop</title>
+<meta name="description" content="Snipdrop privacy policy. Snipdrop works entirely on your device — your screenshots, OCR and downloads never leave your computer. No account, no tracking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13211d;--ink-soft:#33473f;--paper:#F2F7F4;--paper-deep:#e6efea;--cream:#ffffff;
+  --line:#d9e6df;--teal:#1D9E75;--teal-deep:#0f6e56;--teal-soft:#e3f4ed;--gold:#B8860B;--muted:#6f7d77;
+  --shadow:0 1px 2px rgba(19,33,29,.04),0 8px 30px rgba(19,33,29,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--paper);color:var(--ink);line-height:1.65;-webkit-font-smoothing:antialiased}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--teal-deep);text-decoration:none}
+a:hover{text-decoration:underline}
+.display{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-.02em;line-height:1.1}
+
+nav{position:sticky;top:0;z-index:50;background:rgba(242,247,244,.82);backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+.nav-inner{max-width:760px;margin:0 auto;padding:0 24px;display:flex;align-items:center;height:62px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:16px;color:var(--ink)}
+.brand svg{width:28px;height:28px}
+
+header.head{padding:60px 0 30px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+h1{font-size:clamp(32px,5vw,44px);margin-bottom:14px}
+.updated{font-size:14px;color:var(--muted)}
+
+.tldr{background:var(--teal-soft);border:1px solid #bfe6d6;border-radius:14px;padding:22px 24px;margin:8px 0 36px}
+.tldr strong{color:var(--teal-deep)}
+.tldr p{font-size:15px;color:var(--ink-soft)}
+
+.content{padding-bottom:70px}
+.content h2{font-family:'Fraunces',serif;font-weight:500;font-size:24px;margin:38px 0 12px;color:var(--ink)}
+.content h3{font-size:16px;font-weight:600;margin:24px 0 8px}
+.content p{font-size:15.5px;color:var(--ink-soft);margin-bottom:14px}
+.content ul{list-style:none;margin:0 0 16px;padding:0;display:flex;flex-direction:column;gap:10px}
+.content li{font-size:15.5px;color:var(--ink-soft);padding-left:22px;position:relative}
+.content li::before{content:'';position:absolute;left:2px;top:9px;width:7px;height:7px;border-radius:2px;background:var(--teal)}
+.content li strong{color:var(--ink)}
+
+.perm{background:var(--cream);border:1px solid var(--line);border-radius:12px;padding:4px 22px;margin:16px 0}
+.perm .row{padding:16px 0;border-bottom:1px solid var(--line)}
+.perm .row:last-child{border-bottom:none}
+.perm .pname{font-weight:600;font-size:14.5px;color:var(--ink);margin-bottom:3px;font-family:ui-monospace,Menlo,monospace}
+.perm .pwhy{font-size:14.5px;color:var(--ink-soft)}
+
+footer{padding:36px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:13.5px}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:16px}
+.foot-legal{font-size:12.5px;line-height:1.6}
+
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="/snipdrop">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M50 9 C68 36 82 52 82 64 a32 32 0 1 1 -64 0 C18 52 32 36 50 9 Z" fill="#1D9E75"/>
+        <path d="M40 58 L40 50 L48 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M60 74 L60 82 L52 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M60 58 L60 50 L52 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M40 74 L40 82 L48 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Snipdrop
+    </a>
+  </div>
+</nav>
+
+<header class="head wrap">
+  <div class="eyebrow">Legal</div>
+  <h1 class="display">Privacy Policy</h1>
+  <p class="updated">Last updated: <span id="date"></span></p>
+</header>
+
+<div class="wrap">
+  <div class="tldr">
+    <p><strong>The short version:</strong> Snipdrop runs entirely on your device. Your screenshots, captures, extracted text and downloaded images are processed locally in your browser and are never sent to us or anyone else. There is no account, and we do not track your browsing.</p>
+  </div>
+</div>
+
+<main class="content wrap">
+
+  <h2>Who we are</h2>
+  <p>Snipdrop is a Chrome browser extension produced by niallcodes, a trading name of Florence Publishing Ltd, a company registered in the United Kingdom. You can reach us any time at <a href="mailto:support@niallcodes.com">support@niallcodes.com</a>.</p>
+
+  <h2>The data Snipdrop handles</h2>
+  <p>Snipdrop is a screenshot, snipping and image-downloading tool. To do its job it works with the following, all of which stays on your own computer:</p>
+  <ul>
+    <li><strong>Screenshots and snips</strong> you capture. These are created and stored locally in your browser, used to show your last snip, your capture history, and to save files to your chosen folder.</li>
+    <li><strong>Text extracted by OCR</strong> (a Pro feature). When you copy text from a snip, the recognition runs entirely on your device using a bundled engine. The image is never uploaded; the resulting text is placed on your clipboard.</li>
+    <li><strong>Images you choose to download</strong> from a web page. Snipdrop reads the addresses of images already present on the page you are viewing so it can show them to you and download the ones you select.</li>
+    <li><strong>Your settings and preferences</strong>, such as your chosen save folder, default format and folder list, stored in your browser's local extension storage.</li>
+  </ul>
+  <p>None of the above is transmitted to niallcodes or to any third-party server. Snipdrop has no analytics, no tracking pixels, and does not record your browsing history.</p>
+
+  <h2>What we collect</h2>
+  <p>Through the Snipdrop extension itself, we collect <strong>nothing</strong>. There is no account to create and no sign-in. The extension functions fully offline aside from the actions you take (such as downloading an image that already lives on a page).</p>
+
+  <h2>When you buy Snipdrop Pro</h2>
+  <p>If you choose to upgrade to Pro, the payment is handled by our payment processor, <strong>Stripe</strong>. Stripe collects the information needed to take a one-time payment, including your email address and card details. We never see or store your card details. We receive your email address and a record of the purchase so that we can send you a license key. Stripe's handling of your data is governed by its own <a href="https://stripe.com/privacy" target="_blank" rel="noopener">privacy policy</a>.</p>
+  <p>Your license key and the email address associated with your purchase are stored by us solely to issue and validate your key. License validation sends only your key and the product name to our server to confirm the key is genuine — it does not include any of your captures, browsing data or personal content. We use <strong>Resend</strong> to deliver your license key email; their <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">privacy policy</a> applies to that delivery.</p>
+
+  <h2>Permissions Snipdrop requests, and why</h2>
+  <p>Chrome requires extensions to request permissions for the capabilities they use. Snipdrop asks only for what it needs to capture, save and download on your behalf:</p>
+  <div class="perm">
+    <div class="row"><div class="pname">activeTab &amp; scripting</div><div class="pwhy">To capture the page you're currently looking at and to draw the on-page selection overlay when you snip an area or element.</div></div>
+    <div class="row"><div class="pname">downloads</div><div class="pwhy">To save your captures and downloaded images to your chosen folder.</div></div>
+    <div class="row"><div class="pname">storage</div><div class="pwhy">To remember your settings, your last snip and your capture history, locally in your browser.</div></div>
+    <div class="row"><div class="pname">contextMenus</div><div class="pwhy">To add Snipdrop's right-click actions (snip, capture, download images).</div></div>
+    <div class="row"><div class="pname">clipboardWrite</div><div class="pwhy">To copy a snip — or text extracted from it — to your clipboard when you ask.</div></div>
+    <div class="row"><div class="pname">offscreen</div><div class="pwhy">A behind-the-scenes helper Chrome requires to reliably save large captures, such as full-page screenshots.</div></div>
+    <div class="row"><div class="pname">host access (&lt;all_urls&gt;)</div><div class="pwhy">So you can snip and download images on any website you visit. Snipdrop only acts on a page when you trigger it — it does not read or monitor pages in the background.</div></div>
+  </div>
+
+  <h2>Where your data is stored</h2>
+  <p>Everything Snipdrop creates lives on your own device — in your browser's local extension storage and in the download folder you choose. If you uninstall the extension, this local data is removed by Chrome. Files you have already saved to disk remain yours and are unaffected.</p>
+
+  <h2>Children</h2>
+  <p>Snipdrop is a general-purpose utility and is not directed at children. We do not knowingly collect any personal information from anyone, including children.</p>
+
+  <h2>Your rights</h2>
+  <p>Because Snipdrop stores your captures and settings locally, you are in direct control of that data and can clear it at any time from within the extension or by uninstalling. For the limited purchase information we hold (your email and license record), you may request access to or deletion of it by emailing <a href="mailto:support@niallcodes.com">support@niallcodes.com</a>, subject to any records we are legally required to keep.</p>
+
+  <h2>Changes to this policy</h2>
+  <p>If we update this policy, we will revise the date at the top of this page. Material changes will be reflected here before they take effect.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about privacy or anything else? Email <a href="mailto:support@niallcodes.com">support@niallcodes.com</a> and we'll be glad to help.</p>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="/snipdrop">Home</a>
+      <a href="/snipdrop#features">Features</a>
+      <a href="/snipdrop#pricing">Pricing</a>
+      <a href="mailto:support@niallcodes.com">Support</a>
+    </div>
+    <p class="foot-legal">
+      Snipdrop is a product from niallcodes · Florence Publishing Ltd. © <span id="year"></span> niallcodes. All rights reserved.<br>
+      Google Chrome is a trademark of Google LLC. Snipdrop is not affiliated with or endorsed by Google.
+    </p>
+  </div>
+</footer>
+
+<script>
+  const d=new Date();
+  document.getElementById('date').textContent=d.toLocaleDateString('en-GB',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('year').textContent=d.getFullYear();
+</script>
+</body>
+</html>
