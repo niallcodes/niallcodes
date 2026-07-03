@@ -207,6 +207,16 @@
     .ext-name {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 16px; font-weight: 700; color: var(--text-1);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .ext-new {
+      font-family: var(--mono);
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ember);
+      border: 1px solid rgba(255,106,61,0.4);
+      background: rgba(255,106,61,0.08);
+      border-radius: 20px; padding: 2px 8px;
     }
     .ext-status {
       font-family: var(--mono);
@@ -329,47 +339,48 @@
       <p class="section-count"><b>●</b> all systems operational</p>
     </div>
     <div class="ext-grid">
-
-      <!-- Focus Session -->
-      <a href="/focus-session/" class="ext-card reveal" style="--d:0.28s">
+<!-- Snipdrop -->
+      <a href="/snipdrop/" class="ext-card reveal" style="--d:0.28s">
         <div class="ext-header">
-          <div class="ext-icon" style="background:#0b0e15; display:flex; align-items:center; justify-content:center;">
-            <svg width="30" height="30" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="34" fill="none" stroke="#ff6a3d" stroke-width="7" opacity="0.25"/>
-              <circle cx="50" cy="50" r="34" fill="none" stroke="#ff6a3d" stroke-width="7" stroke-linecap="round" stroke-dasharray="160 214" transform="rotate(-90 50 50)"/>
-              <circle cx="50" cy="50" r="15" fill="#ffb347"/>
+          <div class="ext-icon" style="background:#0F1A17; display:flex; align-items:center; justify-content:center;">
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
+              <path d="M50 9 C68 36 82 52 82 64 a32 32 0 1 1 -64 0 C18 52 32 36 50 9 Z" fill="#1D9E75"/>
+              <path d="M40 58 L40 50 L48 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M60 74 L60 82 L52 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M60 58 L60 50 L52 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M40 74 L40 82 L48 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </div>
           <div class="ext-meta">
-            <span class="ext-name">Focus Session</span>
+            <span class="ext-name">Snipdrop <span class="ext-new">New</span></span>
             <span class="ext-status live">Live</span>
           </div>
         </div>
-        <p class="ext-desc">A Pomodoro timer that blocks the sites you keep opening. Free tier includes the full timer and session blocking. Pro adds advanced analytics, always-on blocking, and more.</p>
+        <p class="ext-desc">A fast screenshot and snipping tool. Snip any area, full page or element, then drag it straight into any upload. Plus a bulk image downloader, OCR and annotation. Free, with optional Pro.</p>
         <div class="ext-tags">
-          <span class="ext-tag">productivity</span>
-          <span class="ext-tag">pomodoro</span>
-          <span class="ext-tag">site-blocker</span>
+          <span class="ext-tag">tools</span>
+          <span class="ext-tag">screenshot</span>
+          <span class="ext-tag">image-downloader</span>
           <span class="ext-tag">free+pro</span>
         </div>
         <span class="ext-arrow">learn_more →</span>
       </a>
 
-      <!-- CiteRight -->
-      <a href="/citeright/" class="ext-card reveal" style="--d:0.34s">
+      <!-- Lectern -->
+      <a href="/lectern/" class="ext-card reveal" style="--d:0.34s">
         <div class="ext-header">
-          <div class="ext-icon" style="background:#0F1B2D; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:22px; font-weight:700; color:#F5A623;">C</div>
+          <div class="ext-icon" style="background:#1c1917; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:24px; font-weight:600; color:#FAF7F2;">L</div>
           <div class="ext-meta">
-            <span class="ext-name">CiteRight</span>
+            <span class="ext-name">Lectern</span>
             <span class="ext-status live">Live</span>
           </div>
         </div>
-        <p class="ext-desc">Generate perfectly formatted academic citations in APA, MLA, Harvard, Chicago, IEEE, Vancouver, OSCOLA and more. Auto-fills from any webpage. Free forever.</p>
+        <p class="ext-desc">A distraction-free reader for the web. Clean reading view, AI summaries, highlights, speed reading and export to Markdown, HTML or PDF. Free, with optional Pro.</p>
         <div class="ext-tags">
-          <span class="ext-tag">education</span>
-          <span class="ext-tag">citations</span>
-          <span class="ext-tag">apa·mla·harvard</span>
-          <span class="ext-tag">free</span>
+          <span class="ext-tag">productivity</span>
+          <span class="ext-tag">reader-mode</span>
+          <span class="ext-tag">ai-summaries</span>
+          <span class="ext-tag">free+pro</span>
         </div>
         <span class="ext-arrow">learn_more →</span>
       </a>
@@ -416,47 +427,45 @@
         <span class="ext-arrow">learn_more →</span>
       </a>
 
-      <!-- Lectern -->
-      <a href="/lectern/" class="ext-card reveal" style="--d:0.46s">
+      <!-- CiteRight -->
+      <a href="/citeright/" class="ext-card reveal" style="--d:0.46s">
         <div class="ext-header">
-          <div class="ext-icon" style="background:#1c1917; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:24px; font-weight:600; color:#FAF7F2;">L</div>
+          <div class="ext-icon" style="background:#0F1B2D; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:22px; font-weight:700; color:#F5A623;">C</div>
           <div class="ext-meta">
-            <span class="ext-name">Lectern</span>
+            <span class="ext-name">CiteRight</span>
             <span class="ext-status live">Live</span>
           </div>
         </div>
-        <p class="ext-desc">A distraction-free reader for the web. Clean reading view, AI summaries, highlights, speed reading and export to Markdown, HTML or PDF. Free, with optional Pro.</p>
+        <p class="ext-desc">Generate perfectly formatted academic citations in APA, MLA, Harvard, Chicago, IEEE, Vancouver, OSCOLA and more. Auto-fills from any webpage. Free forever.</p>
         <div class="ext-tags">
-          <span class="ext-tag">productivity</span>
-          <span class="ext-tag">reader-mode</span>
-          <span class="ext-tag">ai-summaries</span>
-          <span class="ext-tag">free+pro</span>
+          <span class="ext-tag">education</span>
+          <span class="ext-tag">citations</span>
+          <span class="ext-tag">apa·mla·harvard</span>
+          <span class="ext-tag">free</span>
         </div>
         <span class="ext-arrow">learn_more →</span>
       </a>
 
-      <!-- Snipdrop -->
-      <a href="/snipdrop/" class="ext-card reveal" style="--d:0.52s">
+      <!-- Focus Session -->
+      <a href="/focus-session/" class="ext-card reveal" style="--d:0.52s">
         <div class="ext-header">
-          <div class="ext-icon" style="background:#0F1A17; display:flex; align-items:center; justify-content:center;">
-            <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
-              <path d="M50 9 C68 36 82 52 82 64 a32 32 0 1 1 -64 0 C18 52 32 36 50 9 Z" fill="#1D9E75"/>
-              <path d="M40 58 L40 50 L48 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M60 74 L60 82 L52 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M60 58 L60 50 L52 50" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-              <path d="M40 74 L40 82 L48 82" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          <div class="ext-icon" style="background:#0b0e15; display:flex; align-items:center; justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 100 100">
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#ff6a3d" stroke-width="7" opacity="0.25"/>
+              <circle cx="50" cy="50" r="34" fill="none" stroke="#ff6a3d" stroke-width="7" stroke-linecap="round" stroke-dasharray="160 214" transform="rotate(-90 50 50)"/>
+              <circle cx="50" cy="50" r="15" fill="#ffb347"/>
             </svg>
           </div>
           <div class="ext-meta">
-            <span class="ext-name">Snipdrop</span>
+            <span class="ext-name">Focus Session</span>
             <span class="ext-status live">Live</span>
           </div>
         </div>
-        <p class="ext-desc">A fast screenshot and snipping tool. Snip any area, full page or element, then drag it straight into any upload. Plus a bulk image downloader, OCR and annotation. Free, with optional Pro.</p>
+        <p class="ext-desc">A Pomodoro timer that blocks the sites you keep opening. Free tier includes the full timer and session blocking. Pro adds advanced analytics, always-on blocking, and more.</p>
         <div class="ext-tags">
-          <span class="ext-tag">tools</span>
-          <span class="ext-tag">screenshot</span>
-          <span class="ext-tag">image-downloader</span>
+          <span class="ext-tag">productivity</span>
+          <span class="ext-tag">pomodoro</span>
+          <span class="ext-tag">site-blocker</span>
           <span class="ext-tag">free+pro</span>
         </div>
         <span class="ext-arrow">learn_more →</span>
