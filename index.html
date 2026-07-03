@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NiallCodes — Chrome Extensions</title>
   <meta name="description" content="Chrome extensions built by Niall. Useful tools, honest pricing, no bloat.">
-  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+  <link rel="apple-touch-icon" href="favicon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -21,15 +24,13 @@
       --text-1:  #f3f1ec;
       --text-2:  #8b92a8;
       --text-3:  #5c6275;
+      --mono:    'JetBrains Mono', monospace;
     }
 
     html, body { min-height: 100vh; }
 
     body {
-      background:
-        radial-gradient(ellipse at 20% 20%, rgba(255,106,61,0.07) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(91,77,180,0.10) 0%, transparent 50%),
-        var(--bg);
+      background: var(--bg);
       color: var(--text-1);
       font-family: 'Inter', sans-serif;
       font-size: 16px;
@@ -37,68 +38,129 @@
       -webkit-font-smoothing: antialiased;
       display: flex;
       flex-direction: column;
+      position: relative;
     }
 
+    /* ── Atmosphere: dot grid + ember/violet glow ─────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.045) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 100%);
+      -webkit-mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black 30%, transparent 100%);
+    }
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(255,106,61,0.09) 0%, transparent 50%),
+        radial-gradient(ellipse at 85% 90%, rgba(91,77,180,0.12) 0%, transparent 50%);
+    }
+    nav, .hero, .extensions-section, footer { position: relative; z-index: 1; }
+
     .container { max-width: 860px; margin: 0 auto; padding: 0 32px; width: 100%; }
-    /* Wider container for the extensions grid so 3 tiles fit per row */
     .container-wide { max-width: 1120px; margin: 0 auto; padding: 0 32px; width: 100%; }
+
+    a:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 4px; }
 
     /* ── Nav ──────────────────────────────────────────────── */
     nav {
       padding: 24px 0;
       border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(6px);
     }
-    .nav-inner {
-      display: flex; align-items: center; justify-content: space-between;
-    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
     .logo {
       font-family: 'Space Grotesk', sans-serif;
       font-size: 20px; font-weight: 700; color: var(--text-1);
       text-decoration: none; letter-spacing: -0.01em;
     }
     .logo span { color: var(--ember); }
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+    .nav-badge {
+      font-family: var(--mono); font-size: 11px; color: var(--text-3);
+      display: flex; align-items: center; gap: 7px;
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 4px 12px;
+      background: rgba(255,255,255,0.02);
+    }
+    .nav-badge::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 8px var(--teal);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
     nav a.contact {
-      font-size: 13px; color: var(--text-3); text-decoration: none;
+      font-family: var(--mono);
+      font-size: 12px; color: var(--text-3); text-decoration: none;
       transition: color 0.12s;
     }
     nav a.contact:hover { color: var(--text-1); }
 
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
     /* ── Hero ─────────────────────────────────────────────── */
     .hero {
-      padding: 80px 0 72px;
+      padding: 88px 0 76px;
       border-bottom: 1px solid var(--border);
     }
 
     .eyebrow {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 11px; font-weight: 600;
+      font-family: var(--mono);
+      font-size: 11px; font-weight: 500;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--ember); margin-bottom: 16px;
+      color: var(--ember); margin-bottom: 18px;
     }
 
     h1 {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(32px, 5vw, 52px);
-      font-weight: 700; line-height: 1.1;
+      font-size: clamp(34px, 5.4vw, 56px);
+      font-weight: 700; line-height: 1.08;
       letter-spacing: -0.02em;
       color: var(--text-1);
       margin-bottom: 20px;
     }
+    h1 .cursor {
+      display: inline-block;
+      width: 0.55em; height: 0.95em;
+      background: var(--ember);
+      margin-left: 6px;
+      vertical-align: text-bottom;
+      animation: blink 1.1s steps(1) infinite;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
 
     .hero-sub {
       font-size: 17px; color: var(--text-2);
       line-height: 1.65; max-width: 480px;
     }
 
+    .hero-stats {
+      margin-top: 32px;
+      display: flex; gap: 28px; flex-wrap: wrap;
+      font-family: var(--mono); font-size: 12px; color: var(--text-3);
+    }
+    .hero-stats strong { color: var(--text-1); font-weight: 600; margin-right: 4px; }
+
     /* ── Extensions grid ──────────────────────────────────── */
     .extensions-section { padding: 64px 0; flex: 1; }
 
+    .section-head {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 8px;
+    }
     .section-label {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: var(--mono);
       font-size: 11px; font-weight: 600;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: var(--text-3); margin-bottom: 24px;
+      color: var(--text-3);
     }
+    .section-count { font-family: var(--mono); font-size: 11px; color: var(--text-3); }
+    .section-count b { color: var(--teal); font-weight: 500; }
 
     .ext-grid {
       display: grid;
@@ -106,24 +168,27 @@
       gap: 16px;
     }
 
+    /* Cards: same size & structure as before, upgraded surface + cursor glow */
     .ext-card {
-      background: var(--bg-2);
+      background: linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0)) , var(--bg-2);
       border: 1px solid var(--border);
       border-radius: 18px; padding: 24px;
       text-decoration: none;
       display: flex; flex-direction: column; gap: 16px;
-      transition: border-color 0.15s, transform 0.15s;
+      transition: border-color 0.15s, transform 0.15s, box-shadow 0.2s;
       position: relative; overflow: hidden;
     }
+    /* Cursor-tracking spotlight */
     .ext-card::before {
-      content: ''; position: absolute;
-      inset: 0; pointer-events: none;
-      background: radial-gradient(circle at 0% 0%, rgba(255,106,61,0.05), transparent 60%);
-      opacity: 0; transition: opacity 0.2s;
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 0%),
+                  rgba(255,106,61,0.08), transparent 65%);
+      opacity: 0; transition: opacity 0.25s;
     }
     .ext-card:hover {
-      border-color: rgba(255,106,61,0.3);
-      transform: translateY(-2px);
+      border-color: rgba(255,106,61,0.35);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
     }
     .ext-card:hover::before { opacity: 1; }
 
@@ -133,7 +198,9 @@
       width: 48px; height: 48px; border-radius: 12px;
       overflow: hidden; flex-shrink: 0;
       border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.2s ease;
     }
+    .ext-card:hover .ext-icon { transform: scale(1.06) rotate(-2deg); }
     .ext-icon img { width: 100%; height: 100%; object-fit: cover; }
 
     .ext-meta { display: flex; flex-direction: column; gap: 2px; }
@@ -142,17 +209,29 @@
       font-size: 16px; font-weight: 700; color: var(--text-1);
     }
     .ext-status {
-      font-size: 11px; font-weight: 600;
-      letter-spacing: 0.06em; text-transform: uppercase;
+      font-family: var(--mono);
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 6px;
     }
     .ext-status.live { color: var(--teal); }
+    .ext-status.live::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--teal); box-shadow: 0 0 6px var(--teal);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
     .ext-status.soon { color: var(--text-3); }
+    .ext-status.soon::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      border: 1px solid var(--text-3);
+    }
 
     .ext-desc { font-size: 14px; color: var(--text-2); line-height: 1.6; }
 
     .ext-tags { display: flex; gap: 6px; flex-wrap: wrap; }
     .ext-tag {
-      font-size: 11px; padding: 3px 9px; border-radius: 20px;
+      font-family: var(--mono);
+      font-size: 10.5px; padding: 3px 9px; border-radius: 6px;
       background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
       color: var(--text-3);
@@ -160,11 +239,13 @@
 
     .ext-arrow {
       align-self: flex-end; margin-top: auto;
-      font-size: 13px; color: var(--ember);
+      font-family: var(--mono);
+      font-size: 12px; color: var(--ember);
       font-weight: 500; opacity: 0;
-      transition: opacity 0.15s;
+      transform: translateX(-4px);
+      transition: opacity 0.15s, transform 0.2s ease;
     }
-    .ext-card:hover .ext-arrow { opacity: 1; }
+    .ext-card:hover .ext-arrow { opacity: 1; transform: translateX(0); }
 
     /* Coming soon card */
     .ext-card.coming-soon {
@@ -181,19 +262,36 @@
       display: flex; align-items: center; justify-content: space-between;
       flex-wrap: wrap; gap: 12px;
     }
-    .footer-left { font-size: 13px; color: var(--text-3); }
+    .footer-left { font-family: var(--mono); font-size: 12px; color: var(--text-3); }
     .footer-right { display: flex; gap: 20px; }
     .footer-link {
-      font-size: 13px; color: var(--text-3);
+      font-family: var(--mono);
+      font-size: 12px; color: var(--text-3);
       text-decoration: none; transition: color 0.12s;
     }
     .footer-link:hover { color: var(--text-1); }
+
+    /* ── Load choreography ────────────────────────────────── */
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal {
+        opacity: 0;
+        transform: translateY(14px);
+        animation: rise 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        animation-delay: var(--d, 0s);
+      }
+      @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nav-badge::before, .ext-status.live::before, h1 .cursor { animation: none; }
+    }
 
     @media (max-width: 560px) {
       .container { padding: 0 20px; }
       .container-wide { padding: 0 20px; }
       .ext-grid { grid-template-columns: 1fr; }
-      h1 { font-size: 32px; }
+      h1 { font-size: 34px; }
+      .hero { padding: 60px 0 52px; }
+      .nav-badge { display: none; }
     }
   </style>
 </head>
@@ -203,26 +301,37 @@
   <div class="container">
     <div class="nav-inner">
       <a href="/" class="logo">Niall<span>Codes</span></a>
-      <a href="mailto:hello@niallcodes.com" class="contact">hello@niallcodes.com</a>
+      <div class="nav-right">
+        <span class="nav-badge">5 extensions live</span>
+        <a href="mailto:hello@niallcodes.com" class="contact">hello@niallcodes.com</a>
+      </div>
     </div>
   </div>
 </nav>
 
 <section class="hero">
   <div class="container">
-    <p class="eyebrow">Chrome Extensions</p>
-    <h1>Small tools.<br>Built to last.</h1>
-    <p class="hero-sub">I build focused Chrome extensions that earn their place on your toolbar. Generous free tiers. No bloat. Just software that works.</p>
+    <p class="eyebrow reveal" style="--d:0s">Chrome Extensions</p>
+    <h1 class="reveal" style="--d:0.07s">Small tools.<br>Built to last.<span class="cursor"></span></h1>
+    <p class="hero-sub reveal" style="--d:0.14s">I build focused Chrome extensions that earn their place on your toolbar. Generous free tiers. No bloat. Just software that works.</p>
+    <div class="hero-stats reveal" style="--d:0.2s">
+      <span><strong>5</strong>shipped</span>
+      <span><strong>1</strong>in development</span>
+      <span><strong>0</strong>abandoned</span>
+    </div>
   </div>
 </section>
 
 <section class="extensions-section">
   <div class="container-wide">
-    <p class="section-label">Extensions</p>
+    <div class="section-head reveal" style="--d:0.24s">
+      <p class="section-label">Extensions</p>
+      <p class="section-count"><b>●</b> all systems operational</p>
+    </div>
     <div class="ext-grid">
 
       <!-- Focus Session -->
-      <a href="/focus-session/" class="ext-card">
+      <a href="/focus-session/" class="ext-card reveal" style="--d:0.28s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0b0e15; display:flex; align-items:center; justify-content:center;">
             <svg width="30" height="30" viewBox="0 0 100 100">
@@ -233,40 +342,40 @@
           </div>
           <div class="ext-meta">
             <span class="ext-name">Focus Session</span>
-            <span class="ext-status live">● Live</span>
+            <span class="ext-status live">Live</span>
           </div>
         </div>
         <p class="ext-desc">A Pomodoro timer that blocks the sites you keep opening. Free tier includes the full timer and session blocking. Pro adds advanced analytics, always-on blocking, and more.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Productivity</span>
-          <span class="ext-tag">Pomodoro</span>
-          <span class="ext-tag">Site blocker</span>
-          <span class="ext-tag">Free + Pro</span>
+          <span class="ext-tag">productivity</span>
+          <span class="ext-tag">pomodoro</span>
+          <span class="ext-tag">site-blocker</span>
+          <span class="ext-tag">free+pro</span>
         </div>
-        <span class="ext-arrow">Learn more →</span>
+        <span class="ext-arrow">learn_more →</span>
       </a>
 
       <!-- CiteRight -->
-      <a href="/citeright/" class="ext-card">
+      <a href="/citeright/" class="ext-card reveal" style="--d:0.34s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0F1B2D; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:22px; font-weight:700; color:#F5A623;">C</div>
           <div class="ext-meta">
             <span class="ext-name">CiteRight</span>
-            <span class="ext-status live">● Live</span>
+            <span class="ext-status live">Live</span>
           </div>
         </div>
         <p class="ext-desc">Generate perfectly formatted academic citations in APA, MLA, Harvard, Chicago, IEEE, Vancouver, OSCOLA and more. Auto-fills from any webpage. Free forever.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Education</span>
-          <span class="ext-tag">Citations</span>
-          <span class="ext-tag">APA · MLA · Harvard</span>
-          <span class="ext-tag">Free</span>
+          <span class="ext-tag">education</span>
+          <span class="ext-tag">citations</span>
+          <span class="ext-tag">apa·mla·harvard</span>
+          <span class="ext-tag">free</span>
         </div>
-        <span class="ext-arrow">Learn more →</span>
+        <span class="ext-arrow">learn_more →</span>
       </a>
 
       <!-- Capy -->
-      <a href="/capy/" class="ext-card">
+      <a href="/capy/" class="ext-card reveal" style="--d:0.40s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#FAF7F2; display:flex; align-items:center; justify-content:center;">
             <svg width="34" height="34" viewBox="0 0 128 128">
@@ -294,40 +403,40 @@
           </div>
           <div class="ext-meta">
             <span class="ext-name">Capy</span>
-            <span class="ext-status live">● Live</span>
+            <span class="ext-status live">Live</span>
           </div>
         </div>
         <p class="ext-desc">An all-in-one study companion. Focus timer, notes, flashcards, planner, web highlighter and site blocker — with Cap the capybara cheering you on. Free, with optional Pro.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Education</span>
-          <span class="ext-tag">Study timer</span>
-          <span class="ext-tag">Notes · Flashcards</span>
-          <span class="ext-tag">Free + Pro</span>
+          <span class="ext-tag">education</span>
+          <span class="ext-tag">study-timer</span>
+          <span class="ext-tag">notes·flashcards</span>
+          <span class="ext-tag">free+pro</span>
         </div>
-        <span class="ext-arrow">Learn more →</span>
+        <span class="ext-arrow">learn_more →</span>
       </a>
 
       <!-- Lectern -->
-      <a href="/lectern/" class="ext-card">
+      <a href="/lectern/" class="ext-card reveal" style="--d:0.46s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#1c1917; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:24px; font-weight:600; color:#FAF7F2;">L</div>
           <div class="ext-meta">
             <span class="ext-name">Lectern</span>
-            <span class="ext-status live">● Live</span>
+            <span class="ext-status live">Live</span>
           </div>
         </div>
         <p class="ext-desc">A distraction-free reader for the web. Clean reading view, AI summaries, highlights, speed reading and export to Markdown, HTML or PDF. Free, with optional Pro.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Productivity</span>
-          <span class="ext-tag">Reader mode</span>
-          <span class="ext-tag">AI summaries</span>
-          <span class="ext-tag">Free + Pro</span>
+          <span class="ext-tag">productivity</span>
+          <span class="ext-tag">reader-mode</span>
+          <span class="ext-tag">ai-summaries</span>
+          <span class="ext-tag">free+pro</span>
         </div>
-        <span class="ext-arrow">Learn more →</span>
+        <span class="ext-arrow">learn_more →</span>
       </a>
 
       <!-- Snipdrop -->
-      <a href="/snipdrop/" class="ext-card">
+      <a href="/snipdrop/" class="ext-card reveal" style="--d:0.52s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0F1A17; display:flex; align-items:center; justify-content:center;">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
@@ -340,31 +449,31 @@
           </div>
           <div class="ext-meta">
             <span class="ext-name">Snipdrop</span>
-            <span class="ext-status live">● Live</span>
+            <span class="ext-status live">Live</span>
           </div>
         </div>
         <p class="ext-desc">A fast screenshot and snipping tool. Snip any area, full page or element, then drag it straight into any upload. Plus a bulk image downloader, OCR and annotation. Free, with optional Pro.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Tools</span>
-          <span class="ext-tag">Screenshot</span>
-          <span class="ext-tag">Image downloader</span>
-          <span class="ext-tag">Free + Pro</span>
+          <span class="ext-tag">tools</span>
+          <span class="ext-tag">screenshot</span>
+          <span class="ext-tag">image-downloader</span>
+          <span class="ext-tag">free+pro</span>
         </div>
-        <span class="ext-arrow">Learn more →</span>
+        <span class="ext-arrow">learn_more →</span>
       </a>
 
       <!-- Placeholder for next extension -->
-      <div class="ext-card coming-soon">
+      <div class="ext-card coming-soon reveal" style="--d:0.58s">
         <div class="ext-header">
           <div class="ext-icon" style="background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; font-size:22px;">⚙</div>
           <div class="ext-meta">
             <span class="ext-name">Coming soon</span>
-            <span class="ext-status soon">○ In development</span>
+            <span class="ext-status soon">In development</span>
           </div>
         </div>
         <p class="ext-desc">More extensions in the works. Check back soon.</p>
         <div class="ext-tags">
-          <span class="ext-tag">Chrome</span>
+          <span class="ext-tag">chrome</span>
         </div>
       </div>
 
@@ -377,11 +486,22 @@
     <div class="footer-inner">
       <span class="footer-left">© 2026 NiallCodes</span>
       <div class="footer-right">
-        <a href="mailto:hello@niallcodes.com" class="footer-link">Contact</a>
+        <a href="mailto:hello@niallcodes.com" class="footer-link">contact</a>
       </div>
     </div>
   </div>
 </footer>
+
+<script>
+  // Cursor-tracking spotlight on cards
+  document.querySelectorAll('.ext-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+      card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+    });
+  });
+</script>
 
 </body>
 </html>
