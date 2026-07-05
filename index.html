@@ -60,7 +60,7 @@
     nav, .hero, .extensions-section, footer { position: relative; z-index: 1; }
 
     .container { max-width: 860px; margin: 0 auto; padding: 0 32px; width: 100%; }
-    .container-wide { max-width: 1120px; margin: 0 auto; padding: 0 32px; width: 100%; }
+    .container-wide { max-width: 1480px; margin: 0 auto; padding: 0 32px; width: 100%; }
 
     a:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 4px; }
 
@@ -164,9 +164,11 @@
 
     .ext-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
+    @media (max-width: 1180px) { .ext-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 900px)  { .ext-grid { grid-template-columns: repeat(2, 1fr); } }
 
     /* Cards: same size & structure as before, upgraded surface + cursor glow */
     .ext-card {
@@ -312,7 +314,7 @@
     <div class="nav-inner">
       <a href="/" class="logo">Niall<span>Codes</span></a>
       <div class="nav-right">
-        <span class="nav-badge">5 extensions live</span>
+        <span class="nav-badge">6 extensions live</span>
         <a href="mailto:hello@niallcodes.com" class="contact">hello@niallcodes.com</a>
       </div>
     </div>
@@ -325,7 +327,7 @@
     <h1 class="reveal" style="--d:0.07s">Small tools.<br>Built to last.<span class="cursor"></span></h1>
     <p class="hero-sub reveal" style="--d:0.14s">I build focused Chrome extensions that earn their place on your toolbar. Generous free tiers. No bloat. Just software that works.</p>
     <div class="hero-stats reveal" style="--d:0.2s">
-      <span><strong>5</strong>shipped</span>
+      <span><strong>6</strong>shipped</span>
       <span><strong>1</strong>in development</span>
       <span><strong>0</strong>abandoned</span>
     </div>
@@ -339,8 +341,33 @@
       <p class="section-count"><b>●</b> all systems operational</p>
     </div>
     <div class="ext-grid">
+<!-- DocKit -->
+      <a href="/dockit/" class="ext-card reveal" style="--d:0.28s">
+        <div class="ext-header">
+          <div class="ext-icon" style="background:#0F1A17; display:flex; align-items:center; justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none">
+              <rect x="18" y="12" width="52" height="68" rx="8" fill="#1D9E75"/>
+              <rect x="30" y="20" width="52" height="68" rx="8" fill="#0f6e56"/>
+              <path d="M46 54l7 7 14-14" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="ext-meta">
+            <span class="ext-name">DocKit <span class="ext-new">New</span></span>
+            <span class="ext-status live">Live</span>
+          </div>
+        </div>
+        <p class="ext-desc">Every document tool in one place. Merge, split, compress and convert PDFs, eSign, OCR, redact and translate whole documents — 100% on your device. Free, with optional Pro.</p>
+        <div class="ext-tags">
+          <span class="ext-tag">tools</span>
+          <span class="ext-tag">pdf·word·excel</span>
+          <span class="ext-tag">esign·ocr</span>
+          <span class="ext-tag">free+pro</span>
+        </div>
+        <span class="ext-arrow">learn_more →</span>
+      </a>
+
 <!-- Snipdrop -->
-      <a href="/snipdrop/" class="ext-card reveal" style="--d:0.28s">
+      <a href="/snipdrop/" class="ext-card reveal" style="--d:0.34s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0F1A17; display:flex; align-items:center; justify-content:center;">
             <svg width="32" height="32" viewBox="0 0 100 100" fill="none">
@@ -352,7 +379,7 @@
             </svg>
           </div>
           <div class="ext-meta">
-            <span class="ext-name">Snipdrop <span class="ext-new">New</span></span>
+            <span class="ext-name">Snipdrop</span>
             <span class="ext-status live">Live</span>
           </div>
         </div>
@@ -367,7 +394,7 @@
       </a>
 
       <!-- Lectern -->
-      <a href="/lectern/" class="ext-card reveal" style="--d:0.34s">
+      <a href="/lectern/" class="ext-card reveal" style="--d:0.40s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#1c1917; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:24px; font-weight:600; color:#FAF7F2;">L</div>
           <div class="ext-meta">
@@ -386,7 +413,7 @@
       </a>
 
       <!-- Capy -->
-      <a href="/capy/" class="ext-card reveal" style="--d:0.40s">
+      <a href="/capy/" class="ext-card reveal" style="--d:0.46s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#FAF7F2; display:flex; align-items:center; justify-content:center;">
             <svg width="34" height="34" viewBox="0 0 128 128">
@@ -428,7 +455,7 @@
       </a>
 
       <!-- CiteRight -->
-      <a href="/citeright/" class="ext-card reveal" style="--d:0.46s">
+      <a href="/citeright/" class="ext-card reveal" style="--d:0.52s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0F1B2D; display:flex; align-items:center; justify-content:center; font-family:'Georgia',serif; font-size:22px; font-weight:700; color:#F5A623;">C</div>
           <div class="ext-meta">
@@ -447,7 +474,7 @@
       </a>
 
       <!-- Focus Session -->
-      <a href="/focus-session/" class="ext-card reveal" style="--d:0.52s">
+      <a href="/focus-session/" class="ext-card reveal" style="--d:0.58s">
         <div class="ext-header">
           <div class="ext-icon" style="background:#0b0e15; display:flex; align-items:center; justify-content:center;">
             <svg width="30" height="30" viewBox="0 0 100 100">
@@ -472,7 +499,7 @@
       </a>
 
       <!-- Placeholder for next extension -->
-      <div class="ext-card coming-soon reveal" style="--d:0.58s">
+      <div class="ext-card coming-soon reveal" style="--d:0.64s">
         <div class="ext-header">
           <div class="ext-icon" style="background:rgba(255,255,255,0.04); display:flex; align-items:center; justify-content:center; font-size:22px;">⚙</div>
           <div class="ext-meta">
