@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — DocKit</title>
+<meta name="description" content="DocKit's privacy policy. DocKit runs 100% on your device — your files never leave your browser. No account, no tracking.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#13211d;
+  --ink-soft:#33473f;
+  --paper:#F2F7F4;
+  --paper-deep:#e6efea;
+  --cream:#ffffff;
+  --line:#d9e6df;
+  --teal:#1D9E75;
+  --teal-deep:#0f6e56;
+  --teal-soft:#e3f4ed;
+  --gold:#B8860B;
+  --muted:#6f7d77;
+  --shadow:0 1px 2px rgba(19,33,29,.04), 0 8px 30px rgba(19,33,29,.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--paper);color:var(--ink);
+  line-height:1.65;-webkit-font-smoothing:antialiased;
+}
+.display{font-family:'Fraunces',Georgia,serif;font-weight:500;letter-spacing:-0.02em;line-height:1.1}
+.wrap{max-width:760px;margin:0 auto;padding:0 24px}
+a{color:var(--teal-deep);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s}
+a:hover{border-bottom-color:var(--teal-deep)}
+
+/* Nav */
+nav{border-bottom:1px solid var(--line);background:rgba(242,247,244,.82);backdrop-filter:saturate(140%) blur(12px);position:sticky;top:0;z-index:20}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px;max-width:760px;margin:0 auto;padding:0 24px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:600;font-size:16px;color:var(--ink)}
+.brand svg{width:28px;height:28px;display:block}
+.nav-back{font-size:14px;color:var(--ink-soft)}
+
+/* Header */
+header.page{padding:56px 0 32px}
+header.page .eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+header.page h1{font-size:clamp(32px,5vw,44px);margin-bottom:12px}
+header.page .updated{font-size:13.5px;color:var(--muted)}
+
+/* Highlight callout */
+.highlight{
+  background:var(--cream);border:1px solid var(--line);border-left:3px solid var(--teal);
+  border-radius:12px;padding:20px 22px;margin:8px 0 40px;box-shadow:var(--shadow);
+}
+.highlight strong{color:var(--ink);font-weight:600}
+.highlight p{font-size:15px;color:var(--ink-soft)}
+
+/* Body */
+main{padding-bottom:64px}
+section.policy{margin-bottom:34px}
+section.policy h2{font-family:'Fraunces',serif;font-weight:500;font-size:22px;margin-bottom:12px;color:var(--ink)}
+section.policy p{font-size:15px;color:var(--ink-soft);margin-bottom:12px}
+section.policy ul{list-style:none;margin:0 0 12px;padding:0}
+section.policy li{font-size:15px;color:var(--ink-soft);padding:7px 0 7px 26px;position:relative}
+section.policy li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;border-radius:50%;background:var(--teal)}
+section.policy li strong{color:var(--ink);font-weight:600}
+
+/* Footer */
+footer{border-top:1px solid var(--line);padding:36px 0 56px}
+.foot-inner{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center;font-size:13.5px;color:var(--muted)}
+.foot-links{display:flex;gap:20px;flex-wrap:wrap}
+.foot-links a{color:var(--ink-soft)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="brand" href="/dockit">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect x="18" y="12" width="52" height="68" rx="8" fill="#1D9E75"/>
+        <rect x="30" y="20" width="52" height="68" rx="8" fill="#0f6e56"/>
+        <path d="M46 54l7 7 14-14" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg> DocKit
+    </a>
+    <a class="nav-back" href="/dockit">← Back to DocKit</a>
+  </div>
+</nav>
+
+<header class="page">
+  <div class="wrap">
+    <p class="eyebrow">Privacy Policy</p>
+    <h1 class="display">Your documents stay yours.</h1>
+    <p class="updated">Last updated: 5 July 2026</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="highlight">
+    <p><strong>The short version:</strong> DocKit runs entirely on your device. Your files are never uploaded to any server, and DocKit works without an account. The only information we ever handle is the email address tied to a Pro license — and only so we can send you your key and check that it's valid.</p>
+  </div>
+</div>
+
+<main>
+  <div class="wrap">
+
+    <section class="policy">
+      <h2>1. Your files never leave your device</h2>
+      <p>Every tool in DocKit — merging, splitting, compressing, converting, signing, OCR, redaction, translation and everything else — runs locally inside your browser. Your documents are processed on your own computer and are <strong>never uploaded, transmitted, stored, or seen by us or anyone else</strong>. When you close DocKit, the files you were working on are gone from memory. We have no server that receives your documents, because there isn't one.</p>
+    </section>
+
+    <section class="policy">
+      <h2>2. No account, no tracking</h2>
+      <p>DocKit does not require an account, login, or sign-up. The extension contains <strong>no analytics, no tracking, no advertising, and no telemetry</strong>. We do not build a profile of you, monitor which tools you use, or collect information about the pages you visit. DocKit only runs when you open it.</p>
+    </section>
+
+    <section class="policy">
+      <h2>3. Information we store locally</h2>
+      <p>DocKit saves a small amount of information on your own device (using your browser's local storage) so the app remembers your setup between sessions:</p>
+      <ul>
+        <li>Your preferences and settings</li>
+        <li>Your workspace state</li>
+        <li>Your Pro license status, once activated</li>
+      </ul>
+      <p>This information stays on your device. It is not sent to us and is not shared with anyone.</p>
+    </section>
+
+    <section class="policy">
+      <h2>4. Pro licenses</h2>
+      <p>If you purchase DocKit Pro, we handle a limited amount of information solely to issue and validate your license:</p>
+      <ul>
+        <li><strong>Your email address</strong> — provided by you at checkout, used to send your license key and to verify the key when you activate Pro. It is stored securely and used only for licensing.</li>
+        <li><strong>Your license key and a purchase reference</strong> — stored so we can confirm a key is genuine when the extension checks it.</li>
+      </ul>
+      <p>When DocKit validates a license, it sends only the license key to our licensing service — <strong>never any part of your documents</strong>. We do not use your email for marketing and do not share or sell it.</p>
+    </section>
+
+    <section class="policy">
+      <h2>5. Payments</h2>
+      <p>Payments for DocKit Pro are processed entirely by <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe</a>, a third-party payment provider. Your card details are entered on Stripe's secure checkout and are <strong>never seen or handled by DocKit or by us</strong>. Stripe's handling of your payment information is governed by Stripe's own privacy policy.</p>
+    </section>
+
+    <section class="policy">
+      <h2>6. Translation</h2>
+      <p>DocKit's document translation uses your browser's built-in, on-device translation capabilities. Text is translated locally on your machine. As with every other tool, your document content is not uploaded to us or to any external translation service.</p>
+    </section>
+
+    <section class="policy">
+      <h2>7. Permissions</h2>
+      <p>DocKit requests only the <strong>storage</strong> permission, which lets the extension save your preferences and license status locally on your device, as described above. DocKit does not request access to your browsing history, the content of web pages, or your tabs.</p>
+    </section>
+
+    <section class="policy">
+      <h2>8. Children's privacy</h2>
+      <p>DocKit is a general-purpose document tool and is not directed at children. We do not knowingly collect personal information from anyone, including children.</p>
+    </section>
+
+    <section class="policy">
+      <h2>9. Changes to this policy</h2>
+      <p>If we make changes to this policy, we'll update the date at the top of this page. Because DocKit's design is built around keeping everything on your device, we don't anticipate changes that would reduce your privacy.</p>
+    </section>
+
+    <section class="policy">
+      <h2>10. Contact</h2>
+      <p>If you have any questions about this policy or how DocKit handles data, email us at <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a> and we'll be happy to help.</p>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot-inner">
+    <span>DocKit is a product from niallcodes — an independent software project based in the United Kingdom.</span>
+    <div class="foot-links">
+      <a href="/dockit">DocKit</a>
+      <a href="mailto:hello@niallcodes.com">Support</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
