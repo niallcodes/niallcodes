@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy Policy — Nullfeed</title>
+<meta name="description" content="Nullfeed is local-only by design: no accounts, no analytics, no telemetry, no tracking. Read exactly what the extension does.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2318181f'/%3E%3Cg stroke='%233f95f7' stroke-width='3.6' fill='none' stroke-linecap='round'%3E%3Ccircle cx='16' cy='16' r='8.6'/%3E%3Cline x1='10' y1='23' x2='22' y2='9'/%3E%3C/g%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#101014; --panel:#16161c; --panel-2:#1c1c24; --hair:#2a2a34;
+    --blue:#3f95f7; --blue-deep:#1f78dd; --blue-soft:rgba(42,138,246,.14);
+    --text:#e8e8ee; --muted:#9a9aa5; --faint:#63636e;
+    --coral:#ff5e5b;
+    --serif:Georgia,'Times New Roman',serif;
+    --sans:'Segoe UI',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--ink); color:var(--text); font-family:var(--sans);
+    line-height:1.65; -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--blue);text-decoration:none}
+  a:hover{text-decoration:underline}
+
+  /* ambient glow, same signature as the store assets */
+  .glow{position:fixed;right:-260px;top:-320px;width:1000px;height:1000px;border-radius:50%;
+    background:radial-gradient(circle,var(--blue-soft),transparent 62%);pointer-events:none;z-index:0}
+
+  .wrap{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:0 24px}
+
+  header{padding:40px 0 8px}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:13px}
+  .brand svg{width:38px;height:38px;flex:none}
+  .wm{font-size:26px;font-weight:700;letter-spacing:-.02em}
+  .wm span{color:var(--blue)}
+  .back{font-family:var(--mono);font-size:12.5px;letter-spacing:.04em;color:var(--muted)}
+
+  .title-block{padding:44px 0 30px;border-bottom:1px solid var(--hair)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--blue);font-weight:600;text-transform:uppercase}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(38px,7vw,60px);line-height:1.05;margin:18px 0 20px}
+  .meta{font-family:var(--mono);font-size:12.5px;color:var(--faint);letter-spacing:.02em}
+  .meta b{color:var(--muted);font-weight:400}
+  .lede{font-size:18px;color:var(--muted);margin-top:22px;max-width:60ch}
+
+  main{padding:14px 0 40px}
+  section{padding:34px 0;border-bottom:1px solid var(--hair)}
+  section:last-of-type{border-bottom:none}
+  h2{font-family:var(--serif);font-weight:400;font-size:26px;line-height:1.2;margin-bottom:16px}
+  p{margin:0 0 14px;color:#cfcfd7}
+  p:last-child{margin-bottom:0}
+  strong{color:var(--text);font-weight:600}
+
+  ul{list-style:none;margin:6px 0 14px}
+  ul li{position:relative;padding-left:26px;margin-bottom:9px;color:#cfcfd7}
+  ul li::before{content:"";position:absolute;left:4px;top:11px;width:7px;height:7px;border-radius:50%;
+    background:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+
+  /* the two network requests get a numbered card treatment — order matters here */
+  .net{display:grid;gap:14px;margin:8px 0 6px}
+  .net .card{background:var(--panel);border:1px solid var(--hair);border-radius:14px;padding:20px 22px;position:relative}
+  .net .n{font-family:var(--mono);font-size:12px;color:var(--blue);letter-spacing:.1em;font-weight:600;margin-bottom:8px}
+  .net h3{font-size:16px;font-weight:600;margin-bottom:8px;color:var(--text)}
+  .net p{font-size:14.5px;margin:0}
+
+  .callout{background:var(--panel-2);border:1px solid var(--hair);border-left:3px solid var(--blue);
+    border-radius:12px;padding:18px 22px;margin:20px 0;font-size:15px;color:#d6d6de}
+  .callout strong{color:var(--text)}
+
+  .who{background:var(--panel);border:1px solid var(--hair);border-radius:14px;padding:22px 24px}
+  .who p{margin-bottom:6px}
+
+  footer{padding:40px 0 64px;border-top:1px solid var(--hair);margin-top:8px;
+    font-family:var(--mono);font-size:12.5px;color:var(--faint);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  footer a{color:var(--muted)}
+
+  @media (max-width:560px){
+    header{padding-top:28px}
+    .title-block{padding-top:34px}
+    section{padding:28px 0}
+  }
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div class="wrap">
+
+  <header>
+    <div class="top">
+      <a class="brand" href="/nullfeed" aria-label="Nullfeed home">
+        <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#23232e"/><stop offset="1" stop-color="#121218"/></linearGradient>
+            <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4da3ff"/><stop offset="1" stop-color="#1f78dd"/></linearGradient>
+          </defs>
+          <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+          <rect x="22" y="32" width="60" height="13" rx="6.5" fill="#4a4a58"/>
+          <rect x="22" y="57" width="46" height="13" rx="6.5" fill="#40404c"/>
+          <rect x="22" y="82" width="56" height="13" rx="6.5" fill="#383842"/>
+          <g stroke="#121218" stroke-width="19" fill="none" stroke-linecap="round"><circle cx="80" cy="64" r="29"/><line x1="60" y1="87" x2="100" y2="41"/></g>
+          <g stroke="url(#ring)" stroke-width="11" fill="none" stroke-linecap="round"><circle cx="80" cy="64" r="29"/><line x1="60" y1="87" x2="100" y2="41"/></g>
+        </svg>
+        <span class="wm">null<span>feed</span></span>
+      </a>
+      <a class="back" href="/nullfeed">← Back to Nullfeed</a>
+    </div>
+  </header>
+
+  <div class="title-block">
+    <div class="eyebrow">Privacy Policy</div>
+    <h1>Nothing leaves your device.</h1>
+    <p class="meta"><b>Effective date:</b> 2026-07-06 &nbsp;·&nbsp; <b>Applies to:</b> the Nullfeed browser extension</p>
+    <p class="lede">Nullfeed is local-only by design. No accounts, no analytics, no telemetry, no tracking of any kind. This policy describes exactly what the extension does — nothing is simplified away.</p>
+  </div>
+
+  <main>
+    <section>
+      <h2>What Nullfeed stores, and where</h2>
+      <p>All of your data lives in your browser's local extension storage on your device:</p>
+      <ul>
+        <li>your blocking rules (built-in toggles and elements you chose to block),</li>
+        <li>per-site settings and presets,</li>
+        <li>the self-lock timer state,</li>
+        <li>a cached copy of the current blocking-rule list.</li>
+      </ul>
+      <p>None of this is transmitted to us or anyone else. Uninstalling the extension deletes it. The export feature writes this data to a file on your device that only you control.</p>
+    </section>
+
+    <section>
+      <h2>The only two network requests Nullfeed ever makes</h2>
+      <div class="net">
+        <div class="card">
+          <div class="n">REQUEST 01 · AUTOMATIC · READ-ONLY</div>
+          <h3>Blocking-rule updates</h3>
+          <p>Roughly every 6 hours, and on browser startup, the extension downloads the current blocking-rule list from our server (a Cloudflare Worker). This is a plain download: no account, no identifier, no cookies, and no information about you or your browsing is included. Like any web request, our infrastructure provider (Cloudflare) processes your IP address to deliver the response; we do not log or store it.</p>
+        </div>
+        <div class="card">
+          <div class="n">REQUEST 02 · ONLY WHEN YOU CLICK IT</div>
+          <h3>“Report broken site”</h3>
+          <p>If — and only if — you explicitly choose right-click → “Report broken site” and press Send, the extension transmits: the site name (e.g. “youtube”), the CSS selectors of elements you blocked on that site, your optional typed note, and the extension/rule-list version numbers. The dialog shows you this exact list before you send. Reports contain no personal data and no page content; they are stored for up to 90 days for review and then deleted. Your IP address is used only in a transient rate-limiting counter that expires within one hour and is never stored with a report.</p>
+        </div>
+      </div>
+      <div class="callout">
+        That is the complete list. <strong>Nullfeed never sends page content, browsing history, or any behavioural data anywhere.</strong>
+      </div>
+    </section>
+
+    <section>
+      <h2>What Nullfeed does on pages</h2>
+      <p>On the seven built-in sites (YouTube, X/Twitter, Reddit, LinkedIn, Facebook, Instagram, Amazon) — and on any additional site you explicitly enable via “Enable on this site” or the right-click menu — the extension reads the page's structure locally in your browser to hide feed, Shorts/Reels, sponsored, and user-chosen elements. This processing never leaves your device.</p>
+      <p>Access to additional sites is granted by you per site through Chrome's own permission prompt, and you can revoke it at any time from the extension's details page.</p>
+    </section>
+
+    <section>
+      <h2>Third-party links</h2>
+      <p>The extension links to Ko-fi (donations) and niallcodes.com (our other tools). These open in a new tab and have their own privacy policies; nothing is sent to them by the extension itself.</p>
+    </section>
+
+    <section>
+      <h2>Data sales and sharing</h2>
+      <p>We do not sell, share, or monetise any data. There is nothing to sell.</p>
+    </section>
+
+    <section>
+      <h2>Who we are</h2>
+      <div class="who">
+        <p>Nullfeed is published by <strong>Florence Publishing Ltd</strong> (United Kingdom), trading as niallcodes.</p>
+        <p>Contact: <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a></p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Changes</h2>
+      <p>Any change to this policy will be listed in the extension's open changelog and reflected in the effective date above.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>Nullfeed · a niallcodes product</span>
+    <span><a href="/nullfeed">nullfeed</a> &nbsp;·&nbsp; <a href="https://niallcodes.com">niallcodes.com</a></span>
+  </footer>
+
+</div>
+</body>
+</html>
