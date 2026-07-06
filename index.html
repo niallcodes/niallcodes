@@ -105,7 +105,7 @@
 
     /* ── Hero ─────────────────────────────────────────────── */
     .hero {
-      padding: 88px 0 76px;
+      padding: 52px 0 60px;
       border-bottom: 1px solid var(--border);
     }
 
@@ -147,7 +147,7 @@
     .hero-stats strong { color: var(--text-1); font-weight: 600; margin-right: 4px; }
 
     /* ── Extensions grid ──────────────────────────────────── */
-    .extensions-section { padding: 64px 0; flex: 1; }
+    .extensions-section { padding: 48px 0 64px; flex: 1; }
 
     .section-head {
       display: flex; align-items: baseline; justify-content: space-between;
@@ -302,7 +302,7 @@
       .container-wide { padding: 0 20px; }
       .ext-grid { grid-template-columns: 1fr; }
       h1 { font-size: 34px; }
-      .hero { padding: 60px 0 52px; }
+      .hero { padding: 40px 0 44px; }
       .nav-badge { display: none; }
     }
   </style>
@@ -314,7 +314,7 @@
     <div class="nav-inner">
       <a href="/" class="logo">Niall<span>Codes</span></a>
       <div class="nav-right">
-        <span class="nav-badge">6 extensions live</span>
+        <span class="nav-badge">7 extensions live</span>
         <a href="mailto:hello@niallcodes.com" class="contact">hello@niallcodes.com</a>
       </div>
     </div>
@@ -323,11 +323,10 @@
 
 <section class="hero">
   <div class="container">
-    <p class="eyebrow reveal" style="--d:0s">Chrome Extensions</p>
-    <h1 class="reveal" style="--d:0.07s">Small tools.<br>Built to last.<span class="cursor"></span></h1>
-    <p class="hero-sub reveal" style="--d:0.14s">I build focused Chrome extensions that earn their place on your toolbar. Generous free tiers. No bloat. Just software that works.</p>
-    <div class="hero-stats reveal" style="--d:0.2s">
-      <span><strong>6</strong>shipped</span>
+    <h1 class="reveal" style="--d:0s">Small tools.<br>Built to last.<span class="cursor"></span></h1>
+    <p class="hero-sub reveal" style="--d:0.07s">I build focused Chrome extensions that earn their place on your toolbar. Generous free tiers. No bloat. Just software that works.</p>
+    <div class="hero-stats reveal" style="--d:0.13s">
+      <span><strong>7</strong>shipped</span>
       <span><strong>1</strong>in development</span>
       <span><strong>0</strong>abandoned</span>
     </div>
@@ -336,11 +335,38 @@
 
 <section class="extensions-section">
   <div class="container-wide">
-    <div class="section-head reveal" style="--d:0.24s">
+    <div class="section-head reveal" style="--d:0.18s">
       <p class="section-label">Extensions</p>
       <p class="section-count"><b>●</b> all systems operational</p>
     </div>
     <div class="ext-grid">
+<!-- Nullfeed -->
+      <a href="/nullfeed/" class="ext-card reveal" style="--d:0.22s">
+        <div class="ext-header">
+          <div class="ext-icon" style="background:#18181f; display:flex; align-items:center; justify-content:center;">
+            <svg width="30" height="30" viewBox="0 0 128 128" fill="none">
+              <rect x="18" y="30" width="52" height="11" rx="5.5" fill="#4a4a58"/>
+              <rect x="18" y="52" width="40" height="11" rx="5.5" fill="#40404c"/>
+              <rect x="18" y="74" width="48" height="11" rx="5.5" fill="#383842"/>
+              <g stroke="#18181f" stroke-width="17" fill="none" stroke-linecap="round"><circle cx="82" cy="64" r="26"/><line x1="64" y1="85" x2="100" y2="43"/></g>
+              <g stroke="#3f95f7" stroke-width="10" fill="none" stroke-linecap="round"><circle cx="82" cy="64" r="26"/><line x1="64" y1="85" x2="100" y2="43"/></g>
+            </svg>
+          </div>
+          <div class="ext-meta">
+            <span class="ext-name">Nullfeed <span class="ext-new">New</span></span>
+            <span class="ext-status live">Live</span>
+          </div>
+        </div>
+        <p class="ext-desc">Hides algorithmic feeds, Shorts, Reels and sponsored posts on YouTube, X, Reddit, LinkedIn, Facebook, Instagram and Amazon — while search, comments and messages keep working. Free forever.</p>
+        <div class="ext-tags">
+          <span class="ext-tag">productivity</span>
+          <span class="ext-tag">feed-blocker</span>
+          <span class="ext-tag">anti-distraction</span>
+          <span class="ext-tag">free</span>
+        </div>
+        <span class="ext-arrow">learn_more →</span>
+      </a>
+
 <!-- DocKit -->
       <a href="/dockit/" class="ext-card reveal" style="--d:0.28s">
         <div class="ext-header">
