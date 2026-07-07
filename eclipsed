@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eclipsed — Dark Mode for Every Website</title>
+<meta name="description" content="Dark mode for every website that stays fast. Uses each site's own dark theme first — and never inverts your photos. Free forever, no account. A niallcodes extension for Chrome.">
+<meta property="og:title" content="Eclipsed — dark mode that stays fast">
+<meta property="og:description" content="A universal dark mode that uses each site's own dark theme first, and only filters where it has to. Fast on day 1 and day 90 — and it never mangles your photos. Free forever, no account.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0E17'/%3E%3Ccircle cx='32' cy='32' r='19' fill='%23FFC24D'/%3E%3Ccircle cx='36' cy='29' r='18' fill='%230B0E17'/%3E%3C/svg%3E">
+<style>
+  :root{
+    /* Locked Eclipsed brand kit — store/BRAND.md */
+    --umbra:#0B0E17;        /* page background */
+    --penumbra:#151A28;     /* raised surfaces, cards */
+    --line:#232B3F;         /* borders, dividers */
+    --line-soft:#1b2233;
+    --corona:#FFC24D;       /* THE accent */
+    --flare:#FFD98A;        /* accent hover / highlighted copy */
+    --starlight:#EDF0F8;    /* primary text */
+    --dust:#8A93A8;         /* muted text */
+    --faint:#5c6478;
+    --corona-soft:rgba(255,194,77,.13);
+    --corona-glow:rgba(255,194,77,.15);
+
+    /* light popup mock surfaces (the site card in the real UI is a raised dark panel) */
+    --grotesk:'Space Grotesk','Segoe UI',system-ui,-apple-system,sans-serif;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  @font-face{
+    font-family:'Space Grotesk';
+    font-style:normal;font-weight:400 500;font-display:swap;
+    src:local('Space Grotesk');
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--umbra);color:var(--starlight);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,14,23,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:32px;height:32px;flex:none}
+  .wm{font-family:var(--grotesk);font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .nav-cta{display:flex;align-items:center;gap:22px}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--dust)}
+  .nav-links a:hover{color:var(--starlight)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;border-radius:10px;padding:10px 18px;font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background .15s ease,border-color .15s ease,color .15s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--corona);color:var(--umbra)}
+  .btn-primary:hover{background:var(--flare)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--starlight)}
+  .btn-ghost:hover{border-color:var(--corona);color:var(--flare)}
+  @media (max-width:720px){.nav-links{display:none}}
+
+  /* ---------- hero ---------- */
+  .glow{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,var(--corona-glow),transparent 62%);z-index:0}
+  .hero{position:relative;overflow:hidden}
+  .hero .glow{right:-300px;top:-360px;width:1120px;height:1120px}
+  .hero .row{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:76px 0 84px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--corona);font-weight:600;text-transform:uppercase}
+  h1{font-family:var(--grotesk);font-weight:500;font-size:clamp(50px,7.8vw,84px);line-height:1.03;margin:20px 0 24px;letter-spacing:-.02em}
+  h1 .n{color:var(--corona)}
+  .hero p.sub{font-size:19px;color:var(--dust);max-width:31em;line-height:1.6}
+  .hero-actions{display:flex;gap:14px;margin:32px 0 20px;flex-wrap:wrap}
+  .free-note{font-family:var(--mono);font-size:12.5px;color:var(--faint);letter-spacing:.02em}
+  .free-note b{color:var(--dust);font-weight:400}
+  .day90{margin-top:28px;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--dust);border:1px solid var(--line);border-radius:999px;padding:8px 15px;background:var(--penumbra)}
+  .day90 b{color:var(--flare);font-weight:400}
+
+  /* product popup mock — mirrors the real Eclipsed popup */
+  .shot{position:relative;justify-self:end;width:100%;max-width:360px}
+  .popup{background:var(--penumbra);border:1px solid var(--line);border-radius:18px;box-shadow:0 40px 90px rgba(0,0,0,.55);padding:20px;position:relative;z-index:2}
+  .ph{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+  .ph .pic{width:24px;height:24px;flex:none}
+  .ph b{font-family:var(--grotesk);font-weight:500;font-size:17px;letter-spacing:-.01em}
+  .ph .ver{color:var(--faint);font-family:var(--mono);font-size:11px;margin-left:auto}
+  .sitecard{background:var(--umbra);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:14px}
+  .sitecard .top{display:flex;align-items:center;justify-content:space-between}
+  .sitecard .host{font-size:14.5px;color:var(--starlight)}
+  .chip{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--umbra);background:var(--corona);border-radius:6px;padding:3px 8px;letter-spacing:.02em}
+  .sitecard .status{font-size:12.5px;color:var(--dust);margin-top:6px}
+  .switch-row{display:flex;align-items:center;justify-content:space-between;font-size:14px;color:var(--starlight);padding:4px 2px 14px}
+  .switch{width:38px;height:22px;border-radius:999px;background:var(--corona);position:relative;flex:none}
+  .switch::after{content:"";position:absolute;top:3px;right:3px;width:16px;height:16px;border-radius:50%;background:var(--umbra)}
+  .seg{display:flex;gap:6px;margin-bottom:16px}
+  .seg div{flex:1;text-align:center;padding:8px 0;border:1px solid var(--line);border-radius:8px;font-size:13px;color:var(--dust)}
+  .seg .on{background:var(--corona);border-color:var(--corona);color:var(--umbra);font-weight:600}
+  .srow{display:flex;align-items:center;gap:12px;padding:8px 2px;font-size:13px;color:var(--dust)}
+  .srow .lab{width:74px;flex:none}
+  .track{flex:1;height:5px;border-radius:3px;background:var(--line)}
+  .track .fill{height:100%;border-radius:3px;background:var(--corona)}
+  .srow .val{width:40px;text-align:right;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .pactions{display:flex;gap:8px;margin-top:6px}
+  .pactions .pbtn{flex:1;text-align:center;border:1px solid var(--line);border-radius:9px;padding:9px 0;font-size:13px;color:var(--starlight)}
+  .pactions .pbtn.accent{border-color:var(--corona);color:var(--flare)}
+  .pfoot{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--faint)}
+  .pfoot a{color:var(--dust)}
+  @media (max-width:860px){
+    .hero .row{grid-template-columns:1fr;gap:52px}
+    .shot{justify-self:start;max-width:360px}
+  }
+
+  /* ---------- band shells ---------- */
+  .band{border-top:1px solid var(--line-soft);padding:70px 0}
+  .band-head{max-width:36em;margin-bottom:40px}
+  .band-head h2{font-family:var(--grotesk);font-weight:500;font-size:clamp(30px,4.4vw,42px);line-height:1.1;margin-bottom:14px;letter-spacing:-.02em}
+  .band-head p{color:var(--dust);font-size:17px}
+  .section-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--corona);font-weight:600;margin-bottom:14px}
+
+  /* ---------- native-first explainer ---------- */
+  .two-engine{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .eng{border:1px solid var(--line);border-radius:16px;background:var(--penumbra);overflow:hidden}
+  .eng .cap{display:flex;align-items:center;gap:11px;padding:16px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .eng .cap .badge{font-family:var(--mono);font-weight:700;font-size:12px;color:var(--umbra);background:var(--corona);border-radius:5px;padding:2px 7px;letter-spacing:0}
+  .eng .cap.native{color:var(--flare)}
+  .eng .cap.filter{color:var(--dust)}
+  .eng-body{padding:22px 20px}
+  .eng-body h3{font-family:var(--grotesk);font-weight:500;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+  .eng-body p{color:var(--dust);font-size:14.5px;line-height:1.65}
+  .eng-body .tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  @media (max-width:640px){.two-engine{grid-template-columns:1fr}}
+
+  /* ---------- photos before/after ---------- */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .ba .col{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--penumbra)}
+  .ba .cap{display:flex;align-items:center;gap:10px;padding:14px 18px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .ba .bad .cap{color:var(--dust)}
+  .ba .good .cap{color:var(--flare)}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .bad .dot{background:#6a6a76}
+  .good .dot{background:var(--corona);box-shadow:0 0 0 3px var(--corona-soft)}
+  .photomock{padding:20px;min-height:220px;display:flex;flex-direction:column;gap:14px}
+  .pm-photo{height:96px;border-radius:10px;position:relative;overflow:hidden}
+  /* a "correct" photo — warm landscape */
+  .pm-photo.correct{background:linear-gradient(160deg,#5a86c9,#8ab0d8 42%,#e6c078 70%,#c98a4a)}
+  /* the inverted "nightmare" version */
+  .pm-photo.inverted{background:linear-gradient(160deg,#a5793a,#75505a 42%,#193f88 70%,#367576);filter:none}
+  .pm-cap{font-family:var(--mono);font-size:11.5px;color:var(--faint)}
+  .pm-row{display:flex;gap:12px}
+  .pm-thumb{width:70px;height:52px;border-radius:8px;flex:none}
+  .pm-thumb.correct{background:linear-gradient(140deg,#c47a52,#e0b070)}
+  .pm-thumb.inverted{background:linear-gradient(140deg,#3b8195,#1f4f8a)}
+  .pm-lines{flex:1;display:flex;flex-direction:column;gap:7px;justify-content:center}
+  .pm-l{height:8px;border-radius:4px;background:var(--line)}
+  .pm-l.short{width:54%}
+  @media (max-width:640px){.ba{grid-template-columns:1fr}}
+
+  /* ---------- features ---------- */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .fcard{background:var(--penumbra);border:1px solid var(--line);border-radius:16px;padding:26px 24px;transition:border-color .15s ease,transform .15s ease}
+  .fcard:hover{border-color:#313a52;transform:translateY(-2px)}
+  .ficon{width:42px;height:42px;border-radius:11px;background:var(--corona-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--corona)}
+  .ficon svg{width:22px;height:22px}
+  .fcard h3{font-family:var(--grotesk);font-size:17px;font-weight:500;margin-bottom:9px;letter-spacing:-.01em}
+  .fcard p{color:var(--dust);font-size:14.5px;line-height:1.6}
+  @media (max-width:860px){.features{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.features{grid-template-columns:1fr}}
+
+  /* ---------- modes ---------- */
+  .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+  .mode{border:1px solid var(--line);border-radius:14px;padding:22px;background:linear-gradient(180deg,var(--penumbra),var(--umbra))}
+  .mode .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--corona);margin-bottom:10px}
+  .mode h3{font-family:var(--grotesk);font-weight:500;font-size:23px;margin-bottom:8px;letter-spacing:-.01em}
+  .mode p{color:var(--dust);font-size:14px}
+  @media (max-width:640px){.modes{grid-template-columns:1fr}}
+
+  /* ---------- trust / free ---------- */
+  .trust{border:1px solid var(--line);border-radius:20px;background:
+     radial-gradient(120% 140% at 90% -20%,var(--corona-soft),transparent 55%),var(--penumbra);
+     padding:44px 40px;text-align:center}
+  .trust h2{font-family:var(--grotesk);font-weight:500;font-size:clamp(28px,4.2vw,40px);line-height:1.12;margin-bottom:16px;letter-spacing:-.02em}
+  .trust p{color:var(--dust);font-size:17px;max-width:47em;margin:0 auto 26px}
+  .trust .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- funnel ---------- */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tool{display:block;border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--penumbra);transition:border-color .15s ease,transform .15s ease}
+  .tool:hover{border-color:var(--corona);transform:translateY(-2px)}
+  .tool .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .tool .tn{font-family:var(--grotesk);font-weight:500;font-size:16px}
+  .tool .tp{font-family:var(--mono);font-size:11px;color:var(--flare);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+  .tool p{color:var(--dust);font-size:13.5px;line-height:1.55}
+  .tool .arrow{color:var(--faint);font-size:13px;margin-top:10px;font-family:var(--mono)}
+  @media (max-width:860px){.tools{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.tools{grid-template-columns:1fr}}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:760px}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  details summary{cursor:pointer;list-style:none;font-family:var(--grotesk);font-size:17px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  details summary::-webkit-details-marker{display:none}
+  details summary .plus{color:var(--corona);font-size:22px;line-height:1;transition:transform .18s ease;flex:none}
+  details[open] summary .plus{transform:rotate(45deg)}
+  details p{color:var(--dust);font-size:15px;margin-top:12px;line-height:1.65}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--line-soft);padding:44px 0;margin-top:20px}
+  footer.site .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer.site .brand .wm{font-size:19px}
+  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:12.5px;color:var(--dust)}
+  .foot-links a:hover{color:var(--starlight)}
+  .foot-legal{width:100%;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--faint);line-height:1.7}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="wrap row">
+    <a class="brand" href="/eclipsed" aria-label="Eclipsed home">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#151A28"/>
+        <circle cx="32" cy="32" r="19" fill="#FFC24D"/>
+        <circle cx="36" cy="29" r="18" fill="#151A28"/>
+      </svg>
+      <span class="wm">eclipsed</span>
+    </a>
+    <div class="nav-cta">
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#tools">More tools</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/dpjmkaaamhgnogohoaldhjcjpoblppdp" target="_blank" rel="noopener" data-install>Add to Chrome</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="glow"></div>
+  <div class="wrap row">
+    <div class="hero-copy">
+      <div class="eyebrow">Eclipsed for Chrome</div>
+      <h1>Dark mode<br>that <span class="n">stays fast.</span></h1>
+      <p class="sub">Eclipsed darkens every website by asking each site for its OWN dark theme first — so pages render exactly as designed, nothing to break, and your photos are never inverted.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/dpjmkaaamhgnogohoaldhjcjpoblppdp" target="_blank" rel="noopener" data-install>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.66 15l4.2-7.28A4 4 0 0112 8h9.54A10 10 0 0012 2zm10 8.46L16.66 12A4 4 0 0112 16a4.05 4.05 0 01-.9-.1l-3.7 6.4A10 10 0 0022 12a10 10 0 000-1.54zM8 12a4 4 0 003.34 3.95L7.6 22.4A10 10 0 013.34 17L8 12z"/></svg>
+          Add to Chrome — Free
+        </a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="free-note"><b>Free forever</b> · No account · No subscription · Local-only</p>
+      <div class="day90"><span>◐</span><span>Fast on day 1. <b>Still fast on day 90.</b></span></div>
+    </div>
+
+    <div class="shot">
+      <div class="popup" role="img" aria-label="Eclipsed popup: the current site using its native dark theme, with the Auto engine selected and filter sliders">
+        <div class="ph">
+          <svg class="pic" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="32" cy="32" r="26" fill="#FFC24D"/>
+            <circle cx="36" cy="29" r="25" fill="#151A28"/>
+          </svg>
+          <b>eclipsed</b><span class="ver">v1.0.0</span>
+        </div>
+        <div class="sitecard">
+          <div class="top"><span class="host">github.com</span><span class="chip">N · NATIVE</span></div>
+          <div class="status">Using the site's own dark theme · added 0.4 ms</div>
+        </div>
+        <div class="switch-row"><span>Dark mode on this site</span><span class="switch" aria-hidden="true"></span></div>
+        <div class="seg"><div class="on">Auto</div><div>Native</div><div>Filter</div></div>
+        <div class="srow"><span class="lab">Brightness</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="val">100%</span></div>
+        <div class="srow"><span class="lab">Contrast</span><span class="track"><span class="fill" style="width:60%"></span></span><span class="val">100%</span></div>
+        <div class="srow"><span class="lab">Warmth</span><span class="track"><span class="fill" style="width:22%"></span></span><span class="val">18%</span></div>
+        <div class="pactions">
+          <span class="pbtn accent">Fix this site</span>
+          <span class="pbtn">Hold to peek</span>
+        </div>
+        <div class="pfoot"><a>Buy me a coffee</a><span>·</span><a>More by niallcodes</a></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HOW IT WORKS / NATIVE-FIRST ===================== -->
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">The difference</div>
+      <h2>Two engines. The heavy one barely runs.</h2>
+      <p>Most sites already ship a real dark theme. Eclipsed uses it. Only sites without one get the careful filter — so the work that slows other dark-mode extensions down almost never happens.</p>
+    </div>
+    <div class="two-engine">
+      <div class="eng">
+        <div class="cap native"><span class="badge">N</span>Native engine · default</div>
+        <div class="eng-body">
+          <h3>The site's own dark theme</h3>
+          <p>Eclipsed makes the site believe you prefer dark, so it renders its real, designed-for-dark look — exactly as its makers intended. Zero processing, nothing to break, photos and logos perfect because it IS the site's design.</p>
+          <span class="tag">GitHub, YouTube, Reddit, X and thousands more</span>
+        </div>
+      </div>
+      <div class="eng">
+        <div class="cap filter"><span class="badge">F</span>Filter engine · fallback</div>
+        <div class="eng-body">
+          <h3>Only where there's no dark mode</h3>
+          <p>Sites with no dark theme get a careful CSS filter that protects images, video and canvas so photos are never inverted into negatives. Because it runs on far fewer sites, Eclipsed stays light — and it's built so it can't rot over time.</p>
+          <span class="tag">Brightness · contrast · warmth · grayscale</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PHOTOS NOT INVERTED ===================== -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Never mangled</div>
+      <h2>Your photos stay your photos.</h2>
+      <p>The classic dark-mode failure is a blunt invert that turns every image into a negative. Eclipsed protects images, video, canvas and backgrounds — even on filtered sites.</p>
+    </div>
+    <div class="ba">
+      <div class="col bad">
+        <div class="cap"><span class="dot"></span>Blunt invert — the nightmare</div>
+        <div class="photomock">
+          <div class="pm-photo inverted"></div>
+          <div class="pm-cap">Sky turned orange · skin turned blue</div>
+          <div class="pm-row">
+            <div class="pm-thumb inverted"></div>
+            <div class="pm-lines"><div class="pm-l"></div><div class="pm-l short"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col good">
+        <div class="cap"><span class="dot"></span>Eclipsed — protected</div>
+        <div class="photomock">
+          <div class="pm-photo correct"></div>
+          <div class="pm-cap">Text darkened · photo untouched</div>
+          <div class="pm-row">
+            <div class="pm-thumb correct"></div>
+            <div class="pm-lines"><div class="pm-l"></div><div class="pm-l short"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="band" id="features">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">What you get</div>
+      <h2>Everything you'd expect, and the one thing that matters.</h2>
+    </div>
+    <div class="features">
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 109 9c0-.5 0-1-.1-1.4A5 5 0 0112 3z"/></svg></div>
+        <h3>Automatic per site</h3>
+        <p>Auto picks the right engine for each site. The toolbar badge shows which — N for the site's native theme, F for filter — so you can see the fast path working.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h3>Per-site control that sticks</h3>
+        <p>Choose Auto, Native, Filter or Off for any site and it persists — reliably, across sessions. Off doubles as a permanent exclusion.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></div>
+        <h3>Fixes in hours, not weeks</h3>
+        <p>If a site looks wrong, "Fix this site" switches engines instantly and can send a one-line report. Good reports become an updated rule that reaches everyone within days — no store review needed.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v3M12 20v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M1 12h3M20 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg></div>
+        <h3>Schedule, no location needed</h3>
+        <p>Run dark on fixed hours or from sunset to sunrise. Sun times are computed locally from coordinates you type in — Eclipsed never asks for location permission.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V8a5 5 0 0110 0v3"/><path d="M8 15h.01M12 15h.01M16 15h.01"/></svg></div>
+        <h3>Shortcut &amp; hold-to-peek</h3>
+        <p>Toggle the current site with Alt+Shift+D, or hold to peek at the original page for a moment — a gentle glance, no disable-and-re-enable dance.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>
+        <h3>Private by design</h3>
+        <p>No account, no analytics, no tracking — everything stays on your device. Export and import all your settings as a file whenever you want.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MODES ===================== -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Your call, per site</div>
+      <h2>From zero processing to everything dark.</h2>
+    </div>
+    <div class="modes">
+      <div class="mode">
+        <div class="k">Default</div>
+        <h3>Auto</h3>
+        <p>Native theme where the site has one, careful filter where it doesn't, media always protected. The right engine on every site without you thinking about it.</p>
+      </div>
+      <div class="mode">
+        <div class="k">Zero processing</div>
+        <h3>Native only</h3>
+        <p>Only ever spoof the site's own dark theme, never filter. The lightest possible path — you accept that a few sites stay light.</p>
+      </div>
+      <div class="mode">
+        <div class="k">Everything dark</div>
+        <h3>Filter</h3>
+        <p>Force the filter engine on a stubborn site regardless. For when you want it dark no matter what, with photos still protected.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST / FREE ===================== -->
+<section class="band" id="install">
+  <div class="wrap">
+    <div class="trust">
+      <h2>Free forever. And we mean it.</h2>
+      <p>Every feature is free permanently — no subscription, no paid tier, no locked settings, ever. Eclipsed runs on your device, so there's almost nothing for us to pay for. It's funded by goodwill: if it earns its keep, you can leave a tip. That's the whole business model.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/dpjmkaaamhgnogohoaldhjcjpoblppdp" target="_blank" rel="noopener" data-install>Add to Chrome — Free</a>
+        <a class="btn btn-ghost" href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FUNNEL ===================== -->
+<section class="band" id="tools">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">More from niallcodes</div>
+      <h2>Small, sharp tools that respect your time.</h2>
+      <p>Eclipsed is one of a family of independent Chrome extensions built in the UK. No bloat, no dark patterns.</p>
+    </div>
+    <div class="tools">
+      <a class="tool" href="https://niallcodes.com/nullfeed" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">Nullfeed</span><span class="tp">Free</span></div>
+        <p>Hide algorithmic feeds, Shorts, Reels and sponsored posts on the seven sites that matter — while search and messages keep working.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/dockit" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">DocKit</span><span class="tp">$19.99</span></div>
+        <p>An all-in-one document suite for the browser — convert, merge, split and edit files without uploading them to a stranger's server.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/snipdrop" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">Snipdrop</span><span class="tp">$9.99</span></div>
+        <p>Screenshot &amp; snipping tool with a built-in bulk image downloader. Capture anything, grab every image on a page at once.</p>
+        <div class="arrow">View →</div>
+      </a>
+    </div>
+    <p style="margin-top:22px;font-family:var(--mono);font-size:13px;color:var(--faint)">
+      See the full lineup at <a href="https://niallcodes.com" style="color:var(--flare)">niallcodes.com →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Questions</div>
+      <h2>The things people ask first.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Why does this stay fast when other dark modes slow down? <span class="plus">+</span></summary>
+        <p>The heavy work — filtering a page's colours in the browser — is what drags other dark-mode extensions down over time. Eclipsed avoids it on most sites by using the site's own dark theme instead, so there's nothing heavy to accumulate. Where it does filter, it's built around a single, cleaned-up process rather than piling on work as you browse. The promise is simple: as fast on day 90 as on day 1.</p>
+      </details>
+      <details>
+        <summary>Will it invert my photos? <span class="plus">+</span></summary>
+        <p>No. On sites using their native dark theme, nothing is filtered at all — images look exactly as intended. On the minority of sites that get the filter, images, video, canvas and background images are protected so they're never turned into negatives.</p>
+      </details>
+      <details>
+        <summary>What if a site looks wrong? <span class="plus">+</span></summary>
+        <p>Open the popup and press "Fix this site" — it instantly switches to the other engine and remembers your choice for that site. You can also send a one-line report, and if it points to a better default, an updated per-site rule reaches everyone automatically within days, without waiting on a Chrome Web Store review.</p>
+      </details>
+      <details>
+        <summary>Does it need my location for the sunset schedule? <span class="plus">+</span></summary>
+        <p>No. Eclipsed never requests location permission. For sunset-to-sunrise mode you type in approximate coordinates yourself and the sun times are worked out locally on your device. You can also just set fixed hours instead.</p>
+      </details>
+      <details>
+        <summary>Is it really free? <span class="plus">+</span></summary>
+        <p>Yes — every feature, free permanently, with no paid tier and nothing that will move behind a paywall later. There's no account and no license. If Eclipsed helps you, you can leave an optional tip at ko-fi.com/niallcodes. That's the entire model.</p>
+      </details>
+      <details>
+        <summary>Do you collect any data? <span class="plus">+</span></summary>
+        <p>No accounts, no analytics, no tracking. Your settings live only on your device. Eclipsed makes just two kinds of network request: an automatic read-only download of the per-site rules list (no data about you is sent), and a report you send only if you explicitly click one. Full detail is in the <a href="/eclipsed-privacy.html" style="color:var(--flare)">privacy policy</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/eclipsed">
+        <svg viewBox="0 0 64 64" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="64" height="64" rx="15" fill="#151A28"/>
+          <circle cx="32" cy="32" r="19" fill="#FFC24D"/>
+          <circle cx="36" cy="29" r="18" fill="#151A28"/>
+        </svg>
+        <span class="wm">eclipsed</span>
+      </a>
+      <div class="foot-links">
+        <a href="#how">How it works</a>
+        <a href="#tools">More tools</a>
+        <a href="/eclipsed-privacy.html">Privacy</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">niallcodes</a>
+      </div>
+    </div>
+    <p class="foot-legal">
+      Eclipsed is published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. Contact: hello@niallcodes.com<br>
+      Free forever · No account · No subscription · Local-only · Open changelog.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
