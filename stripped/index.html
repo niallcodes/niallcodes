@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stripped — Clean Tracking Junk From Links</title>
+<meta name="description" content="Removes tracking junk (utm, fbclid, gclid…) from links when you copy or share them. Clean URLs without breaking sites. Free forever, no account. A niallcodes extension for Chrome.">
+<meta property="og:title" content="Stripped — clean links, no tracking junk">
+<meta property="og:description" content="Cleans the tracking parameters off a link the moment you copy it — not while you browse, so it never breaks shopping filters, spreadsheets or logins. Free forever, no account.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F172A'/%3E%3Cg fill='none' stroke='%2322C55E' stroke-width='4.6' stroke-linecap='round' stroke-linejoin='round' transform='translate(20 20) scale(1.05)'%3E%3Cpath d='M6 12a6 6 0 0 0 9 .6l3.6-3.6a6 6 0 0 0-8.5-8.5L8 2.6'/%3E%3Cpath d='M14 8a6 6 0 0 0-9-.6L1.4 11a6 6 0 0 0 8.5 8.5L11.9 17.6'/%3E%3C/g%3E%3Ccircle cx='50' cy='50' r='4.5' fill='%23F59E0B'/%3E%3C/svg%3E">
+<style>
+  :root{
+    /* Locked Stripped brand kit — store/BRAND.md */
+    --ink:#0F172A;          /* page background */
+    --card:#1E293B;         /* raised surfaces, cards */
+    --line:#334155;         /* borders, dividers */
+    --line-soft:#28344a;
+    --clean:#22C55E;        /* THE accent — clean/kept */
+    --clean-hi:#4ADE80;     /* accent hover / highlighted copy */
+    --junk:#F59E0B;         /* junk being removed (amber, not danger) */
+    --text:#F8FAFC;         /* primary text */
+    --muted:#94A3B8;        /* secondary text */
+    --faint:#64748B;
+    --deep:#052E16;         /* text on green buttons */
+    --clean-soft:rgba(34,197,94,.12);
+    --clean-glow:rgba(34,197,94,.16);
+    --junk-soft:rgba(245,158,11,.14);
+
+    --grotesk:'Space Grotesk','Segoe UI',system-ui,-apple-system,sans-serif;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  @font-face{
+    font-family:'Space Grotesk';
+    font-style:normal;font-weight:400 500;font-display:swap;
+    src:local('Space Grotesk');
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(15,23,42,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:32px;height:32px;flex:none}
+  .wm{font-family:var(--grotesk);font-size:22px;font-weight:500;letter-spacing:-.02em}
+  .wm .sc{color:var(--clean)}
+  .nav-cta{display:flex;align-items:center;gap:22px}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;border-radius:10px;padding:10px 18px;font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background .15s ease,border-color .15s ease,color .15s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--clean);color:var(--deep)}
+  .btn-primary:hover{background:var(--clean-hi)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--clean);color:var(--clean-hi)}
+  @media (max-width:720px){.nav-links{display:none}}
+
+  /* ---------- hero ---------- */
+  .glow{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,var(--clean-glow),transparent 62%);z-index:0}
+  .hero{position:relative;overflow:hidden}
+  .hero .glow{right:-300px;top:-360px;width:1120px;height:1120px}
+  .hero .row{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:76px 0 84px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--clean);font-weight:600;text-transform:uppercase}
+  h1{font-family:var(--grotesk);font-weight:500;font-size:clamp(48px,7.6vw,82px);line-height:1.03;margin:20px 0 24px;letter-spacing:-.02em}
+  h1 .n{color:var(--clean)}
+  .hero p.sub{font-size:19px;color:var(--muted);max-width:32em;line-height:1.6}
+  .hero-actions{display:flex;gap:14px;margin:32px 0 20px;flex-wrap:wrap}
+  .free-note{font-family:var(--mono);font-size:12.5px;color:var(--faint);letter-spacing:.02em}
+  .free-note b{color:var(--muted);font-weight:400}
+  .copychip{margin-top:28px;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 15px;background:var(--card)}
+  .copychip b{color:var(--clean-hi);font-weight:400}
+
+  /* product popup mock — mirrors the real Stripped popup */
+  .shot{position:relative;justify-self:end;width:100%;max-width:360px}
+  .popup{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:0 40px 90px rgba(0,0,0,.55);padding:20px;position:relative;z-index:2}
+  .ph{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .ph .sc{color:var(--clean);font-size:18px;font-weight:700;flex:none}
+  .ph b{font-family:var(--grotesk);font-weight:500;font-size:17px;letter-spacing:-.01em}
+  .ph .ver{color:var(--faint);font-family:var(--mono);font-size:11px;margin-left:auto}
+  .ph-tag{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .pbtns{display:flex;gap:8px;margin-bottom:16px}
+  .pbtns .pbtn{flex:1;text-align:center;border-radius:9px;padding:10px 0;font-size:13px;font-weight:600}
+  .pbtns .pbtn.primary{background:var(--clean);color:var(--deep)}
+  .pbtns .pbtn.ghost{border:1px solid var(--line);color:var(--text);font-weight:500}
+  .urlmock{background:var(--ink);border:1px solid var(--line);border-radius:12px;padding:13px 14px;margin-bottom:16px;font-family:var(--mono);font-size:12px;line-height:1.8;word-break:break-all}
+  .urlmock .keep{color:var(--text)}
+  .urlmock .kept{color:var(--clean)}
+  .urlmock .cut{color:var(--junk);text-decoration:line-through;opacity:.85}
+  .urlmock .receipt{display:block;margin-top:9px;font-size:11px;color:var(--clean);text-decoration:none}
+  .srow{display:flex;align-items:center;justify-content:space-between;font-size:13.5px;color:var(--text);padding:9px 2px}
+  .srow .sub{display:block;font-size:11px;color:var(--faint);font-weight:400;margin-top:2px}
+  .srow code{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--ink);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  .switch{width:38px;height:22px;border-radius:999px;background:var(--line);position:relative;flex:none}
+  .switch.on{background:var(--clean)}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--text);transition:left .15s}
+  .switch.on::after{left:19px;background:var(--deep)}
+  .pstats{margin-top:10px;padding-top:14px;border-top:1px solid var(--line);font-family:var(--mono);font-size:11px;color:var(--faint);text-align:center}
+  .pstats b{color:var(--clean-hi);font-weight:400}
+  @media (max-width:860px){
+    .hero .row{grid-template-columns:1fr;gap:52px}
+    .shot{justify-self:start;max-width:360px}
+  }
+
+  /* ---------- band shells ---------- */
+  .band{border-top:1px solid var(--line-soft);padding:70px 0}
+  .band-head{max-width:37em;margin-bottom:40px}
+  .band-head h2{font-family:var(--grotesk);font-weight:500;font-size:clamp(30px,4.4vw,42px);line-height:1.1;margin-bottom:14px;letter-spacing:-.02em}
+  .band-head p{color:var(--muted);font-size:17px}
+  .section-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--clean);font-weight:600;margin-bottom:14px}
+
+  /* ---------- copy-time vs browse-time explainer ---------- */
+  .two-engine{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .eng{border:1px solid var(--line);border-radius:16px;background:var(--card);overflow:hidden}
+  .eng .cap{display:flex;align-items:center;gap:11px;padding:16px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .eng .cap .badge{font-family:var(--mono);font-weight:700;font-size:12px;border-radius:5px;padding:2px 8px;letter-spacing:0}
+  .eng .cap.copy{color:var(--clean-hi)}
+  .eng .cap.copy .badge{background:var(--clean);color:var(--deep)}
+  .eng .cap.browse{color:var(--muted)}
+  .eng .cap.browse .badge{background:var(--line);color:var(--text)}
+  .eng-body{padding:22px 20px}
+  .eng-body h3{font-family:var(--grotesk);font-weight:500;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+  .eng-body p{color:var(--muted);font-size:14.5px;line-height:1.65}
+  .eng-body .tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  @media (max-width:640px){.two-engine{grid-template-columns:1fr}}
+
+  /* ---------- before/after URL ---------- */
+  .ba{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .ba .col{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--card)}
+  .ba .cap{display:flex;align-items:center;gap:10px;padding:14px 18px;font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;border-bottom:1px solid var(--line)}
+  .ba .bad .cap{color:var(--muted)}
+  .ba .good .cap{color:var(--clean-hi)}
+  .dot{width:8px;height:8px;border-radius:50%}
+  .bad .dot{background:var(--junk)}
+  .good .dot{background:var(--clean);box-shadow:0 0 0 3px var(--clean-soft)}
+  .urlbox{padding:22px 20px;min-height:150px;font-family:var(--mono);font-size:13px;line-height:2;word-break:break-all}
+  .urlbox .keep{color:var(--text)}
+  .urlbox .kept{color:var(--clean)}
+  .urlbox .cut{color:var(--junk);text-decoration:line-through;opacity:.8}
+  .urlbox .note{display:block;margin-top:16px;font-family:var(--sans);font-size:12.5px;color:var(--faint);line-height:1.5}
+  @media (max-width:640px){.ba{grid-template-columns:1fr}}
+
+  /* ---------- features ---------- */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .fcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px 24px;transition:border-color .15s ease,transform .15s ease}
+  .fcard:hover{border-color:#3d4b66;transform:translateY(-2px)}
+  .ficon{width:42px;height:42px;border-radius:11px;background:var(--clean-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--clean)}
+  .ficon svg{width:22px;height:22px}
+  .fcard h3{font-family:var(--grotesk);font-size:17px;font-weight:500;margin-bottom:9px;letter-spacing:-.01em}
+  .fcard p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .fcard code{font-family:var(--mono);font-size:12px;color:var(--clean-hi);background:var(--ink);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  @media (max-width:860px){.features{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.features{grid-template-columns:1fr}}
+
+  /* ---------- ways to use ---------- */
+  .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:8px}
+  .mode{border:1px solid var(--line);border-radius:14px;padding:22px;background:linear-gradient(180deg,var(--card),var(--ink))}
+  .mode .k{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--clean);margin-bottom:10px}
+  .mode h3{font-family:var(--grotesk);font-weight:500;font-size:21px;margin-bottom:8px;letter-spacing:-.01em}
+  .mode p{color:var(--muted);font-size:14px}
+  .mode kbd{font-family:var(--mono);font-size:12px;color:var(--text);background:var(--ink);border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;padding:2px 7px}
+  @media (max-width:640px){.modes{grid-template-columns:1fr}}
+
+  /* ---------- trust / free ---------- */
+  .trust{border:1px solid var(--line);border-radius:20px;background:
+     radial-gradient(120% 140% at 90% -20%,var(--clean-soft),transparent 55%),var(--card);
+     padding:44px 40px;text-align:center}
+  .trust h2{font-family:var(--grotesk);font-weight:500;font-size:clamp(28px,4.2vw,40px);line-height:1.12;margin-bottom:16px;letter-spacing:-.02em}
+  .trust p{color:var(--muted);font-size:17px;max-width:47em;margin:0 auto 26px}
+  .trust .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- funnel ---------- */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tool{display:block;border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--card);transition:border-color .15s ease,transform .15s ease}
+  .tool:hover{border-color:var(--clean);transform:translateY(-2px)}
+  .tool .th{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .tool .tn{font-family:var(--grotesk);font-weight:500;font-size:16px}
+  .tool .tp{font-family:var(--mono);font-size:11px;color:var(--clean-hi);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+  .tool p{color:var(--muted);font-size:13.5px;line-height:1.55}
+  .tool .arrow{color:var(--faint);font-size:13px;margin-top:10px;font-family:var(--mono)}
+  @media (max-width:860px){.tools{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.tools{grid-template-columns:1fr}}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:760px}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  details summary{cursor:pointer;list-style:none;font-family:var(--grotesk);font-size:17px;font-weight:500;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  details summary::-webkit-details-marker{display:none}
+  details summary .plus{color:var(--clean);font-size:22px;line-height:1;transition:transform .18s ease;flex:none}
+  details[open] summary .plus{transform:rotate(45deg)}
+  details p{color:var(--muted);font-size:15px;margin-top:12px;line-height:1.65}
+  details code{font-family:var(--mono);font-size:13px;color:var(--clean-hi)}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--line-soft);padding:44px 0;margin-top:20px}
+  footer.site .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer.site .brand .wm{font-size:19px}
+  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .foot-links a:hover{color:var(--text)}
+  .foot-legal{width:100%;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--faint);line-height:1.7}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="wrap row">
+    <a class="brand" href="/stripped" aria-label="Stripped home">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#1E293B"/>
+        <g fill="none" stroke="#22C55E" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" transform="translate(20 20) scale(1.05)">
+          <path d="M6 12a6 6 0 0 0 9 .6l3.6-3.6a6 6 0 0 0-8.5-8.5L8 2.6"/>
+          <path d="M14 8a6 6 0 0 0-9-.6L1.4 11a6 6 0 0 0 8.5 8.5L11.9 17.6"/>
+        </g>
+        <circle cx="50" cy="50" r="4.6" fill="#F59E0B"/>
+      </svg>
+      <span class="wm"><span class="sc">✂ </span>stripped</span>
+    </a>
+    <div class="nav-cta">
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#tools">More tools</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/cjfgjeepdhgkmffbehnnhmpmlfcdgalg" target="_blank" rel="noopener" data-install>Add to Chrome</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="glow"></div>
+  <div class="wrap row">
+    <div class="hero-copy">
+      <div class="eyebrow">Stripped for Chrome</div>
+      <h1>Clean links.<br><span class="n">No tracking junk.</span></h1>
+      <p class="sub">Stripped snips the tracking parameters — <code style="font-family:var(--mono);font-size:.8em;color:var(--clean-hi)">utm</code>, <code style="font-family:var(--mono);font-size:.8em;color:var(--clean-hi)">fbclid</code>, <code style="font-family:var(--mono);font-size:.8em;color:var(--clean-hi)">gclid</code> and the rest — off a link the moment you copy it. Short, private URLs, and because it only acts when you copy, it never breaks the pages you browse.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/cjfgjeepdhgkmffbehnnhmpmlfcdgalg" target="_blank" rel="noopener" data-install>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.66 15l4.2-7.28A4 4 0 0112 8h9.54A10 10 0 0012 2zm10 8.46L16.66 12A4 4 0 0112 16a4.05 4.05 0 01-.9-.1l-3.7 6.4A10 10 0 0022 12a10 10 0 000-1.54zM8 12a4 4 0 003.34 3.95L7.6 22.4A10 10 0 013.34 17L8 12z"/></svg>
+          Add to Chrome — Free
+        </a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="free-note"><b>Free forever</b> · No account · No subscription · Local-only</p>
+      <div class="copychip"><span>✂</span><span>Copy a link. <b>Get it back clean.</b></span></div>
+    </div>
+
+    <div class="shot">
+      <div class="popup" role="img" aria-label="Stripped popup: a copied URL with its tracking parameters struck out in amber and the clean parts in green, above the auto-clean toggles">
+        <div class="ph">
+          <span class="sc">✂</span><b>Stripped</b><span class="ver">v1.0.0</span>
+        </div>
+        <div class="ph-tag">clean links, no tracking junk</div>
+        <div class="pbtns">
+          <span class="pbtn primary">Copy clean page link</span>
+          <span class="pbtn ghost">Markdown</span>
+        </div>
+        <div class="urlmock">
+          <span class="keep">shop.com/item</span><span class="kept">?id=482</span><span class="cut">&utm_source=news&fbclid=aX9…&gclid=Cj0</span>
+          <span class="receipt">✂ Stripped 3 trackers · id kept</span>
+        </div>
+        <div class="srow">
+          <span>Auto-clean copied links</span>
+          <span class="switch on" aria-hidden="true"></span>
+        </div>
+        <div class="srow">
+          <span>Auto-clean on <b>this site</b></span>
+          <span class="switch on" aria-hidden="true"></span>
+        </div>
+        <div class="srow">
+          <span>Remove <code>#:~:text=</code> highlights</span>
+          <span class="switch on" aria-hidden="true"></span>
+        </div>
+        <div class="pstats"><b>1,204</b> trackers stripped for you</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== HOW IT WORKS / COPY-TIME ===================== -->
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">The difference</div>
+      <h2>It cleans when you copy — not while you browse.</h2>
+      <p>That one choice is the whole point. Other URL cleaners rewrite pages live as you use them, which is exactly why they break shopping filters, spreadsheets and login flows. Stripped leaves the page completely alone and only acts on the link you actually take with you.</p>
+    </div>
+    <div class="two-engine">
+      <div class="eng">
+        <div class="cap copy"><span class="badge">✂</span>Copy-clean · default</div>
+        <div class="eng-body">
+          <h3>Acts only on the link you take</h3>
+          <p>Copy a link anywhere and Stripped hands it back clean, with a small "Stripped N trackers" receipt. Right-click a link, a selection or the page for "Copy clean link" (a Markdown variant is included). It never touches the live page, so nothing on the site can break.</p>
+          <span class="tag">Copy · right-click · Alt+Shift+C</span>
+        </div>
+      </div>
+      <div class="eng">
+        <div class="cap browse"><span class="badge">⚑</span>Browse-clean · opt-in, off</div>
+        <div class="eng-body">
+          <h3>Only if you go looking for it</h3>
+          <p>Want URLs tidied as you browse a specific site too? Turn browse-clean on per site — it's off by default. Fragile sites (Google apps, Amazon, iCloud, Microsoft) are on a protection list and warn you before you can force it, because live rewriting is what breaks things.</p>
+          <span class="tag">Per site · declarativeNetRequest · guarded</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== BEFORE / AFTER URL ===================== -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Kept vs snipped</div>
+      <h2>The junk goes. The link still works.</h2>
+      <p>Stripped only removes parameters on its published, auditable list. Anything it doesn't recognise is kept — so search queries, video timestamps, product IDs and login tokens survive untouched.</p>
+    </div>
+    <div class="ba">
+      <div class="col bad">
+        <div class="cap"><span class="dot"></span>What you copied</div>
+        <div class="urlbox">
+          <span class="keep">youtube.com/watch</span><span class="kept">?v=dQw4</span><span class="cut">&si=8Kq2</span><span class="kept">&t=42</span><span class="cut">&feature=share&pp=ygU</span>
+          <span class="note">Amber = tracking junk. Green = the parts that actually matter.</span>
+        </div>
+      </div>
+      <div class="col good">
+        <div class="cap"><span class="dot"></span>What Stripped gives back</div>
+        <div class="urlbox">
+          <span class="keep">youtube.com/watch</span><span class="kept">?v=dQw4&t=42</span>
+          <span class="note">The video ID and your timestamp are kept. The share tracker, <code style="color:var(--muted)">si</code> and <code style="color:var(--muted)">feature</code> are gone.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="band" id="features">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">What you get</div>
+      <h2>Small, careful, and it doesn't break your links.</h2>
+    </div>
+    <div class="features">
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7L11.5 5"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7L12 19"/></svg></div>
+        <h3>Copy anywhere, cleaned</h3>
+        <p>Copy a link and Stripped strips it automatically, with a small "Stripped N trackers" receipt. Or right-click a link, selection or page for "Copy clean link" — Markdown option included.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17l-5-5 5-5"/><path d="M20 6l-8 8-3-3"/></svg></div>
+        <h3>Unwraps &amp; un-AMPs</h3>
+        <p>Undoes redirect wrappers like <code>google.com/url</code> and Outlook SafeLinks, turns AMP links back into the real page, and drops the long <code>#:~:text=</code> highlight tails.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+        <h3>Careful by design</h3>
+        <p>It only removes parameters on its published list — anything unrecognised is kept, so links keep working. Search queries, IDs and login tokens are explicitly protected.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.5 2.5M16.5 16.5L19 19M19 5l-2.5 2.5M7.5 16.5L5 19"/></svg></div>
+        <h3>Ruleset auto-updates</h3>
+        <p>The tracking-parameter list refreshes automatically every six hours, so new trackers get stripped without waiting for an extension update. Offline-safe: it always falls back to the last cached, then bundled, list.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3h18v14H3z"/><path d="M3 8h18"/><path d="M7 13h6"/></svg></div>
+        <h3>Auditable &amp; per-site</h3>
+        <p>The full list of what gets stripped is viewable in settings. A one-toggle whitelist switches Stripped off on any site, and a batch cleaner tidies every URL in any text you paste.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>
+        <h3>Private by design</h3>
+        <p>No account, no analytics, no tracking — everything stays on your device. Stripped only ever writes to your clipboard; it never reads it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WAYS TO USE ===================== -->
+<section class="band">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Three ways to clean</div>
+      <h2>However you grab a link, get it clean.</h2>
+    </div>
+    <div class="modes">
+      <div class="mode">
+        <div class="k">Automatic</div>
+        <h3>Just copy</h3>
+        <p>With auto-clean on, any link you copy is stripped in place, with a quiet receipt showing what came off. Turn the toast off if you'd rather it stay silent.</p>
+      </div>
+      <div class="mode">
+        <div class="k">On demand</div>
+        <h3>Right-click</h3>
+        <p>"Copy clean link" on any link, selection or page — plus a Markdown variant for notes and docs. Nothing runs until you ask for it.</p>
+      </div>
+      <div class="mode">
+        <div class="k">Keyboard</div>
+        <h3>This page, fast</h3>
+        <p>Press <kbd>Alt+Shift+C</kbd> to copy a clean link to the page you're on, without opening anything. Straight from the address bar to a tidy URL.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST / FREE ===================== -->
+<section class="band" id="install">
+  <div class="wrap">
+    <div class="trust">
+      <h2>Free forever. And we mean it.</h2>
+      <p>Every feature is free permanently — no subscription, no paid tier, no locked settings, ever. Stripped runs entirely on your device, so there's almost nothing for us to pay for. It's funded by goodwill: if it saves you from ugly links, you can leave a tip. That's the whole business model.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/cjfgjeepdhgkmffbehnnhmpmlfcdgalg" target="_blank" rel="noopener" data-install>Add to Chrome — Free</a>
+        <a class="btn btn-ghost" href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FUNNEL ===================== -->
+<section class="band" id="tools">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">More from niallcodes</div>
+      <h2>Small, sharp tools that respect your time.</h2>
+      <p>Stripped is one of a family of independent Chrome extensions built in the UK. No bloat, no dark patterns.</p>
+    </div>
+    <div class="tools">
+      <a class="tool" href="https://niallcodes.com/eclipsed" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">Eclipsed</span><span class="tp">Free</span></div>
+        <p>Dark mode for every website that stays fast — it uses each site's own dark theme first, and never inverts your photos.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/nullfeed" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">Nullfeed</span><span class="tp">Free</span></div>
+        <p>Hide algorithmic feeds, Shorts, Reels and sponsored posts on the seven sites that matter — while search and messages keep working.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/dockit" target="_blank" rel="noopener">
+        <div class="th"><span class="tn">DocKit</span><span class="tp">$19.99</span></div>
+        <p>An all-in-one document suite for the browser — convert, merge, split and edit files without uploading them to a stranger's server.</p>
+        <div class="arrow">View →</div>
+      </a>
+    </div>
+    <p style="margin-top:22px;font-family:var(--mono);font-size:13px;color:var(--faint)">
+      See the full lineup at <a href="https://niallcodes.com" style="color:var(--clean-hi)">niallcodes.com →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Questions</div>
+      <h2>The things people ask first.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Why won't this break sites like other URL cleaners? <span class="plus">+</span></summary>
+        <p>Because Stripped doesn't touch the pages you browse. Cleaners that rewrite URLs live are the ones that break shopping filters, spreadsheets and login flows. Stripped only acts on a link when you copy or share it, leaving the live page exactly as the site built it. If you do want browse-time cleaning on a particular site, it's there as an opt-in toggle — off by default, and it warns you on sites known to be fragile.</p>
+      </details>
+      <details>
+        <summary>Will it strip something my link actually needs? <span class="plus">+</span></summary>
+        <p>No. Stripped only removes parameters on its published strip list — anything it doesn't recognise is kept. Functional parameters like search queries, video IDs, timestamps and login tokens are explicitly protected, and the full list of what gets stripped is viewable in the settings so you can audit it yourself.</p>
+      </details>
+      <details>
+        <summary>What does it clean besides utm and fbclid? <span class="plus">+</span></summary>
+        <p>The usual tracking junk — <code>utm_*</code>, <code>fbclid</code>, <code>gclid</code>, <code>msclkid</code>, <code>igshid</code> and many more — plus site-specific ones on Amazon, YouTube, X, TikTok, LinkedIn and others. It also unwraps redirect links like <code>google.com/url</code> and Outlook SafeLinks, converts AMP links back to the real page, and removes the long <code>#:~:text=</code> highlight tails.</p>
+      </details>
+      <details>
+        <summary>How does the list stay current? <span class="plus">+</span></summary>
+        <p>Stripped downloads an updated tracking-parameter list every six hours, so new trackers get handled without waiting on a Chrome Web Store update. It's a read-only JSON data file, and if the fetch ever fails it falls back to your last cached copy, then to the list bundled with the extension — newest valid version wins.</p>
+      </details>
+      <details>
+        <summary>Is it really free? <span class="plus">+</span></summary>
+        <p>Yes — every feature, free permanently, with no paid tier and nothing that will move behind a paywall later. There's no account and no license. If Stripped helps you, you can leave an optional tip at ko-fi.com/niallcodes. That's the entire model.</p>
+      </details>
+      <details>
+        <summary>Do you collect any data? <span class="plus">+</span></summary>
+        <p>No accounts, no analytics, no tracking. Your settings and statistics live only on your device. Stripped makes just two kinds of network request: the automatic read-only download of the ruleset (no data about you is sent), and a problem report you send only if you explicitly click one. Full detail is in the <a href="/stripped-privacy.html" style="color:var(--clean-hi)">privacy policy</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/stripped">
+        <svg viewBox="0 0 64 64" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="64" height="64" rx="15" fill="#1E293B"/>
+          <g fill="none" stroke="#22C55E" stroke-width="4.6" stroke-linecap="round" stroke-linejoin="round" transform="translate(20 20) scale(1.05)">
+            <path d="M6 12a6 6 0 0 0 9 .6l3.6-3.6a6 6 0 0 0-8.5-8.5L8 2.6"/>
+            <path d="M14 8a6 6 0 0 0-9-.6L1.4 11a6 6 0 0 0 8.5 8.5L11.9 17.6"/>
+          </g>
+          <circle cx="50" cy="50" r="4.6" fill="#F59E0B"/>
+        </svg>
+        <span class="wm"><span class="sc">✂ </span>stripped</span>
+      </a>
+      <div class="foot-links">
+        <a href="#how">How it works</a>
+        <a href="#tools">More tools</a>
+        <a href="/stripped-privacy.html">Privacy</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">niallcodes</a>
+      </div>
+    </div>
+    <p class="foot-legal">
+      Stripped is published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. Contact: hello@niallcodes.com<br>
+      Free forever · No account · No subscription · Local-only · Open changelog.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
