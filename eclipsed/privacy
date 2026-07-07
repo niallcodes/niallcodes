@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Eclipsed — Privacy Policy</title>
+<meta name="description" content="Eclipsed runs entirely on your device. No account, no analytics, no tracking. This privacy policy matches the extension's behaviour exactly.">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230B0E17'/%3E%3Ccircle cx='32' cy='32' r='19' fill='%23FFC24D'/%3E%3Ccircle cx='36' cy='29' r='18' fill='%230B0E17'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --umbra:#0B0E17;--penumbra:#151A28;--line:#232B3F;--line-soft:#1b2233;
+    --corona:#FFC24D;--flare:#FFD98A;--starlight:#EDF0F8;--dust:#8A93A8;--faint:#5c6478;
+    --corona-soft:rgba(255,194,77,.13);
+    --grotesk:'Space Grotesk','Segoe UI',system-ui,-apple-system,sans-serif;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--umbra);color:var(--starlight);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:var(--flare);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px}
+
+  /* nav */
+  nav{position:sticky;top:0;z-index:50;background:rgba(11,14,23,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:760px;margin:0 auto;padding:0 28px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:32px;height:32px;flex:none}
+  .wm{font-family:var(--grotesk);font-size:22px;font-weight:500;letter-spacing:-.02em;color:var(--starlight)}
+  .back{font-family:var(--mono);font-size:13px;color:var(--dust)}
+  .back:hover{color:var(--starlight);text-decoration:none}
+
+  /* header */
+  .head{padding:64px 0 20px;position:relative;overflow:hidden}
+  .glow{position:absolute;right:-260px;top:-320px;width:900px;height:900px;border-radius:50%;background:radial-gradient(circle,var(--corona-soft),transparent 62%);pointer-events:none;z-index:0}
+  .head .wrap{position:relative;z-index:1}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--corona);font-weight:600}
+  h1{font-family:var(--grotesk);font-weight:500;font-size:clamp(34px,6vw,46px);line-height:1.08;letter-spacing:-.02em;margin:16px 0 18px}
+  .meta{font-family:var(--mono);font-size:12.5px;color:var(--faint);line-height:1.9}
+  .meta b{color:var(--dust);font-weight:400}
+
+  /* short version callout */
+  .tldr{margin:30px 0 8px;border:1px solid var(--line);border-radius:16px;background:
+     radial-gradient(120% 140% at 90% -30%,var(--corona-soft),transparent 55%),var(--penumbra);
+     padding:26px 28px}
+  .tldr h2{font-family:var(--grotesk);font-weight:500;font-size:18px;margin-bottom:10px;letter-spacing:-.01em}
+  .tldr p{color:var(--dust);font-size:15.5px}
+
+  /* body */
+  .content{padding:20px 0 40px}
+  .content h2{font-family:var(--grotesk);font-weight:500;font-size:22px;letter-spacing:-.01em;margin:38px 0 14px}
+  .content h2:first-child{margin-top:8px}
+  .content p{color:var(--dust);font-size:16px;margin-bottom:16px}
+  .content ul{list-style:none;margin:0 0 16px}
+  .content li{position:relative;padding-left:24px;color:var(--dust);font-size:16px;margin-bottom:11px}
+  .content li::before{content:"";position:absolute;left:2px;top:11px;width:7px;height:7px;border-radius:50%;background:var(--corona)}
+  .content strong{color:var(--starlight);font-weight:600}
+  .content .num{counter-reset:step;list-style:none;padding:0}
+  .content .num li{counter-increment:step;padding-left:44px;margin-bottom:18px}
+  .content .num li::before{content:counter(step);top:2px;left:0;width:26px;height:26px;border-radius:8px;background:var(--corona-soft);color:var(--corona);font-family:var(--mono);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center}
+  code{font-family:var(--mono);font-size:13.5px;color:var(--flare);background:var(--penumbra);border:1px solid var(--line);border-radius:5px;padding:1px 6px}
+  hr{border:none;border-top:1px solid var(--line);margin:34px 0}
+
+  /* footer */
+  footer.site{border-top:1px solid var(--line-soft);padding:40px 0;margin-top:20px}
+  footer.site .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:12.5px;color:var(--dust)}
+  .foot-links a{color:var(--dust)}
+  .foot-links a:hover{color:var(--starlight);text-decoration:none}
+  .foot-legal{width:100%;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--faint);line-height:1.8}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="row">
+    <a class="brand" href="/eclipsed" aria-label="Eclipsed home">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#151A28"/>
+        <circle cx="32" cy="32" r="19" fill="#FFC24D"/>
+        <circle cx="36" cy="29" r="18" fill="#151A28"/>
+      </svg>
+      <span class="wm">eclipsed</span>
+    </a>
+    <a class="back" href="/eclipsed">← Back to Eclipsed</a>
+  </div>
+</nav>
+
+<header class="head">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div class="eyebrow">Eclipsed</div>
+    <h1>Privacy Policy</h1>
+    <p class="meta">
+      <b>Effective date:</b> 7 July 2026<br>
+      <b>Publisher:</b> Florence Publishing Ltd (trading as niallcodes)
+    </p>
+    <div class="tldr">
+      <h2>The short version</h2>
+      <p>Eclipsed runs entirely on your device. It has no account system, no analytics, and no tracking. It does not collect, sell or share personal data. Your settings never leave your machine unless you export them yourself.</p>
+    </div>
+  </div>
+</header>
+
+<main class="content">
+  <div class="wrap">
+
+    <h2>What Eclipsed stores</h2>
+    <p>Everything below is kept locally, in Chrome's extension storage on your device:</p>
+    <ul>
+      <li>Your per-site choices (for example, <code>wikipedia.org: filter</code> or <code>figma.com: off</code>)</li>
+      <li>Slider settings — brightness, contrast, warmth and grayscale</li>
+      <li>Your schedule settings, including any coordinates you typed in for sunset/sunrise mode. Eclipsed never requests location permission and cannot read your location — you type approximate coordinates yourself</li>
+      <li>A cached copy of the per-site rules list</li>
+      <li>Counters for the in-app "leave a tip" reminder cadence</li>
+    </ul>
+    <p>All of this lives on your device. Uninstalling the extension deletes it.</p>
+
+    <h2>Network requests — the complete list</h2>
+    <p>Eclipsed makes exactly two kinds of network request:</p>
+    <ol class="num">
+      <li><strong>Rules list fetch (automatic, read-only).</strong> About every 6 hours the extension downloads a JSON file from our server (<code>eclipsed-rules.niallflorence1.workers.dev</code>) saying which darkening engine works best on which website. This request sends no user data — no browsing history, no identifiers, nothing about you. It is how site fixes reach you without waiting for a store update. If it fails or you're offline, the extension keeps working from its cached or bundled copy.</li>
+      <li><strong>Site report (only when you click it).</strong> If you use "Fix this site → Still wrong?" and press a report button, the extension sends: the site's domain name, which engine was active, the symptom you picked, and the extension and rules-list version numbers. Nothing else — no page content, no URL paths, no personal information. Reports are used solely to improve the per-site rules list and are deleted automatically after 60 days. Our server infrastructure (Cloudflare) processes your IP address transiently to rate-limit abuse of this endpoint; we do not store it in the report.</li>
+    </ol>
+    <p>There are no other network requests. No analytics services, no error trackers, no advertising or affiliate calls.</p>
+
+    <h2>What we never do</h2>
+    <ul>
+      <li>No collection of browsing history</li>
+      <li>No selling or sharing of any data with third parties</li>
+      <li>No ads, and no affiliate links injected into pages</li>
+      <li>No account, no sign-in, no emails</li>
+    </ul>
+
+    <h2>Changes</h2>
+    <p>If this policy changes, the new version will be posted at this URL with an updated effective date, and the extension's changelog will note it.</p>
+
+    <h2>Contact</h2>
+    <p>Florence Publishing Ltd — via <a href="https://niallcodes.com">niallcodes.com</a>.</p>
+
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/eclipsed">
+        <svg viewBox="0 0 64 64" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="64" height="64" rx="15" fill="#151A28"/>
+          <circle cx="32" cy="32" r="19" fill="#FFC24D"/>
+          <circle cx="36" cy="29" r="18" fill="#151A28"/>
+        </svg>
+        <span class="wm">eclipsed</span>
+      </a>
+      <div class="foot-links">
+        <a href="/eclipsed">Eclipsed</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">niallcodes</a>
+      </div>
+    </div>
+    <p class="foot-legal">
+      Eclipsed is published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. Contact: hello@niallcodes.com<br>
+      Free forever · No account · No subscription · Local-only.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
