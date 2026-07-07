@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>JSON Peek — Privacy Policy</title>
+<meta name="description" content="JSON Peek's privacy policy. No account, no analytics, no tracking, and zero network calls — everything stays on your device.">
+<meta name="robots" content="index,follow">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='28' fill='%230D1117'/%3E%3Ccircle cx='64' cy='64' r='30' fill='%233FB6F5' fill-opacity='0.14'/%3E%3Cpath d='M50 34 c-9 0 -13 4 -13 13 v6 c0 6 -3 9 -8 11 c5 2 8 5 8 11 v6 c0 9 4 13 13 13' fill='none' stroke='%233FB6F5' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M78 34 c9 0 13 4 13 13 v6 c0 6 3 9 8 11 c-5 2 -8 5 -8 11 v6 c0 9 -4 13 -13 13' fill='none' stroke='%233FB6F5' stroke-width='7' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='64' cy='64' r='9' fill='%237EE787'/%3E%3C/svg%3E">
+<style>
+  :root{
+    --bg:#0D1117;--panel:#161B22;--panel-2:#1B222B;--border:#26303B;--border-soft:#1E2630;
+    --text:#E6EDF3;--text-dim:#8B98A5;--text-faint:#5C6773;
+    --accent:#3FB6F5;--accent-hi:#69C8FA;--accent-soft:rgba(63,182,245,.12);--deep:#04121C;
+    --string:#7EE787;
+    --ui:'Space Grotesk','Inter','Segoe UI',system-ui,-apple-system,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  @font-face{font-family:'Space Grotesk';font-style:normal;font-weight:400 700;font-display:swap;src:local('Space Grotesk')}
+  @font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 500;font-display:swap;src:local('JetBrains Mono')}
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--ui);line-height:1.68;-webkit-font-smoothing:antialiased}
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(rgba(255,255,255,.028) 1px,transparent 1px);background-size:24px 24px}
+  a{color:var(--accent-hi);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:760px;margin:0 auto;padding:0 28px}
+
+  nav{position:sticky;top:0;z-index:50;background:rgba(13,17,23,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--border-soft)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:66px;max-width:1120px;margin:0 auto;padding:0 28px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .brand svg{width:30px;height:30px;flex:none}
+  .wm{font-size:20px;font-weight:600;letter-spacing:-.02em}
+  .back{font-family:var(--mono);font-size:13px;color:var(--text-dim)}
+  .back:hover{color:var(--text);text-decoration:none}
+
+  header.doc{padding:64px 0 26px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:14px}
+  h1{font-weight:600;font-size:clamp(34px,6vw,52px);letter-spacing:-.03em;line-height:1.06;margin-bottom:16px}
+  .updated{font-family:var(--mono);font-size:12.5px;color:var(--text-faint)}
+
+  .tldr{border:1px solid var(--border);border-radius:16px;background:radial-gradient(120% 140% at 90% -30%,var(--accent-soft),transparent 55%),var(--panel);padding:26px 28px;margin:14px 0 40px}
+  .tldr h2{font-size:15px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:500}
+  .tldr ul{list-style:none;display:grid;gap:11px}
+  .tldr li{display:flex;gap:11px;font-size:15.5px;color:var(--text)}
+  .tldr li .ok{color:var(--string);flex:none;font-family:var(--mono)}
+
+  section.doc{padding:8px 0 26px}
+  section.doc h2{font-size:22px;font-weight:600;letter-spacing:-.01em;margin:30px 0 12px}
+  section.doc h3{font-size:16px;font-weight:600;margin:22px 0 8px;color:var(--text)}
+  section.doc p{color:var(--text-dim);font-size:16px;margin-bottom:13px}
+  section.doc ul.body{margin:0 0 15px 2px;padding-left:18px;color:var(--text-dim);font-size:16px}
+  section.doc ul.body li{margin-bottom:9px}
+  section.doc code{font-family:var(--mono);font-size:13.5px;color:var(--accent-hi);background:var(--panel-2);border:1px solid var(--border);border-radius:4px;padding:1px 6px}
+  .perm{border:1px solid var(--border);border-radius:12px;background:var(--panel);padding:16px 18px;margin-bottom:12px}
+  .perm .pn{font-family:var(--mono);font-size:13px;color:var(--accent-hi);margin-bottom:6px}
+  .perm p{margin:0;font-size:15px}
+
+  hr{border:none;border-top:1px solid var(--border);margin:34px 0}
+
+  footer.site{border-top:1px solid var(--border-soft);padding:40px 0;margin-top:30px}
+  .foot-legal{font-family:var(--mono);font-size:12px;color:var(--text-faint);line-height:1.7}
+  .foot-links{display:flex;gap:20px;font-family:var(--mono);font-size:12.5px;color:var(--text-dim);margin-bottom:16px;flex-wrap:wrap}
+  .foot-links a{color:var(--text-dim)}
+  .foot-links a:hover{color:var(--text);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="row">
+    <a class="brand" href="/jsonpeek" aria-label="JSON Peek home">
+      <svg viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="128" height="128" rx="28" fill="#161B22"/>
+        <circle cx="64" cy="64" r="30" fill="#3FB6F5" fill-opacity="0.14"/>
+        <path d="M50 34 c-9 0 -13 4 -13 13 v6 c0 6 -3 9 -8 11 c5 2 8 5 8 11 v6 c0 9 4 13 13 13" fill="none" stroke="#3FB6F5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M78 34 c9 0 13 4 13 13 v6 c0 6 3 9 8 11 c-5 2 -8 5 -8 11 v6 c0 9 -4 13 -13 13" fill="none" stroke="#3FB6F5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="64" cy="64" r="9" fill="#7EE787"/>
+      </svg>
+      <span class="wm">JSON Peek</span>
+    </a>
+    <a class="back" href="/jsonpeek">← Back to JSON Peek</a>
+  </div>
+</nav>
+
+<header class="doc">
+  <div class="wrap">
+    <div class="eyebrow">Privacy Policy</div>
+    <h1>Your JSON never leaves your device.</h1>
+    <p class="updated">Last updated: 7 July 2026 · JSON Peek v1.0.0</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="tldr">
+    <h2>The short version</h2>
+    <ul>
+      <li><span class="ok">✓</span><span>JSON Peek makes <strong>zero network calls</strong>. It never contacts a server — ours or anyone's.</span></li>
+      <li><span class="ok">✓</span><span>No account, no sign-in, no analytics, no tracking, no advertising.</span></li>
+      <li><span class="ok">✓</span><span>The JSON you view is read <strong>locally</strong> only to render it, and is never transmitted or stored off-device.</span></li>
+      <li><span class="ok">✓</span><span>Your settings and ignored-site list live in your browser's own storage, on your machine.</span></li>
+      <li><span class="ok">✓</span><span>No data is ever sold, shared, or used for any purpose beyond running the extension.</span></li>
+    </ul>
+  </div>
+</div>
+
+<section class="doc">
+  <div class="wrap">
+    <h2>Who this covers</h2>
+    <p>This policy applies to the <strong>JSON Peek</strong> browser extension ("the extension", "we", "us"), published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. It explains what the extension does and does not do with information on your device. If you have questions, contact <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a>.</p>
+
+    <h2>The simple truth about data</h2>
+    <p>JSON Peek is built to run entirely on your own computer. It does not send anything anywhere. There is no backend, no server, no API endpoint, no analytics service and no advertising network involved in any part of the extension. Because nothing is transmitted, there is nothing for us — or anyone else — to collect, see, sell or lose.</p>
+
+    <h2>What the extension reads, and why</h2>
+    <p>To do its job, JSON Peek needs to look at the content of the page you're on so it can tell whether that page is JSON and, if so, render it as an interactive tree. This happens through a fast local check (the page's content type and first characters); on ordinary pages that check exits in under a millisecond and the extension does nothing further.</p>
+    <p>When a page <em>is</em> JSON, the extension parses and displays it on the page, in your browser, on your device. That content is <strong>never sent anywhere</strong>, never written to any external storage, and never retained by us in any form. When you close or navigate away from the page, that parsed content is simply gone.</p>
+
+    <h2>What is stored on your device</h2>
+    <p>JSON Peek saves a small amount of information using the browser's built-in extension storage, so your choices persist between sessions. This never leaves your machine (beyond your own browser's sync, if you have that switched on in Chrome). It consists of:</p>
+    <ul class="body">
+      <li>Your preferences — theme, indent width, and whether the extension is enabled.</li>
+      <li>Your list of ignored sites — hosts where you've asked JSON Peek not to activate.</li>
+      <li>A one-time flag recording that you've seen the first-run welcome message.</li>
+    </ul>
+    <p>You can clear all of this at any time by removing the extension, or from the extension's own settings page.</p>
+
+    <h2>Permissions, in plain language</h2>
+    <p>Chrome asks you to approve a short list of permissions when you install. Here's exactly what each one is for:</p>
+
+    <div class="perm">
+      <div class="pn">storage</div>
+      <p>Saves the preferences and ignored-site list described above on your device so they persist. Nothing in storage is transmitted anywhere by the extension.</p>
+    </div>
+    <div class="perm">
+      <div class="pn">contextMenus</div>
+      <p>Adds a right-click entry to open the JSON Peek scratchpad, optionally pre-filled with any text you've selected. Selected text is handled locally and never sent anywhere.</p>
+    </div>
+    <div class="perm">
+      <div class="pn">host access (to read page content)</div>
+      <p>Lets the extension read the text of the pages you open so it can detect whether they're JSON and render them. This detection and rendering happen entirely on your device; no page content is ever sent to any server. A broad host match is what allows JSON Peek to work on any JSON URL automatically, rather than asking you to click each time.</p>
+    </div>
+
+    <h2>What we do NOT do</h2>
+    <ul class="body">
+      <li>We do not use analytics, telemetry, crash reporting, or usage tracking of any kind.</li>
+      <li>We do not use cookies, pixels, fingerprinting, or advertising identifiers.</li>
+      <li>We do not create an account or profile for you, because there isn't one.</li>
+      <li>We do not sell, rent, share or transfer any data to third parties — there is no data to transfer.</li>
+      <li>We do not use any information for creditworthiness or lending purposes.</li>
+    </ul>
+
+    <h2>Payments and tips</h2>
+    <p>JSON Peek is free, with no paid features. If you choose to leave an optional tip, that happens on <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>, a separate third-party service with its own privacy policy. The extension itself is never involved in any payment and never sees any payment information.</p>
+
+    <h2>Children</h2>
+    <p>JSON Peek is a developer utility intended for a general audience. It does not knowingly collect any information from anyone, including children, because it does not collect information at all.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If the extension's behaviour ever changes in a way that affects this policy, we'll update this page and the "last updated" date above. Because the extension's design is built around making no network calls, we don't anticipate material changes to the substance of it.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about privacy, or anything else? Email <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a> and we'll get back to you.</p>
+
+    <hr>
+    <p style="font-size:14px;color:var(--text-faint)">This document is provided for transparency and does not, on its own, create any contractual obligation beyond the commitments described. JSON Peek is provided as-is, free of charge.</p>
+  </div>
+</section>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="/jsonpeek">JSON Peek</a>
+      <a href="/jsonpeek#features">Features</a>
+      <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+      <a href="https://niallcodes.com">niallcodes</a>
+    </div>
+    <p class="foot-legal">
+      JSON Peek is published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. Contact: hello@niallcodes.com<br>
+      Free forever · Open source · No account · No tracking · Zero network calls · Everything stays on your device.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
