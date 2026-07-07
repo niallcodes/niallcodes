@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PeekPic — Hover to Zoom Any Image</title>
+<meta name="description" content="Hover any thumbnail to see the full-size image or video instantly. Zoom, save & search — free forever, no tracking, works across the web. A niallcodes extension for Chrome.">
+<meta property="og:title" content="PeekPic — hover to zoom any image">
+<meta property="og:description" content="See the full-size version of any image the moment you hover it. Reliable where older hover-zoom tools quietly die — free forever, no Pro tier, no tracking.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23221e2e'/%3E%3Crect x='10' y='30' width='26' height='22' rx='4' fill='none' stroke='%239b93ad' stroke-width='2.4'/%3E%3Ccircle cx='40' cy='26' r='13' fill='none' stroke='%23a855f7' stroke-width='4.5'/%3E%3Cline x1='49' y1='35' x2='55' y2='41' stroke='%23a855f7' stroke-width='4.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+  :root{
+    /* Locked PeekPic brand kit — store/BRAND.md (M5) */
+    --ink:#17141f;          /* page background — plum-tinted charcoal */
+    --ink-deep:#14111c;     /* gradient partner */
+    --panel:#221e2e;        /* raised surfaces, cards */
+    --panel-2:#1c1927;
+    --line:#38304a;         /* borders, dividers */
+    --line-soft:#2a2438;
+    --accent:#a855f7;       /* THE accent — violet */
+    --accent-bright:#c084fc;/* hover / highlighted copy */
+    --text:#f4f2f8;         /* primary text */
+    --muted:#9b93ad;        /* secondary text */
+    --faint:#6b6480;
+    --accent-soft:rgba(168,85,247,.14);
+    --accent-glow:rgba(168,85,247,.18);
+    --grotesk:'Space Grotesk','Segoe UI',system-ui,-apple-system,sans-serif;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'Cascadia Code',Consolas,monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--ink);color:var(--text);font-family:var(--sans);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 28px}
+
+  /* ---------- nav ---------- */
+  nav{position:sticky;top:0;z-index:50;background:rgba(23,20,31,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line-soft)}
+  nav .row{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .brand svg{width:32px;height:32px;flex:none}
+  .wm{font-family:var(--grotesk);font-size:22px;font-weight:600;letter-spacing:-.03em}
+  .nav-cta{display:flex;align-items:center;gap:22px}
+  .nav-links{display:flex;gap:22px;font-size:14px;color:var(--muted)}
+  .nav-links a:hover{color:var(--text)}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;border-radius:10px;padding:10px 18px;font-size:14.5px;border:1px solid transparent;cursor:pointer;transition:transform .12s ease,background .15s ease,border-color .15s ease,color .15s ease}
+  .btn:hover{transform:translateY(-1px)}
+  .btn-primary{background:var(--accent);color:var(--ink)}
+  .btn-primary:hover{background:var(--accent-bright)}
+  .btn-ghost{background:transparent;border-color:var(--line);color:var(--text)}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent-bright)}
+  @media (max-width:720px){.nav-links{display:none}}
+
+  /* ---------- hero ---------- */
+  .glow{position:absolute;pointer-events:none;border-radius:50%;background:radial-gradient(circle,var(--accent-glow),transparent 62%);z-index:0}
+  .hero{position:relative;overflow:hidden}
+  .hero .glow{right:-300px;top:-360px;width:1120px;height:1120px}
+  .hero .row{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center;padding:76px 0 84px}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.28em;color:var(--accent-bright);font-weight:600;text-transform:uppercase}
+  h1{font-family:var(--grotesk);font-weight:600;font-size:clamp(50px,7.6vw,82px);line-height:1.03;margin:20px 0 24px;letter-spacing:-.03em}
+  h1 .n{color:var(--accent)}
+  .hero p.sub{font-size:19px;color:var(--muted);max-width:31em;line-height:1.6}
+  .hero-actions{display:flex;gap:14px;margin:32px 0 20px;flex-wrap:wrap}
+  .free-note{font-family:var(--mono);font-size:12.5px;color:var(--faint);letter-spacing:.02em}
+  .free-note b{color:var(--muted);font-weight:400}
+  .reliable{margin-top:28px;display:inline-flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:8px 15px;background:var(--panel)}
+  .reliable b{color:var(--accent-bright);font-weight:400}
+
+  /* hero product mock — a page thumbnail with the PeekPic preview overlay popping out */
+  .shot{position:relative;justify-self:end;width:100%;max-width:400px}
+  .browser{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:0 40px 90px rgba(0,0,0,.55);overflow:hidden;position:relative;z-index:1}
+  .bbar{display:flex;align-items:center;gap:7px;padding:12px 14px;border-bottom:1px solid var(--line)}
+  .bdot{width:10px;height:10px;border-radius:50%;background:var(--line)}
+  .burl{margin-left:10px;flex:1;height:20px;border-radius:6px;background:var(--ink);border:1px solid var(--line)}
+  .grid{padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .th{aspect-ratio:1;border-radius:8px;background:linear-gradient(135deg,#2f2942,#241f33)}
+  .th.hot{outline:2px solid var(--accent);outline-offset:2px}
+  /* the popped-out full-size preview */
+  .preview{position:absolute;z-index:3;right:-26px;top:64px;width:230px;background:var(--panel);border:1px solid var(--accent);border-radius:14px;box-shadow:0 28px 60px rgba(0,0,0,.6),0 0 0 6px var(--accent-soft);overflow:hidden}
+  .preview .pimg{height:150px;background:
+     radial-gradient(120% 120% at 25% 20%,#c98af7,transparent 55%),
+     linear-gradient(150deg,#7c4bd0,#a855f7 45%,#e0a068 100%)}
+  .preview .pmeta{display:flex;align-items:center;justify-content:space-between;padding:9px 11px;font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+  .preview .keys{display:flex;gap:5px}
+  .kcap{font-family:var(--mono);font-size:10px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:1px 5px}
+  .kcap b{color:var(--accent-bright);font-weight:400}
+  @media (max-width:860px){
+    .hero .row{grid-template-columns:1fr;gap:64px}
+    .shot{justify-self:start;max-width:380px}
+    .preview{right:6px}
+  }
+
+  /* ---------- band shells ---------- */
+  .band{border-top:1px solid var(--line-soft);padding:70px 0}
+  .band-head{max-width:36em;margin-bottom:40px}
+  .band-head h2{font-family:var(--grotesk);font-weight:600;font-size:clamp(30px,4.4vw,42px);line-height:1.1;margin-bottom:14px;letter-spacing:-.03em}
+  .band-head p{color:var(--muted);font-size:17px}
+  .section-eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--accent-bright);font-weight:600;margin-bottom:14px}
+
+  /* ---------- reliability (the wedge) ---------- */
+  .why{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+  .whycard{border:1px solid var(--line);border-radius:16px;background:var(--panel);padding:26px 24px}
+  .whycard .cap{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .whycard.old .cap{color:var(--muted)}
+  .whycard.new .cap{color:var(--accent-bright)}
+  .whycard h3{font-family:var(--grotesk);font-weight:600;font-size:20px;margin-bottom:10px;letter-spacing:-.01em}
+  .whycard p{color:var(--muted);font-size:14.5px;line-height:1.65}
+  .whycard .tag{display:inline-block;margin-top:14px;font-family:var(--mono);font-size:11.5px;color:var(--faint);border:1px solid var(--line);border-radius:6px;padding:4px 9px}
+  @media (max-width:640px){.why{grid-template-columns:1fr}}
+
+  /* ---------- features ---------- */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .fcard{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:26px 24px;transition:border-color .15s ease,transform .15s ease}
+  .fcard:hover{border-color:#463a5e;transform:translateY(-2px)}
+  .ficon{width:42px;height:42px;border-radius:11px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center;margin-bottom:16px;color:var(--accent-bright)}
+  .ficon svg{width:22px;height:22px}
+  .fcard h3{font-family:var(--grotesk);font-size:17px;font-weight:600;margin-bottom:9px;letter-spacing:-.01em}
+  .fcard p{color:var(--muted);font-size:14.5px;line-height:1.6}
+  .kbd{font-family:var(--mono);font-size:11px;color:var(--accent-bright);border:1px solid var(--line);border-radius:4px;padding:0 5px}
+  @media (max-width:860px){.features{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.features{grid-template-columns:1fr}}
+
+  /* ---------- trust / free ---------- */
+  .trust{border:1px solid var(--line);border-radius:20px;background:
+     radial-gradient(120% 140% at 90% -20%,var(--accent-soft),transparent 55%),var(--panel);
+     padding:44px 40px;text-align:center}
+  .trust h2{font-family:var(--grotesk);font-weight:600;font-size:clamp(28px,4.2vw,40px);line-height:1.12;margin-bottom:16px;letter-spacing:-.03em}
+  .trust p{color:var(--muted);font-size:17px;max-width:47em;margin:0 auto 26px}
+  .trust .btn-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+
+  /* ---------- funnel ---------- */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .tool{display:block;border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--panel);transition:border-color .15s ease,transform .15s ease}
+  .tool:hover{border-color:var(--accent);transform:translateY(-2px)}
+  .tool .th2{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .tool .tn{font-family:var(--grotesk);font-weight:600;font-size:16px}
+  .tool .tp{font-family:var(--mono);font-size:11px;color:var(--accent-bright);border:1px solid var(--line);border-radius:5px;padding:2px 7px}
+  .tool p{color:var(--muted);font-size:13.5px;line-height:1.55}
+  .tool .arrow{color:var(--faint);font-size:13px;margin-top:10px;font-family:var(--mono)}
+  @media (max-width:860px){.tools{grid-template-columns:1fr 1fr}}
+  @media (max-width:560px){.tools{grid-template-columns:1fr}}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:760px}
+  details{border-bottom:1px solid var(--line);padding:18px 0}
+  details summary{cursor:pointer;list-style:none;font-family:var(--grotesk);font-size:17px;font-weight:600;display:flex;justify-content:space-between;align-items:center;gap:16px}
+  details summary::-webkit-details-marker{display:none}
+  details summary .plus{color:var(--accent);font-size:22px;line-height:1;transition:transform .18s ease;flex:none}
+  details[open] summary .plus{transform:rotate(45deg)}
+  details p{color:var(--muted);font-size:15px;margin-top:12px;line-height:1.65}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--line-soft);padding:44px 0;margin-top:20px}
+  footer.site .row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer.site .brand .wm{font-size:19px}
+  .foot-links{display:flex;gap:22px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+  .foot-links a:hover{color:var(--text)}
+  .foot-legal{width:100%;margin-top:22px;font-family:var(--mono);font-size:12px;color:var(--faint);line-height:1.7}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <div class="wrap row">
+    <a class="brand" href="/peekpic" aria-label="PeekPic home">
+      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="64" height="64" rx="15" fill="#221e2e"/>
+        <rect x="10" y="30" width="26" height="22" rx="4" fill="none" stroke="#9b93ad" stroke-width="2.4"/>
+        <path d="M14 46l6-6 4 4 6-7 4 5" fill="none" stroke="#9b93ad" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="40" cy="26" r="13" fill="#221e2e"/>
+        <circle cx="40" cy="26" r="13" fill="none" stroke="#a855f7" stroke-width="4.5"/>
+        <line x1="49" y1="35" x2="56" y2="42" stroke="#a855f7" stroke-width="4.8" stroke-linecap="round"/>
+      </svg>
+      <span class="wm">peekpic</span>
+    </a>
+    <div class="nav-cta">
+      <div class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
+        <a href="#tools">More tools</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/phicjndnhpmejklcpfjbbpcpkdndjjbl" target="_blank" rel="noopener" data-install>Add to Chrome</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<header class="hero">
+  <div class="glow"></div>
+  <div class="wrap row">
+    <div class="hero-copy">
+      <div class="eyebrow">PeekPic for Chrome</div>
+      <h1>Hover to zoom<br><span class="n">any image.</span></h1>
+      <p class="sub">See the full-size version of any picture the moment you hover its thumbnail — no clicks, no new tabs. Reliable where older hover-zoom tools quietly die, and it never phones home.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/phicjndnhpmejklcpfjbbpcpkdndjjbl" target="_blank" rel="noopener" data-install>
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.66 15l4.2-7.28A4 4 0 0112 8h9.54A10 10 0 0012 2zm10 8.46L16.66 12A4 4 0 0112 16a4.05 4.05 0 01-.9-.1l-3.7 6.4A10 10 0 0022 12a10 10 0 000-1.54zM8 12a4 4 0 003.34 3.95L7.6 22.4A10 10 0 013.34 17L8 12z"/></svg>
+          Add to Chrome — Free
+        </a>
+        <a class="btn btn-ghost" href="#how">See how it works</a>
+      </div>
+      <p class="free-note"><b>Free forever</b> · No Pro tier · No account · No tracking</p>
+      <div class="reliable"><span>🔍</span><span>Works on sites <b>nobody wrote a rule for.</b></span></div>
+    </div>
+
+    <div class="shot">
+      <div class="browser" role="img" aria-label="A page of thumbnails with PeekPic showing a full-size preview popping out of the hovered one">
+        <div class="bbar"><span class="bdot"></span><span class="bdot"></span><span class="bdot"></span><span class="burl"></span></div>
+        <div class="grid">
+          <div class="th"></div><div class="th"></div><div class="th hot"></div><div class="th"></div>
+          <div class="th"></div><div class="th"></div><div class="th"></div><div class="th"></div>
+          <div class="th"></div><div class="th"></div><div class="th"></div><div class="th"></div>
+        </div>
+      </div>
+      <div class="preview" aria-hidden="true">
+        <div class="pimg"></div>
+        <div class="pmeta">
+          <span>2400 × 1600</span>
+          <span class="keys"><span class="kcap"><b>S</b> save</span><span class="kcap"><b>P</b> pin</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== WHY / RELIABILITY WEDGE ===================== -->
+<section class="band" id="how">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Why it keeps working</div>
+      <h2>Older hover tools memorise websites. PeekPic reads the image.</h2>
+      <p>That one difference is why the classics break every few months and PeekPic doesn't.</p>
+    </div>
+    <div class="why">
+      <div class="whycard old">
+        <div class="cap">The old way</div>
+        <h3>A rulebook that rots</h3>
+        <p>The classic hover-zoom tools keep a hand-written rule for each site. The moment a site changes how it serves images, its rule breaks — and the tool silently stops working there until someone patches it. That's the "it stopped working on Twitter again" you've seen in every review.</p>
+        <span class="tag">breaks when sites change</span>
+      </div>
+      <div class="whycard new">
+        <div class="cap">The PeekPic way</div>
+        <h3>It works out the full-size image itself</h3>
+        <p>PeekPic derives the full-size address straight from the thumbnail — recognising how the big image hosts build their URLs, and falling back to smart heuristics everywhere else. No per-site rulebook to rot, so it keeps working on sites nobody ever wrote a rule for.</p>
+        <span class="tag">reliable by design</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FEATURES ===================== -->
+<section class="band" id="features">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">What you get</div>
+      <h2>Everything, in the first version. No Pro tier waiting behind it.</h2>
+    </div>
+    <div class="features">
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="16" y1="16" x2="21" y2="21"/></svg></div>
+        <h3>Instant hover preview</h3>
+        <p>The full-size image appears beside your cursor the instant you hover, and vanishes the moment you move away. Images and video both.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/></svg></div>
+        <h3>Pin &amp; zoom</h3>
+        <p>Press <span class="kbd">P</span> to lock the preview open, then wheel up to 8× and drag to pan — inspect the fine detail without leaving the page.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></div>
+        <h3>One tap to save</h3>
+        <p><span class="kbd">S</span> sends the full-size image straight to Downloads — even where right-click saving is blocked. <span class="kbd">C</span> copies it to the clipboard.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/><path d="M15 9l-2 3 2 3"/></svg></div>
+        <h3>Gallery mode</h3>
+        <p>Step through every image on a page with the arrow keys — no mouse movement needed. Perfect for boards, albums and search results.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 019-9 9 9 0 016.7 3M21 3v6h-6"/><path d="M21 12a9 9 0 01-9 9 9 9 0 01-6.7-3M3 21v-6h6"/></svg></div>
+        <h3>Reverse image search</h3>
+        <p>Send any preview to Google Lens, Bing, Yandex or TinEye. Opt-in and off by default — nothing leaves the page unless you turn it on and press the key.</p>
+      </div>
+      <div class="fcard">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M2 12h20M12 2a15 15 0 010 20M12 2a15 15 0 000 20"/></svg></div>
+        <h3>Private by design</h3>
+        <p>No account, no analytics, no tracking, no server of ours. The only network traffic is loading the images you actually look at. Settings stay on your device.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TRUST / FREE ===================== -->
+<section class="band" id="install">
+  <div class="wrap">
+    <div class="trust">
+      <h2>Free forever. No Pro tier. No catch.</h2>
+      <p>Every feature — video, pin &amp; zoom, save, gallery mode, reverse search — is free permanently. There's no subscription, no license, and nothing waiting behind a paywall. PeekPic runs entirely on your device, so there's almost nothing for us to pay for. If it makes your browsing nicer, you can buy the developer a coffee. That's the whole model.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="https://chromewebstore.google.com/detail/phicjndnhpmejklcpfjbbpcpkdndjjbl" target="_blank" rel="noopener" data-install>Add to Chrome — Free</a>
+        <a class="btn btn-ghost" href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">☕ Buy me a coffee</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FUNNEL ===================== -->
+<section class="band" id="tools">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">More from niallcodes</div>
+      <h2>Small, sharp tools that respect your time.</h2>
+      <p>PeekPic is one of a family of independent Chrome extensions built in the UK. No bloat, no dark patterns.</p>
+    </div>
+    <div class="tools">
+      <a class="tool" href="https://niallcodes.com/snipdrop" target="_blank" rel="noopener">
+        <div class="th2"><span class="tn">Snipdrop</span><span class="tp">$9.99</span></div>
+        <p>Need <em>every</em> image on a page at once? Snipdrop is the screenshot &amp; snipping tool with a built-in bulk image downloader.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/eclipsed" target="_blank" rel="noopener">
+        <div class="th2"><span class="tn">Eclipsed</span><span class="tp">Free</span></div>
+        <p>Dark mode for every website that stays fast — it uses each site's own dark theme first, so your photos are never inverted.</p>
+        <div class="arrow">View →</div>
+      </a>
+      <a class="tool" href="https://niallcodes.com/nullfeed" target="_blank" rel="noopener">
+        <div class="th2"><span class="tn">Nullfeed</span><span class="tp">Free</span></div>
+        <p>Hide algorithmic feeds, Shorts, Reels and sponsored posts on the seven sites that matter — while search and messages keep working.</p>
+        <div class="arrow">View →</div>
+      </a>
+    </div>
+    <p style="margin-top:22px;font-family:var(--mono);font-size:13px;color:var(--faint)">
+      See the full lineup at <a href="https://niallcodes.com" style="color:var(--accent-bright)">niallcodes.com →</a>
+    </p>
+  </div>
+</section>
+
+<!-- ===================== FAQ ===================== -->
+<section class="band" id="faq">
+  <div class="wrap">
+    <div class="band-head">
+      <div class="section-eyebrow">Questions</div>
+      <h2>The things people ask first.</h2>
+    </div>
+    <div class="faq">
+      <details open>
+        <summary>Why does this keep working when other hover-zoom tools break? <span class="plus">+</span></summary>
+        <p>Most hover-zoom extensions keep a hand-written rule for each website, so when a site changes how it serves images, its rule breaks and the tool quietly stops working there. PeekPic doesn't use a per-site rulebook — it works out the full-size image address from the thumbnail itself, recognising how the major image hosts build their URLs and using smart heuristics everywhere else. That's why it keeps working on sites nobody wrote a rule for.</p>
+      </details>
+      <details>
+        <summary>Does it track me or send my browsing anywhere? <span class="plus">+</span></summary>
+        <p>No. There's no account, no analytics, no tracking, and no PeekPic server — there's nowhere for your data to go. The only network activity is loading the images you hover, from the same image hosts the page already uses. The one thing that ever leaves the page is reverse image search, which is off by default and only fires when you turn it on and press the key.</p>
+      </details>
+      <details>
+        <summary>How do I save an image? <span class="plus">+</span></summary>
+        <p>Hover the image so the preview appears, then press <b>S</b> — the full-size version goes straight to your Downloads folder, even on sites that block right-click saving. Press <b>C</b> to copy it to the clipboard instead. You can remap both keys in settings.</p>
+      </details>
+      <details>
+        <summary>Can it download every image on a page at once? <span class="plus">+</span></summary>
+        <p>PeekPic saves one image at a time, on purpose — it's a focused hover-and-save tool. If you need to grab every image on a page in one go, that's exactly what <a href="https://niallcodes.com/snipdrop" style="color:var(--accent-bright)">Snipdrop</a> is built for, with a bulk image downloader alongside its snipping tools.</p>
+      </details>
+      <details>
+        <summary>Is it really free? <span class="plus">+</span></summary>
+        <p>Yes — every feature, free permanently, with no Pro tier, no subscription and no license system, and there never will be. There's no account and nothing to unlock. If PeekPic makes your browsing nicer, you can leave an optional tip at ko-fi.com/niallcodes. That's the entire model.</p>
+      </details>
+      <details>
+        <summary>Which sites does it work on? <span class="plus">+</span></summary>
+        <p>Across the web — social feeds, image boards, shops, galleries and ordinary sites alike. Because it reads the image rather than following a per-site rulebook, it works in places other hover tools never covered. If a particular site ever misbehaves, you can turn PeekPic off there in one click.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site">
+  <div class="wrap">
+    <div class="row">
+      <a class="brand" href="/peekpic">
+        <svg viewBox="0 0 64 64" width="30" height="30" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect width="64" height="64" rx="15" fill="#221e2e"/>
+          <rect x="10" y="30" width="26" height="22" rx="4" fill="none" stroke="#9b93ad" stroke-width="2.4"/>
+          <circle cx="40" cy="26" r="13" fill="#221e2e"/>
+          <circle cx="40" cy="26" r="13" fill="none" stroke="#a855f7" stroke-width="4.5"/>
+          <line x1="49" y1="35" x2="56" y2="42" stroke="#a855f7" stroke-width="4.8" stroke-linecap="round"/>
+        </svg>
+        <span class="wm">peekpic</span>
+      </a>
+      <div class="foot-links">
+        <a href="#how">How it works</a>
+        <a href="#tools">More tools</a>
+        <a href="/peekpic/privacy">Privacy</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">niallcodes</a>
+      </div>
+    </div>
+    <p class="foot-legal">
+      PeekPic is published by Florence Publishing Ltd (United Kingdom), trading as niallcodes. Contact: hello@niallcodes.com<br>
+      Free forever · No Pro tier · No account · No tracking · Local-only.
+    </p>
+  </div>
+</footer>
+
+</body>
+</html>
