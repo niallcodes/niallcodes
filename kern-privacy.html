@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Kern</title>
+<meta name="description" content="Kern's privacy policy: everything runs locally in your browser. Kern collects nothing, transmits nothing, and has no server.">
+<link rel="icon" type="image/png" href="assets/kern-icon-128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0E0E10;
+    --surface: #161619;
+    --surface-2: #1D1D22;
+    --line: #26262B;
+    --text: #F4F4F6;
+    --muted: #A0A0AA;
+    --faint: #6C6C78;
+    --cobalt: #3B6BFF;
+    --cobalt-bright: #5C85FF;
+    --cobalt-soft: rgba(59,107,255,0.14);
+    --good: #35C88A;
+    --good-soft: rgba(53,200,138,0.12);
+    --ui: "Inter", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--ink); color: var(--text);
+    font-family: var(--ui); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--cobalt-bright); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 34px; height: 34px; border-radius: 8px; }
+  .brand b { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+  .nav a.back { font-size: 14px; color: var(--muted); }
+  .nav a.back:hover { color: var(--text); text-decoration: none; }
+
+  header.head { padding: 44px 0 10px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--cobalt-bright); margin-bottom: 16px; }
+  h1 { font-size: clamp(32px, 5vw, 44px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.08; margin-bottom: 14px; }
+  .meta { font-family: var(--mono); font-size: 12.5px; color: var(--faint); }
+
+  .tldr {
+    margin: 34px 0 10px;
+    background: var(--good-soft); border: 1px solid rgba(53,200,138,0.3);
+    border-radius: 15px; padding: 22px 24px;
+    font-size: 15.5px;
+  }
+  .tldr b { color: var(--good); }
+
+  main { padding-bottom: 40px; }
+  h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; margin: 44px 0 12px; }
+  p, li { font-size: 15px; color: var(--muted); }
+  p + p { margin-top: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  ul { margin: 12px 0 0 22px; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--cobalt); }
+  code { font-family: var(--mono); font-size: 13px; color: var(--cobalt-bright); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+
+  .table-wrap { overflow-x: auto; margin-top: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  td { color: var(--muted); }
+  td:first-child { color: var(--text); font-weight: 600; }
+  @media (max-width: 640px) {
+    th, td { padding: 9px 10px; font-size: 13px; }
+    h1 { font-size: 27px; }
+  }
+  .no { color: var(--good); font-weight: 700; font-family: var(--mono); font-size: 13px; }
+
+  footer { border-top: 1px solid var(--line); padding: 30px 0 44px; margin-top: 60px; }
+  .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .foot-row .small { font-size: 13px; color: var(--faint); }
+  .foot-links { display: flex; gap: 20px; font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand">
+      <img src="assets/kern-icon-128.png" alt="Kern icon">
+      <b>Kern</b>
+    </div>
+    <a class="back" href="index.html">← Back to Kern</a>
+  </nav>
+
+  <header class="head">
+    <div class="eyebrow">Privacy Policy</div>
+    <h1>Kern doesn't collect your data.<br>It can't — there's nothing to collect it with.</h1>
+    <div class="meta">Effective 8 July 2026 · Applies to the Kern Chrome extension v1.0.0 and later</div>
+  </header>
+
+  <main>
+    <div class="tldr">
+      <b>The short version:</b> Kern runs entirely inside your browser. It has no server, no analytics, no account system and no telemetry. It does not collect, store remotely, transmit, sell or share any data about you or the pages you visit — not because a policy says so, but because there is no backend for data to go to.
+    </div>
+
+    <h2>Who we are</h2>
+    <p>Kern is a free Chrome extension published by <strong>niallcodes</strong>, an independent software project operated by Florence Publishing Ltd, a company registered in the United Kingdom.</p>
+
+    <h2>What Kern does</h2>
+    <p>Kern identifies and inspects the fonts and typography used on web pages you choose to inspect. To do that, it reads the styling (fonts, sizes, colors, CSS rules) of the page in your current tab — <strong>locally, on your device</strong> — and displays that information to you. Page content is processed in memory and never leaves your browser.</p>
+
+    <h2>What Kern collects and shares: nothing</h2>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Data type</th><th>Collected?</th><th>Notes</th></tr>
+      <tr><td>Personally identifiable info</td><td class="no">NO</td><td>No account, no email, no sign-up of any kind.</td></tr>
+      <tr><td>Browsing history</td><td class="no">NO</td><td>Kern does not record or transmit the pages you visit.</td></tr>
+      <tr><td>Website content</td><td class="no">Not collected</td><td>Read locally on-device to display typography to you; never stored remotely or transmitted.</td></tr>
+      <tr><td>Analytics / telemetry</td><td class="no">NO</td><td>No usage tracking, no crash reporting, no third-party SDKs.</td></tr>
+      <tr><td>Cookies</td><td class="no">NO</td><td>Kern sets no cookies and reads none.</td></tr>
+      <tr><td>Health, financial, location, communications</td><td class="no">NO</td><td>Never accessed in any form.</td></tr>
+    </table>
+    </div>
+    <p style="margin-top:14px;">We do not sell data, share data, or use data for advertising, profiling or creditworthiness — there is no data to do any of that with.</p>
+
+    <h2>What's stored on your device</h2>
+    <p>Kern keeps a small amount of data in your browser's local extension storage (<code>chrome.storage.local</code>), purely so the tool works the way you left it:</p>
+    <ul>
+      <li><strong>Preferences</strong> — your theme (light/dark) and preferred color format (HEX/RGB/HSL/OKLCH).</li>
+      <li><strong>Your collection</strong> — fonts you deliberately save, including their inspected properties.</li>
+      <li><strong>Your last page audit</strong> — so the results are still there when you reopen the panel.</li>
+      <li><strong>A first-run flag</strong> — so the welcome tip only shows once.</li>
+    </ul>
+    <p>This data never leaves your device. It is removed by Chrome when you uninstall the extension, and you can clear it at any time from <code>chrome://extensions</code>.</p>
+
+    <h2>Fonts you upload for try-on</h2>
+    <p>The try-on feature lets you preview a font file from your own computer on a live page. Your file is read into memory in the current tab only. It is <strong>never uploaded anywhere, never written to storage, and never persisted</strong> — it's gone when the page reloads.</p>
+
+    <h2>Network requests</h2>
+    <p>Kern makes exactly one kind of network request, and only when you ask it to: when you use try-on, pairing previews or glyph coverage with a Google Fonts family, Kern loads that font's stylesheet and font files from Google Fonts (<code>fonts.googleapis.com</code> / <code>fonts.gstatic.com</code>), exactly as any website using Google Fonts does. This request is initiated by your action, contains no personal data from Kern, and is subject to <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's privacy policy</a>. Kern's own UI fonts are bundled inside the extension and load from your disk.</p>
+
+    <h2>Why Kern asks for the permissions it does</h2>
+    <ul>
+      <li><strong>Read data on all websites</strong> — Kern must read a page's fonts and CSS to identify them, on whatever site you happen to be inspecting, without a per-site prompt each time. All processing is local; nothing is sent anywhere.</li>
+      <li><strong>Scripting / active tab</strong> — injects the on-page inspector UI into the tab you're using.</li>
+      <li><strong>Storage</strong> — the local preferences and collection described above.</li>
+      <li><strong>Context menus, side panel, keyboard commands</strong> — the right-click entry, the workspace panel, and the toggle shortcut.</li>
+    </ul>
+
+    <h2>Third-party services</h2>
+    <p>Kern's pages link to <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a> (optional donations) and <a href="https://niallcodes.com">niallcodes.com</a>. Those sites are separate services with their own privacy policies; Kern shares no data with them — following a link is the only interaction.</p>
+
+    <h2>Children</h2>
+    <p>Kern does not knowingly collect information from anyone, including children. There is no data collection mechanism in the product.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If a future update ever changes how Kern handles data (for example, adding an opt-in feature that requires a network service), this policy will be updated first, the change will be described in the extension's changelog, and the Chrome Web Store data disclosures will be updated to match before release.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy or about Kern: <a href="mailto:hello@niallcodes.com">hello@niallcodes.com</a>, or via the support tab on Kern's Chrome Web Store listing.</p>
+  </main>
+
+  <footer>
+    <div class="foot-row">
+      <div class="small">Kern is a product from <a href="https://niallcodes.com">niallcodes</a> — an independent software project based in the United Kingdom.</div>
+      <div class="foot-links">
+        <a href="index.html">Kern</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">More from niallcodes</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
