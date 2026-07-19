@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Nope — Reject Cookie Banners, Block Popups &amp; Web Annoyances, Free</title>
+    <meta name="description" content="Nope auto-rejects cookie banners and zaps newsletter popups, sign-in walls, chat widgets and notification nags. Reject-first for real privacy. 100% local, free forever." />
+    <meta property="og:title" content="Nope — Say nope to the junk. Enjoy a cleaner web." />
+    <meta property="og:description" content="Auto-reject cookie banners and zap every web annoyance. Free forever, 100% local, no tracking." />
+    <link rel="icon" href="icon128.png" />
+    <link rel="stylesheet" href="site.css" />
+</head>
+<body>
+    <div class="page">
+        <nav class="nav">
+            <a class="brand" href="./"><img src="icon128.png" width="30" height="30" alt="" />Nope</a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#faq">FAQ</a>
+                <a href="privacy.html">Privacy</a>
+                <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi ☕</a>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <header class="hero">
+            <span class="eyebrow">Say nope to the junk</span>
+            <h1>Cookie banners? Popups?<br />Nope.</h1>
+            <p class="lede muted">
+                One extension that quietly says no to it all — cookie consent banners, newsletter popups,
+                "sign in to continue" walls, chat bubbles, notification nags. Rejected where possible,
+                hidden where not, and honest about which.
+            </p>
+            <div class="hero-ctas">
+                <a class="btn btn-accent btn-lg" id="install-btn" href="https://chromewebstore.google.com/detail/mhknmiknncmccfeaocbmoonfmnjcflec" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+                <a class="btn btn-lg" href="#features">See what it kills</a>
+            </div>
+            <p class="hero-note muted">Free forever · 100% local · No account · Not an ad blocker</p>
+        </header>
+
+        <!-- Features -->
+        <section id="features">
+            <span class="eyebrow">What Nope does</span>
+            <h2>Every category of web annoyance. One tool.</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <span class="icon">🍪</span>
+                    <h3>Rejects cookie banners</h3>
+                    <p>Where a site's consent platform is recognised, Nope genuinely <strong>declines non-essential cookies</strong> — real privacy, not just a hidden banner. Powered by the open-source DuckDuckGo AutoConsent rules.</p>
+                </div>
+                <div class="card">
+                    <span class="icon">🫧</span>
+                    <h3>Honest about it</h3>
+                    <p>When a banner can only be hidden (not rejected), Nope says so, per site: "Rejected via OneTrust" vs "Banner hidden". No other tool tells you the difference.</p>
+                </div>
+                <div class="card">
+                    <span class="icon">🚫</span>
+                    <h3>Zaps the whole mess</h3>
+                    <p>Newsletter modals, "sign in to continue" walls, chat bubbles, notification nags, "open in app" banners, survey popups — each with its own toggle.</p>
+                </div>
+                <div class="card">
+                    <span class="icon">🎯</span>
+                    <h3>Element picker</h3>
+                    <p>See a leftover annoyance? Click it — gone forever on that site. Fully reversible, with a one-click "show everything" escape hatch.</p>
+                </div>
+                <div class="card">
+                    <span class="icon">🔢</span>
+                    <h3>The zap counter</h3>
+                    <p>Watch the annoyances you've dodged add up, with the time saved. Strangely satisfying.</p>
+                </div>
+                <div class="card">
+                    <span class="icon">🔒</span>
+                    <h3>100% local &amp; private</h3>
+                    <p>No account, no tracking, no telemetry. Nothing you do ever leaves your device — there's no server to send it to.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- How it handles cookies -->
+        <section>
+            <span class="eyebrow">Cookies, honestly</span>
+            <h2>Reject-first. Hide as fallback. Always transparent.</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>1 — Recognised → rejected</h3>
+                    <p>Known consent platforms (OneTrust, Cookiebot, Quantcast, Didomi and hundreds more) get their own "reject" flow driven for you. Fewer cookies actually set.</p>
+                </div>
+                <div class="card">
+                    <h3>2 — Unrecognised → hidden</h3>
+                    <p>Unknown banners are hidden so you can read in peace — and Nope tells you the site may still set cookies, instead of pretending otherwise.</p>
+                </div>
+                <div class="card">
+                    <h3>3 — You see what fired</h3>
+                    <p>The toolbar panel shows exactly what happened on every site, and everything is pausable and reversible per site.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="faq">
+            <span class="eyebrow">FAQ</span>
+            <h2>Fair questions.</h2>
+            <details>
+                <summary>Is it really free?</summary>
+                <p>Completely. Every feature, for everyone, forever — no premium tier, no trial, no locked settings. Nope is supported by voluntary <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi donations</a> from people who like it. That's the whole business model.</p>
+            </details>
+            <details>
+                <summary>Is Nope an ad blocker?</summary>
+                <p>No. Nope removes annoyances and handles cookie consent — it does not block ads, and never will. That's a deliberate boundary: sites keep their revenue, you lose the junk.</p>
+            </details>
+            <details>
+                <summary>Why does it need access to every website?</summary>
+                <p>Cookie banners and popups appear on any site, so Nope's content script has to be able to run on any site to catch them. Everything happens locally in your browser: Nope makes no network requests, has no server, and collects nothing. The code that touches every page is exactly the code that can't phone home — see the <a href="privacy.html">privacy policy</a>.</p>
+            </details>
+            <details>
+                <summary>Does rejecting cookies break sites?</summary>
+                <p>Rarely — Nope drives the site's own "reject" buttons, the same ones you'd click yourself. If a site ever misbehaves, pause Nope on that site with one toggle (or Alt+Shift+N) and it stays out of the way there.</p>
+            </details>
+            <details>
+                <summary>What happens when Nope can't reject a banner?</summary>
+                <p>It hides it and tells you it was only hidden — the site may still set cookies. Honesty over theatre. You can also report the site so the rules improve for everyone.</p>
+            </details>
+            <details>
+                <summary>Does it circumvent paywalls?</summary>
+                <p>No. Nope removes soft nags ("sign in to continue" overlays, newsletter walls) but doesn't unlock paid content or bypass hard paywalls.</p>
+            </details>
+        </section>
+
+        <!-- Support -->
+        <section class="hero">
+            <span class="eyebrow">Free forever</span>
+            <h2>If Nope saves you a hundred clicks a week…</h2>
+            <p class="lede muted">…a coffee keeps the rulesets sharp. Built and maintained by one person in the UK.</p>
+            <div class="hero-ctas">
+                <a class="btn btn-accent btn-lg" href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">☕ Support Nope on Ko-fi</a>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <p>Nope is a product from <a href="https://niallcodes.com" target="_blank" rel="noopener">niallcodes</a> — an independent software project based in the United Kingdom.</p>
+            <p><a href="privacy.html">Privacy policy</a> · Consent rules by <a href="https://github.com/duckduckgo/autoconsent" target="_blank" rel="noopener">DuckDuckGo AutoConsent</a> (MIT) · Not an ad blocker</p>
+        </footer>
+    </div>
+</body>
+</html>
