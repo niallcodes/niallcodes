@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy Policy — Vantage for YouTube</title>
+<meta name="description" content="Privacy policy for the Vantage for YouTube Chrome extension. Everything is local; no accounts, no analytics, no tracking." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #151310; --bg-elev: #201d17; --border: #2e2a22;
+  --text: #f4f0e8; --muted: #a69e90; --accent: #5ba3b0; --accent-soft: #8fcad4; --dot: #28241e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg); color: var(--text);
+  background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+main { max-width: 720px; margin: 0 auto; padding: 72px 32px 56px; }
+.eyebrow {
+  font-family: "JetBrains Mono", monospace; font-size: 12px; font-weight: 600;
+  letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
+h1 { font-size: 34px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 10px; }
+.updated { font-size: 13px; color: var(--muted); margin-bottom: 36px; }
+.tldr {
+  background: var(--bg-elev); border: 1px solid #47555f; border-radius: 14px;
+  padding: 20px 24px; margin-bottom: 40px; font-size: 15px; line-height: 1.7;
+}
+.tldr strong { color: var(--accent-soft); }
+h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; margin: 36px 0 12px; }
+p, li { font-size: 14.5px; color: var(--muted); line-height: 1.75; }
+p strong, li strong { color: var(--text); }
+ul { margin: 10px 0 10px 22px; }
+li { margin-bottom: 6px; }
+a { color: var(--accent-soft); text-decoration: none; }
+a:hover { text-decoration: underline; }
+footer { border-top: 1px solid var(--border); margin-top: 48px; padding-top: 24px; }
+footer p { font-size: 12px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Vantage for YouTube</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Effective 9 July 2026 · Version 1.0</p>
+
+  <div class="tldr">
+    <strong>The short version:</strong> Vantage has no server, no accounts, and no analytics.
+    Everything you do in it — settings, notes, loops, playback positions — is stored in your
+    browser and nowhere else. The one optional feature that talks to the internet
+    (community sponsor skipping) is off by default, and even then it never sends anything
+    that identifies you or the exact video you're watching.
+  </div>
+
+  <h2>What Vantage stores, and where</h2>
+  <p>Vantage keeps the following data in your browser's local extension storage
+  (<code>chrome.storage.local</code>), on your device only:</p>
+  <ul>
+    <li><strong>Settings</strong> — your toggles, defaults, shortcuts and auto-speed rules.</li>
+    <li><strong>Notes</strong> — the timestamped notes you write, with the video title and ID they belong to.</li>
+    <li><strong>Saved loops and playback positions</strong> — so A→B loops and resume-where-you-left-off work. Positions are automatically deleted after 90 days.</li>
+  </ul>
+  <p>None of this is transmitted anywhere. Uninstalling the extension deletes it all
+  (use the panel's Backup feature first if you want to keep your notes).</p>
+
+  <h2>What Vantage reads</h2>
+  <p>To do its job, Vantage reads the YouTube page you're on: the video element (for speed,
+  volume, screenshots), the video's title and channel (for notes and auto-speed rules), and
+  YouTube's own transcript data (for transcript export). This happens inside your browser
+  and stays inside your browser.</p>
+
+  <h2>The one network feature: sponsor skipping</h2>
+  <p>The optional "auto-skip sponsors" feature uses the community-run
+  <a href="https://sponsor.block.guide" rel="noopener">SponsorBlock</a> database. It is
+  <strong>off by default</strong>. When you turn it on, Vantage asks the public SponsorBlock
+  API (sponsor.ajay.app) for skip segments using a <strong>k-anonymity lookup</strong>: the
+  video ID is hashed on your device and only the first four characters of that hash are
+  sent, so the API cannot tell which video you're actually watching. No cookies, no
+  identifiers, nothing else is included. Turn the feature off and Vantage makes no network
+  requests at all.</p>
+
+  <h2>What Vantage does NOT do</h2>
+  <ul>
+    <li>No analytics, telemetry, or crash reporting of any kind.</li>
+    <li>No accounts, sign-ins, or cloud sync.</li>
+    <li>No collection of browsing history, personal information, or YouTube account data.</li>
+    <li>No selling, sharing, or transferring of data — there is no data to sell.</li>
+    <li>No remote code, no third-party scripts, no ads.</li>
+  </ul>
+
+  <h2>Permissions, in plain words</h2>
+  <ul>
+    <li><strong>Access to youtube.com</strong> — required to enhance the YouTube page. Vantage runs nowhere else.</li>
+    <li><strong>Storage / unlimited storage</strong> — keeps your settings and notes on your device so they persist.</li>
+    <li><strong>Clipboard write</strong> — lets "copy screenshot", "copy transcript" and "copy link" actually copy.</li>
+  </ul>
+
+  <h2>Changes to this policy</h2>
+  <p>If a future version of Vantage ever changes what data is handled, this policy will be
+  updated before that version ships, with the change described plainly at the top.</p>
+
+  <h2>Contact</h2>
+  <p>Vantage is published by niallcodes (Florence Publishing Ltd, United Kingdom).
+  Questions: <a href="https://niallcodes.com">niallcodes.com</a>.</p>
+
+  <footer>
+    <p>Vantage is an independent, third-party extension and is not affiliated with, endorsed
+    by, or sponsored by YouTube. YouTube is a trademark of Google LLC.</p>
+    <p><a href="index.html">← Back to Vantage</a></p>
+  </footer>
+</main>
+</body>
+</html>
