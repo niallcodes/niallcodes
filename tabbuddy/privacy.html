@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Privacy Policy — Tab Buddy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Tab Buddy privacy policy: local-first, no account, no tracking, optional end-to-end encrypted sync.">
+  <link rel="icon" href="icon128.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #17150F; --bg-el: #211E16; --text: #F5F1E8; --muted: #A8A093;
+      --accent: #E8A13C; --border: #2E2A22; --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Inter", system-ui, sans-serif; font-size: 15.5px; line-height: 1.7;
+      background-image: radial-gradient(#2A2620 1px, transparent 1px); background-size: 24px 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 26px 24px 80px; }
+    nav { display: flex; align-items: center; gap: 10px; margin-bottom: 44px; font-weight: 700; }
+    nav img { border-radius: 8px; }
+    nav a { color: var(--text); display: flex; align-items: center; gap: 10px; }
+    .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
+    h1 { font-size: 34px; letter-spacing: -0.02em; margin: 10px 0 6px; }
+    .updated { color: var(--muted); font-family: var(--mono); font-size: 12.5px; }
+    h2 { font-size: 20px; letter-spacing: -0.01em; margin: 40px 0 10px; }
+    h3 { font-size: 16px; margin: 26px 0 8px; }
+    p, li { color: var(--muted); }
+    strong { color: var(--text); }
+    .tldr {
+      border: 1px solid rgba(232,161,60,.4); background: rgba(232,161,60,.06);
+      border-radius: 14px; padding: 20px 24px; margin: 28px 0;
+    }
+    .tldr p { margin: 0; color: var(--text); }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 14px; }
+    th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--text); font-weight: 600; }
+    td { color: var(--muted); }
+    code { font-family: var(--mono); font-size: 13px; background: var(--bg-el); padding: 1px 6px; border-radius: 5px; }
+    footer { margin-top: 60px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 13.5px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav><a href="index.html"><img src="icon128.png" width="28" height="28" alt="">Tab Buddy</a></nav>
+
+    <span class="eyebrow">TAB BUDDY</span>
+    <h1>Privacy Policy</h1>
+    <p class="updated">Effective 9 July 2026 · applies to Tab Buddy v1.x</p>
+
+    <div class="tldr">
+      <p><strong>The short version:</strong> Tab Buddy has no account, no analytics, and no tracking
+      of any kind. Your tabs and sessions are stored in your own browser. If you turn on the
+      optional sync, your data is encrypted <em>on your device</em> before it leaves — we store
+      ciphertext we cannot read. We don't collect, sell, or share anything, because there is
+      nothing to collect.</p>
+    </div>
+
+    <h2>Who we are</h2>
+    <p>Tab Buddy is a product from <strong>niallcodes</strong>, an independent software project
+    operated by Florence Publishing Ltd, United Kingdom. Contact:
+    <a href="mailto:swingneil@gmail.com">swingneil@gmail.com</a>.</p>
+
+    <h2>What Tab Buddy stores, and where</h2>
+    <table>
+      <tr><th>Data</th><th>Where it lives</th><th>Leaves your device?</th></tr>
+      <tr>
+        <td><strong>Saved sessions</strong> — tab URLs, titles, pinned state, tab-group names/colours, window layout, scroll positions</td>
+        <td>Your browser's local storage (IndexedDB)</td>
+        <td>Never — unless <em>you</em> turn on encrypted sync (see below) or use Export</td>
+      </tr>
+      <tr>
+        <td><strong>Crash-recovery snapshots</strong> — rolling automatic captures of your open windows</td>
+        <td>Your browser's local storage</td>
+        <td>Never. Snapshots are excluded from sync by design.</td>
+      </tr>
+      <tr>
+        <td><strong>Page thumbnails</strong> (optional feature, off by default)</td>
+        <td>Your browser's local storage, downscaled and compressed</td>
+        <td>Never. Thumbnails are excluded from sync by design.</td>
+      </tr>
+      <tr>
+        <td><strong>Settings & preferences</strong></td>
+        <td>Your browser's local storage</td>
+        <td>Never</td>
+      </tr>
+      <tr>
+        <td><strong>Sync records</strong> (only if you enable sync)</td>
+        <td>Encrypted on your device, then stored on our server (Cloudflare Workers KV)</td>
+        <td>Only as ciphertext — see "Encrypted sync" below</td>
+      </tr>
+    </table>
+
+    <h2>What we don't do</h2>
+    <ul>
+      <li>No accounts, sign-ups, or email collection</li>
+      <li>No analytics, telemetry, crash reporting, or usage tracking of any kind</li>
+      <li>No third-party scripts, fonts, or beacons inside the extension</li>
+      <li>No ads, and no selling or sharing of data with anyone — there is nothing to sell</li>
+      <li>Favicons are rendered via Chrome's built-in local favicon store, not fetched from
+        third-party favicon services, so your saved URLs are not leaked to anyone for icon lookups</li>
+    </ul>
+
+    <h2>Encrypted sync (opt-in)</h2>
+    <p>Sync is <strong>off by default</strong>. If you enable it:</p>
+    <ul>
+      <li>Your sessions are encrypted <strong>on your device</strong> with AES-256-GCM. The key is
+        derived from your passphrase (PBKDF2, 600,000 iterations) and <strong>the passphrase never
+        leaves your device</strong>.</li>
+      <li>The server receives and stores only: your random Sync ID, ciphertext blobs, record
+        timestamps, and a one-way hash of an authentication token (which is itself derived from
+        your passphrase and cannot be reversed into it).</li>
+      <li>The server <strong>cannot</strong> see tab URLs, titles, group names, or any content —
+        and neither can we. There is no "reset password" because there is nothing we could reset.</li>
+      <li>Thumbnails and crash snapshots are never synced at all.</li>
+      <li>Sync data is stored on Cloudflare Workers KV. Cloudflare acts as our infrastructure
+        provider and only ever handles the ciphertext described above
+        (<a href="https://www.cloudflare.com/privacypolicy/" rel="noopener" target="_blank">Cloudflare's privacy policy</a>).</li>
+      <li>Turning sync off stops all network activity. To remove your ciphertext from the server,
+        delete your sessions while sync is on (deletions propagate as tombstones), then turn sync
+        off — or email us your Sync ID and we'll delete the stored ciphertext for that ID.</li>
+    </ul>
+
+    <h2>Browser permissions, explained honestly</h2>
+    <table>
+      <tr><th>Permission</th><th>Why Tab Buddy needs it</th></tr>
+      <tr><td><code>tabs</code></td><td>Read open tabs' URLs, titles, and pinned state to save and restore sessions.</td></tr>
+      <tr><td><code>tabGroups</code></td><td>Read and recreate native Chrome tab groups — names, colours, collapsed state.</td></tr>
+      <tr><td><code>storage</code> / <code>unlimitedStorage</code></td><td>Keep your sessions, snapshots, and settings on your device.</td></tr>
+      <tr><td><code>alarms</code></td><td>Schedule the rolling crash-recovery snapshots.</td></tr>
+      <tr><td><code>contextMenus</code></td><td>The right-click "Save this tab / window" actions.</td></tr>
+      <tr><td><code>favicon</code></td><td>Show site icons from Chrome's local favicon store (instead of leaking URLs to a remote icon service).</td></tr>
+      <tr><td><code>scripting</code> + <code>activeTab</code></td><td>Save and restore page scroll positions.</td></tr>
+      <tr><td>"Read all sites" (<code>&lt;all_urls&gt;</code>) — <strong>optional, off by default</strong></td>
+        <td>Only requested if you switch on visual thumbnails; capturing a page preview requires it.
+        Captures are downscaled, stored locally, and never transmitted. Decline or revoke it any
+        time — everything else keeps working.</td></tr>
+    </table>
+
+    <h2>Your data, your exit</h2>
+    <p>Export everything to JSON, CSV, Markdown, or HTML at any time from the manager. Uninstalling
+    the extension deletes all local data (Chrome removes the extension's storage). If you used
+    sync, see above for removing server-side ciphertext.</p>
+
+    <h2>Legal bases and your rights (UK/EU GDPR)</h2>
+    <p>Tab Buddy is designed so that we do not process your personal data at all in normal use.
+    The only data our server ever holds is opt-in, pseudonymous, client-side-encrypted sync
+    ciphertext, processed on the legal basis of performing the sync feature you requested
+    (Art. 6(1)(b)). You retain all rights under UK/EU data protection law — access, rectification,
+    erasure, portability — though in practice the export button and the deletion steps above give
+    you these directly, without needing to ask us.</p>
+
+    <h2>Children</h2>
+    <p>Tab Buddy is a general-audience productivity tool and does not knowingly collect any
+    personal information from anyone, including children.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If we ever change how Tab Buddy handles data, we'll update this page and the "effective"
+    date above, and call out material changes in the extension's release notes. We will never
+    retroactively weaken the promises above for data you've already stored.</p>
+
+    <footer>
+      Tab Buddy is a product from niallcodes — an independent software project based in the
+      United Kingdom. · <a href="index.html">tab buddy home</a> ·
+      <a href="mailto:swingneil@gmail.com">contact</a>
+    </footer>
+  </div>
+</body>
+</html>
