@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Tab Buddy — the session manager that never loses your tabs</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Save, restore & sync tabs and tab groups. Command-palette search, crash recovery, thumbnails, end-to-end encrypted sync. Free, no account, no tracking.">
+  <meta property="og:title" content="Tab Buddy — never lose a tab again">
+  <meta property="og:description" content="The session manager that's free forever, never loses your data, and looks like it costs money.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="icon128.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #17150F; --bg-el: #211E16; --bg-el2: #2A2620;
+      --text: #F5F1E8; --muted: #A8A093;
+      --accent: #E8A13C; --accent-soft: #F2C77E;
+      --dot: #2A2620; --border: #2E2A22;
+      --mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: "Inter", system-ui, sans-serif; font-size: 16px; line-height: 1.65;
+      background-image: radial-gradient(var(--dot) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .wrap { max-width: 1020px; margin: 0 auto; padding: 0 24px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--accent);
+    }
+    .kbd {
+      font-family: var(--mono); font-size: 12px; padding: 3px 8px; border-radius: 6px;
+      border: 1px solid var(--border); background: var(--bg-el); color: var(--muted);
+      box-shadow: inset 0 -1.5px 0 var(--border);
+    }
+    /* nav */
+    nav { display: flex; align-items: center; gap: 22px; padding: 22px 0; }
+    nav .logo { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--text); }
+    nav .logo img { border-radius: 8px; }
+    nav .links { margin-left: auto; display: flex; gap: 22px; font-size: 14.5px; }
+    nav .links a { color: var(--muted); }
+    nav .links a:hover { color: var(--text); text-decoration: none; }
+    /* hero */
+    header.hero { position: relative; text-align: center; padding: 72px 0 60px; overflow: hidden; }
+    header.hero::before {
+      content: ""; position: absolute; top: -260px; left: 50%; transform: translateX(-50%);
+      width: 1100px; height: 660px;
+      background: radial-gradient(ellipse at center, rgba(232,161,60,0.13), transparent 62%);
+      pointer-events: none;
+    }
+    .hero h1 { font-size: clamp(34px, 6vw, 58px); line-height: 1.08; letter-spacing: -0.025em; margin: 18px 0; }
+    .hero h1 .amber { color: var(--accent); }
+    .hero .sub { color: var(--muted); font-size: 18px; max-width: 54ch; margin: 0 auto 34px; }
+    .cta-row { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; align-items: center; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 9px; font-weight: 600; font-size: 15px;
+      padding: 13px 26px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--bg-el); color: var(--text); cursor: pointer; transition: all .15s;
+    }
+    .btn:hover { border-color: var(--accent); text-decoration: none; }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #17150F; }
+    .btn.primary:hover { background: var(--accent-soft); border-color: var(--accent-soft); }
+    .hero .fineprint { margin-top: 18px; font-size: 13px; color: var(--muted); font-family: var(--mono); }
+    /* palette mock */
+    .palette-mock {
+      max-width: 620px; margin: 52px auto 0; text-align: left;
+      background: var(--bg-el); border: 1px solid var(--border); border-radius: 14px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.55); overflow: hidden;
+    }
+    .palette-mock .row { display: flex; align-items: center; gap: 12px; padding: 15px 18px; border-bottom: 1px solid var(--border); }
+    .palette-mock .row .q { color: var(--text); font-size: 15px; }
+    .palette-mock .row .caret { color: var(--accent); animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .palette-mock .item { display: flex; align-items: center; gap: 12px; padding: 11px 18px; font-size: 14px; }
+    .palette-mock .item.sel { background: var(--bg-el2); }
+    .palette-mock .item .fav { width: 18px; height: 18px; border-radius: 4px; background: var(--bg-el2); display: inline-flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 9px; color: var(--muted); }
+    .palette-mock .item .u { color: var(--muted); font-family: var(--mono); font-size: 11.5px; margin-left: auto; }
+    .palette-mock .item .tag { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); border: 1px solid var(--border); border-radius: 5px; padding: 2px 7px; }
+    .palette-mock .item.sel .tag { color: var(--accent); border-color: rgba(232,161,60,.5); }
+    .palette-mock mark { background: none; color: var(--accent); font-weight: 650; }
+    /* features */
+    section.features { padding: 70px 0 20px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; margin-top: 34px; }
+    .feature {
+      background: var(--bg-el); border: 1px solid var(--border); border-radius: 14px; padding: 26px;
+      transition: border-color .2s;
+    }
+    .feature:hover { border-color: rgba(232,161,60,.4); }
+    .feature .ico { font-size: 22px; }
+    .feature h3 { font-size: 16.5px; margin: 12px 0 8px; letter-spacing: -0.01em; }
+    .feature p { color: var(--muted); font-size: 14px; margin: 0; }
+    .section-head { text-align: center; max-width: 60ch; margin: 0 auto; }
+    .section-head h2 { font-size: clamp(26px, 4vw, 36px); letter-spacing: -0.02em; margin: 14px 0 12px; }
+    .section-head p { color: var(--muted); }
+    /* groups strip */
+    .groups-demo { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 22px; }
+    .tg { font-family: var(--mono); font-size: 12px; padding: 5px 13px; border-radius: 99px; color: #17150F; font-weight: 600; }
+    /* privacy band */
+    section.privacy { padding: 80px 0; }
+    .privacy-band {
+      background: var(--bg-el); border: 1px solid var(--border); border-radius: 18px;
+      padding: 46px; display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; align-items: center;
+    }
+    .privacy-band h2 { font-size: 27px; letter-spacing: -0.02em; margin: 12px 0; }
+    .privacy-band p { color: var(--muted); font-size: 15px; }
+    .privacy-band ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 12px; }
+    .privacy-band li { display: flex; gap: 11px; font-size: 14.5px; align-items: baseline; }
+    .privacy-band li::before { content: "✓"; color: var(--accent); font-weight: 700; }
+    /* faq */
+    section.faq { padding: 20px 0 80px; max-width: 720px; margin: 0 auto; }
+    details {
+      border: 1px solid var(--border); border-radius: 12px; background: var(--bg-el);
+      padding: 16px 20px; margin-top: 10px;
+    }
+    summary { cursor: pointer; font-weight: 600; font-size: 15px; }
+    details p { color: var(--muted); font-size: 14.5px; margin: 12px 0 2px; }
+    /* footer */
+    footer { border-top: 1px solid var(--border); padding: 34px 0 44px; }
+    footer .wrap { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; }
+    footer, footer a { color: var(--muted); font-size: 13.5px; }
+    footer .spacer { flex: 1; }
+    @media (max-width: 760px) {
+      .privacy-band { grid-template-columns: 1fr; padding: 30px; }
+      nav .links a:not(.btn) { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <nav>
+      <a class="logo" href="#"><img src="icon128.png" width="30" height="30" alt="">Tab Buddy</a>
+      <div class="links">
+        <a href="#features">Features</a>
+        <a href="#privacy">Privacy</a>
+        <a href="#faq">FAQ</a>
+        <a href="privacy.html">Privacy policy</a>
+        <a class="btn" id="kofi" href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">☕ Ko-fi</a>
+      </div>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <div class="wrap">
+      <span class="eyebrow">FREE FOREVER · NO ACCOUNT · NO TRACKING</span>
+      <h1>Never lose a tab<br><span class="amber">again.</span></h1>
+      <p class="sub">Tab Buddy saves, organises, and restores your tabs and native Chrome tab
+        groups — with crash recovery, a command palette, and optional end-to-end encrypted sync.
+        The session manager that's free forever and looks like it costs money.</p>
+      <div class="cta-row">
+        <a class="btn primary" id="install" href="https://chromewebstore.google.com/detail/cggdkopancknkjmjcgefilaedemdkomn" target="_blank" rel="noopener">Add to Chrome — it's free</a>
+        <a class="btn" href="#features">See what it does</a>
+      </div>
+      <p class="fineprint">works fully offline · your data stays on your device</p>
+
+      <div class="palette-mock" aria-hidden="true">
+        <div class="row"><span style="color:var(--accent)">⌕</span><span class="q">resear</span><span class="caret">▎</span><span style="margin-left:auto" class="kbd">esc</span></div>
+        <div class="item sel"><span class="fav">D</span><span><mark>Resear</mark>ch — Quarterly notes</span><span class="u">docs.google.com</span><span class="tag">switch</span></div>
+        <div class="item"><span class="fav">▦</span><span>Deep <mark>resear</mark>ch session</span><span class="u">3 windows · 42 tabs</span><span class="tag">session</span></div>
+        <div class="item"><span class="fav">W</span><span><mark>Resear</mark>ch methods — Wikipedia</span><span class="u">en.wikipedia.org</span><span class="tag">saved</span></div>
+        <div class="item" style="border-top:1px solid var(--border);color:var(--muted);font-size:12px;justify-content:center;gap:18px">
+          <span><span class="kbd">↑↓</span> navigate</span><span><span class="kbd">↵</span> open</span><span><span class="kbd">⌘K</span> anywhere in the manager</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section class="features wrap" id="features">
+    <div class="section-head">
+      <span class="eyebrow">EVERYTHING INCLUDED · NOTHING GATED</span>
+      <h2>Where the old tools lose your data,<br>Tab Buddy keeps every detail.</h2>
+      <p>Save whole sessions, one window, one group, or a single tab — and get back
+        exactly what you left, groups and all.</p>
+      <div class="groups-demo">
+        <span class="tg" style="background:#6aa9f7">Code review</span>
+        <span class="tg" style="background:#e7c04c">Reference</span>
+        <span class="tg" style="background:#67ba72">Trip planning</span>
+        <span class="tg" style="background:#ee7bb1">Inspiration</span>
+        <span style="color:var(--muted);font-size:13px;align-self:center">← groups survive save &amp; restore, intact</span>
+      </div>
+    </div>
+    <div class="feature-grid">
+      <div class="feature"><span class="ico">🗂️</span><h3>Native tab groups, preserved</h3><p>Names, colours, collapsed state, and order come back exactly as you left them — the single thing every old session manager destroys.</p></div>
+      <div class="feature"><span class="ico">⌘</span><h3>Command palette</h3><p>One keystroke (⌘K / Ctrl+K) fuzzy-searches every open tab, saved session, and archived tab. Full keyboard navigation throughout.</p></div>
+      <div class="feature"><span class="ico">♻️</span><h3>Crash-proof by default</h3><p>Rolling automatic snapshots of all your windows, kept locally. A crash or bad Chrome update never costs you anything.</p></div>
+      <div class="feature"><span class="ico">🔒</span><h3>End-to-end encrypted sync</h3><p>Optional sync across devices with client-side encryption. The server stores ciphertext — we can't read your tabs even if we wanted to.</p></div>
+      <div class="feature"><span class="ico">🖼️</span><h3>Visual grid or dense list</h3><p>Find tabs by what the page looked like with local thumbnails, or fly through a keyboard-first dense list. One toggle.</p></div>
+      <div class="feature"><span class="ico">🧹</span><h3>One-click tidy</h3><p>Group every window by site or by time opened. Find and close duplicates. Sweep stale tabs into a session. Deterministic — no AI, no cloud.</p></div>
+      <div class="feature"><span class="ico">📥</span><h3>Switch with nothing lost</h3><p>Imports OneTab, Session Buddy, Toby, and bookmarks exports on day one. Your history comes with you.</p></div>
+      <div class="feature"><span class="ico">📤</span><h3>Never locked in</h3><p>Export everything to JSON, CSV, Markdown, or HTML any time. Your data is yours — that's the whole point.</p></div>
+      <div class="feature"><span class="ico">🆓</span><h3>Free, sustainably</h3><p>No subscription, no "Pro" tier, no bait-and-switch. Sync costs us pennies by design. If Tab Buddy saves your day, there's a Ko-fi.</p></div>
+    </div>
+  </section>
+
+  <section class="privacy wrap" id="privacy">
+    <div class="privacy-band">
+      <div>
+        <span class="eyebrow">PRIVATE BY ARCHITECTURE</span>
+        <h2>We can't read your data.<br>That's not a promise — it's math.</h2>
+        <p>Tab Buddy is local-first: everything lives in your browser. If you turn on sync,
+          your sessions are encrypted on your device with a passphrase that never leaves it.
+          The server is a dumb store of ciphertext.</p>
+        <p><a href="privacy.html">Read the full privacy policy →</a></p>
+      </div>
+      <ul>
+        <li>No account, ever — install and go</li>
+        <li>No analytics, no tracking, no telemetry</li>
+        <li>Works 100% offline</li>
+        <li>Sync is opt-in and end-to-end encrypted (AES-256-GCM)</li>
+        <li>Thumbnails never leave your device</li>
+        <li>Export everything, any time</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="faq wrap" id="faq">
+    <div class="section-head" style="margin-bottom:22px">
+      <span class="eyebrow">QUESTIONS</span>
+      <h2>FAQ</h2>
+    </div>
+    <details>
+      <summary>Is it really free? What's the catch?</summary>
+      <p>Really free. Tab Buddy stores your data in your own browser, and sync uses client-side
+        encryption on infrastructure that costs pennies at any scale — so there's no cost that
+        would force a subscription. If it saves your bacon, you can leave a tip on Ko-fi.</p>
+    </details>
+    <details>
+      <summary>What happens if I forget my sync passphrase?</summary>
+      <p>Nobody can recover it — not even us. That's the trade for genuine end-to-end encryption.
+        Your local data is unaffected; you'd just set up a fresh sync with a new passphrase and
+        your sessions re-upload. Store the passphrase in your password manager when you set it up.</p>
+    </details>
+    <details>
+      <summary>Does it preserve Chrome's native tab groups?</summary>
+      <p>Yes — names, colours, collapsed state, and order, on both save and restore. This is the
+        gap that made us build Tab Buddy: the older session managers flatten your groups into a
+        plain list.</p>
+    </details>
+    <details>
+      <summary>I'm coming from OneTab / Session Buddy / Toby. Will my data survive?</summary>
+      <p>Yes. Paste or drop your export on the Import page and it comes across — Toby lists even
+        become named tab groups. There's an import step right in the welcome flow.</p>
+    </details>
+    <details>
+      <summary>Why does the thumbnails option ask for a scary permission?</summary>
+      <p>Capturing a preview of a page needs Chrome's "read all sites" permission — there is no
+        narrower one. That's exactly why thumbnails are off by default and opt-in: everything else
+        works without it, and the captures never leave your device either way.</p>
+    </details>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <span>Tab Buddy is a product from <strong>niallcodes</strong> — an independent software project based in the United Kingdom.</span>
+      <span class="spacer"></span>
+      <a href="privacy.html">Privacy policy</a>
+      <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+    </div>
+  </footer>
+</body>
+</html>
