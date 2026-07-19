@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Qode</title>
+<meta name="description" content="Qode's privacy policy: no server, no analytics, zero network requests. Everything you encode or scan stays on your device.">
+<link rel="icon" type="image/png" href="assets/qode-icon-128.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0F0E;
+    --surface: #151816;
+    --line: #262B28;
+    --text: #F3F5F4;
+    --muted: #9EA5A1;
+    --faint: #6E7570;
+    --green: #22C55E;
+    --green-bright: #4ADE80;
+    --good: #22C55E;
+    --ui: "Inter", system-ui, sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--ink); color: var(--text);
+    font-family: var(--ui); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--green-bright); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 26px 0; }
+  .brand { display: flex; align-items: center; gap: 12px; }
+  .brand img { width: 34px; height: 34px; border-radius: 8px; }
+  .brand b { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; color: var(--text); }
+  .back { font-size: 14px; color: var(--muted); }
+  .back:hover { color: var(--text); text-decoration: none; }
+
+  .head { padding: 40px 0 8px; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; font-weight: 600; letter-spacing: 0.26em; text-transform: uppercase; color: var(--green-bright); margin-bottom: 18px; }
+  h1 { font-size: clamp(28px, 5vw, 40px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.12; margin-bottom: 14px; }
+  .meta { font-size: 13.5px; color: var(--faint); margin-bottom: 34px; }
+
+  .tldr {
+    background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--green);
+    border-radius: 12px; padding: 20px 24px; font-size: 15px; color: var(--muted); line-height: 1.65;
+  }
+  .tldr b { color: var(--text); }
+
+  h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; margin: 44px 0 12px; }
+  p, li { font-size: 15px; color: var(--muted); }
+  p + p { margin-top: 12px; }
+  strong { color: var(--text); font-weight: 600; }
+  ul { margin: 12px 0 0 22px; }
+  li { margin-bottom: 8px; }
+  li::marker { color: var(--green); }
+  code { font-family: var(--mono); font-size: 13px; color: var(--green-bright); background: var(--surface); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; }
+
+  .table-wrap { overflow-x: auto; margin-top: 14px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); font-weight: 600; }
+  td { color: var(--muted); }
+  td:first-child { color: var(--text); font-weight: 600; }
+  @media (max-width: 640px) {
+    th, td { padding: 9px 10px; font-size: 13px; }
+    h1 { font-size: 27px; }
+  }
+  .no { color: var(--good); font-weight: 700; font-family: var(--mono); font-size: 13px; }
+
+  footer { border-top: 1px solid var(--line); padding: 30px 0 44px; margin-top: 60px; }
+  .foot-row { display: flex; align-items: center; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+  .foot-row .small { font-size: 13px; color: var(--faint); }
+  .foot-links { display: flex; gap: 20px; font-size: 13.5px; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <nav class="nav">
+    <div class="brand">
+      <img src="assets/qode-icon-128.png" alt="Qode icon">
+      <b>Qode</b>
+    </div>
+    <a class="back" href="index.html">← Back to Qode</a>
+  </nav>
+
+  <header class="head">
+    <div class="eyebrow">Privacy Policy</div>
+    <h1>Qode doesn't collect your data.<br>It can't — there's nothing to collect it with.</h1>
+    <div class="meta">Effective 9 July 2026 · Applies to the Qode Chrome extension v1.0.0 and later</div>
+  </header>
+
+  <main>
+    <div class="tldr">
+      <b>The short version:</b> Qode runs entirely inside your browser and makes <b>zero network requests</b>. The QR generator and the decoder are bundled into the extension itself — there is no server, no analytics, no account system and no telemetry. Whatever you encode or scan (page links, WiFi passwords, contact details) is processed in memory on your device and never transmitted anywhere, not because a policy says so, but because there is no backend for data to go to.
+    </div>
+
+    <h2>Who we are</h2>
+    <p>Qode is a free Chrome extension published by <strong>niallcodes</strong>, an independent software project operated by Florence Publishing Ltd, a company registered in the United Kingdom.</p>
+
+    <h2>What Qode does</h2>
+    <p>Qode turns content into QR codes — the current page's URL, or text, WiFi details, contact cards, email, SMS, phone numbers, locations and calendar events that you type — and decodes QR codes from images you choose. All of this happens <strong>locally, on your device</strong>, using code that ships inside the extension. Qode creates static QR codes: the data lives in the code itself, so it never expires and never routes through anyone's servers — including ours, because we don't have any.</p>
+
+    <h2>What Qode collects and shares: nothing</h2>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Data type</th><th>Collected?</th><th>Notes</th></tr>
+      <tr><td>Personally identifiable info</td><td class="no">NO</td><td>No account, no email, no sign-up of any kind. Details you type into a vCard QR are used only to build the code on your device.</td></tr>
+      <tr><td>Browsing history</td><td class="no">NO</td><td>Qode does not record or transmit the pages you visit. The current tab's URL is read only when you open Qode, to show it as a QR code.</td></tr>
+      <tr><td>Website content</td><td class="no">Not collected</td><td>Read locally only on your explicit action (opening the popup, or right-clicking a selection, link or image) to encode or decode it. Never stored remotely or transmitted.</td></tr>
+      <tr><td>Analytics / telemetry</td><td class="no">NO</td><td>No usage tracking, no crash reporting, no third-party SDKs.</td></tr>
+      <tr><td>Cookies</td><td class="no">NO</td><td>Qode sets no cookies and reads none.</td></tr>
+      <tr><td>Health, financial, location, communications</td><td class="no">NO</td><td>A location you type into a geo QR is user-authored content built locally — never collected.</td></tr>
+    </table>
+    </div>
+    <p style="margin-top:14px;">We do not sell data, share data, or use data for advertising, profiling or creditworthiness — there is no data to do any of that with.</p>
+
+    <h2>What's stored on your device</h2>
+    <p>Qode keeps a small amount of data in your browser's local extension storage (<code>chrome.storage.local</code>), purely so the tool works the way you left it:</p>
+    <ul>
+      <li><strong>Preferences</strong> — your theme (light/dark).</li>
+      <li><strong>History</strong> — your recent QR codes (content, type and styling), capped at 50 entries, so you can reuse them. You can delete entries individually or clear all of it from the Studio's History tab.</li>
+      <li><strong>A first-run flag</strong> — so the welcome tip only shows once.</li>
+    </ul>
+    <p>This data never leaves your device. It is removed by Chrome when you uninstall the extension.</p>
+
+    <h2>Logos you upload</h2>
+    <p>When you place a logo in the center of a QR code, the image file is read into memory on your device to draw the code. It is <strong>never uploaded anywhere</strong>. If a code with a logo is saved to history, the logo is stored locally as part of that entry.</p>
+
+    <h2>Network requests: none</h2>
+    <p>Qode makes <strong>no network requests at all</strong>. The QR generation library, the decoding library and the UI fonts are all bundled inside the extension package and load from your disk. Unlike many QR extensions, Qode never sends the content of your codes to a web API to render them — which means a URL, WiFi password or phone number you encode cannot leak, even in principle.</p>
+
+    <h2>Why Qode asks for the permissions it does</h2>
+    <ul>
+      <li><strong>Active tab</strong> — reads the current tab's URL, only when you open Qode, so the page you're on is instantly a QR code.</li>
+      <li><strong>Scripting</strong> — runs Qode's helpers on the page when you use a right-click action (decode an image, scan a screen region). Injected only on your gesture, removed when done.</li>
+      <li><strong>Storage</strong> — the local preferences and history described above.</li>
+      <li><strong>Context menus</strong> — the right-click entries for creating a QR from a page, link or selection, and for decoding images.</li>
+      <li><strong>Side panel</strong> — Qode's Studio (styling, scanner, history).</li>
+    </ul>
+    <p>Qode deliberately does not request access to read all websites — it has no business there.</p>
+
+    <h2>Third-party services</h2>
+    <p>Qode's pages link to <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a> (optional donations) and <a href="https://niallcodes.com">niallcodes.com</a>. Those sites are separate services with their own privacy policies; Qode shares no data with them — following a link is the only interaction.</p>
+
+    <h2>Children</h2>
+    <p>Qode does not knowingly collect information from anyone, including children. There is no data collection mechanism in the product.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If a future update ever changes how Qode handles data (for example, adding an opt-in feature that requires a network service), this policy will be updated first, the change will be described in the extension's changelog, and the Chrome Web Store data disclosures will be updated to match before release.</p>
+
+    <h2>Contact</h2>
+    <p>Questions about this policy or about Qode: <a href="mailto:swingneil@gmail.com">swingneil@gmail.com</a>, or via the support tab on Qode's Chrome Web Store listing.</p>
+  </main>
+
+  <footer>
+    <div class="foot-row">
+      <div class="small">Qode is a product from <a href="https://niallcodes.com">niallcodes</a> — an independent software project based in the United Kingdom.</div>
+      <div class="foot-links">
+        <a href="index.html">Qode</a>
+        <a href="https://ko-fi.com/niallcodes" target="_blank" rel="noopener">Ko-fi</a>
+        <a href="https://niallcodes.com">More from niallcodes</a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</body>
+</html>
